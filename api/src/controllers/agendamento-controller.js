@@ -1,5 +1,5 @@
-const { AgendamentoModel } = require('./models/agendamentoModel');
-const { UserView } = require('../views/user-view');
+const { AgendamentoModel } = require('../models/agendamento-model');
+// const { UserView } = require('../views/user-view');
 
 class AgendamentoController {
   async create(req, res) {

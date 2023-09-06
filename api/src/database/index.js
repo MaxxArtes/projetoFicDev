@@ -14,10 +14,10 @@ ConsultaModel.init(database);
 ReceitaModel.init(database);
 AgendamentoModel.init(database);
 
-// relationships
-UsuarioModel.associate(database.models);
-ConsultaModel.associate(database.models);
-ReceitaModel.associate(database.models);
-AgendamentoModel.associate(database.models);
+// // relationships
+// UsuarioModel.associate(database.models);
+// ConsultaModel.associate(database.models);
+// ReceitaModel.associate(database.models);
+// AgendamentoModel.associate(database.models);
 
-module.exports = database;
+module.exports = {database};

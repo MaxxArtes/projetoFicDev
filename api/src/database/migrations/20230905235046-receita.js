@@ -4,19 +4,32 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
 
-    await queryInterface.createTable('receita', {
-      id: Sequelize.INTEGER,
-      name: Sequelize.TEXT,
-      data: Sequelize.DATE,
-      horario: Sequelize.TIME,
-      unidade_saude: Sequelize.TEXT,
-      descricao: Sequelize.TEXT
+    await queryInterface.createTable('receitas', {
+      id: {type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+      },
+      name: {type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      data: {type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      horario: {type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      unidade_saude: {type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      descricao: {type: Sequelize.INTEGER,
+        allowNull: false
+      },
     });
 
   },
 
   async down(queryInterface, Sequelize) {
 
-    await queryInterface.dropTable('receita');
+    await queryInterface.dropTable('receitas');
   }
 };

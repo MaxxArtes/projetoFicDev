@@ -1,5 +1,5 @@
-const { ConsultaModel } = require('./models/consultaModel');
-const { UserView } = require('../views/user-view');
+const { ConsultaModel } = require('../models/consulta-model');
+// const { UserView } = require('../views/user-view');
 
 class ConsultaController {
   async create(req, res) {

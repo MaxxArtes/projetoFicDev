@@ -1,5 +1,5 @@
-const { ReceitaModel } = require('./models/receitaModel');
-const { UserView } = require('../views/user-view');
+const { ReceitaModel } = require('../models/receita-model');
+// const { UserView } = require('../views/user-view');
 
 class ReceitaController {
   async create(req, res) {

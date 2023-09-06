@@ -4,25 +4,50 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
 
-    await queryInterface.createTable('agendamento', {
-      id: Sequelize.INTEGER,
-      name: Sequelize.TEXT,
-      email: Sequelize.TEXT,
-      tel: Sequelize.INTEGER,
-      cel: Sequelize.INTEGER,
-      CNS: Sequelize.INTEGER,
-      CPF: Sequelize.INTEGER,
-      endereco: Sequelize.TEXT,
-      nome_medico: Sequelize.TEXT,
-      especialidade: Sequelize.TEXT,
-      data: Sequelize.DATE,
-      horario: Sequelize.TIME,
+    await queryInterface.createTable('agendamentos', {
+      id: {type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      name: {type: Sequelize.TEXT,
+        allowNull: false
+      },    
+      email: {type: Sequelize.TEXT,
+        allowNull: false
+      },    
+      tel: {type: Sequelize.TEXT,
+        allowNull: false
+      },
+      cel: {type: Sequelize.TEXT,
+        allowNull: false
+      },
+      CNS: {type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      CPF: {type: Sequelize.TEXT,
+        allowNull: false
+      },
+      endereco: {type: Sequelize.TEXT,
+        allowNull: false
+      },
+      nome_medico: {type: Sequelize.TEXT,
+        allowNull: false
+      },
+      especialidade: {type: Sequelize.TEXT,
+        allowNull: false
+      },
+      data: {type: Sequelize.DATE,
+        allowNull: false
+      },
+      horario: {type: Sequelize.TIME,
+        allowNull: false
+      },  
     });
 
   },
 
   async down(queryInterface, Sequelize) {
 
-    await queryInterface.dropTable('agendamento');
+    await queryInterface.dropTable('agendamentos');
   }
 };

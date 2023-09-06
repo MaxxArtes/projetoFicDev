@@ -3,16 +3,31 @@ const { Model, DataTypes } = require("sequelize");
 class ConsultaModel extends Model {
     static init(database) {
         super.init({
-            id: DataTypes.INTEGER,
-            name: DataTypes.TEXT,
-            sexo: DataTypes.TEXT,
-            data_nasc: DataTypes.DATE,
-            endereco: DataTypes.TEXT,
-            historico_clinico: DataTypes.TEXT,
-            descricao: DataTypes.TEXT
+            id: {type:DataTypes.INTEGER,
+                autoIncrement: true,
+                primaryKey: true
+                },
+                name: {type:DataTypes.TEXT,
+                  allowNull: false
+                },
+                sexo: {type:DataTypes.TEXT,
+                  allowNull: false
+                },
+                data_nasc: {type:DataTypes.DATE,
+                  allowNull: false
+                },
+                endereco: {type:DataTypes.TEXT,
+                  allowNull: false
+                },
+                historico_clinico: {type:DataTypes.TEXT,
+                  allowNull: false
+                },
+                descricao: {type:DataTypes.TEXT,
+                  allowNull: false
+                }
         }, {
-            tableName: 'receitas', 
-            modelName: 'receita',
+            tableName: 'consultas', 
+            modelName: 'consulta',
             timestamps: false,
             sequelize: database
         });
