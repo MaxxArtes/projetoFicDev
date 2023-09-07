@@ -1,13 +1,25 @@
+require('dotenv').config();
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { UsuarioModel } = require('../models/usuario-model');
 // const { UserView } = require('../views/user-view');
+const salt = bcrypt.genSaltSync(10);
+
+
+
 
 class UsuarioController {
   async create(req, res) {
     try {
       const { name, password, cpf, cargo, especialidade, email } = req.body;
+
+      const passwordHash = bcrypt.hashSync(password, salt);
+
+      console.log("o hash é :", passwordHash)
+
       const usuario = await UsuarioModel.create({
         name,
-        password,
+        password: passwordHash,
         cpf,
         cargo,
         especialidade,
@@ -24,10 +36,16 @@ class UsuarioController {
     try {
       const { id } = req.params;
       const { name, password, cpf, cargo, especialidade, email } = req.body;
+
+      let passwordHash;
+      if (password) {
+        passwordHash = bcrypt.hashSync(password, salt)
+      }
+
       const usuario = await UsuarioModel.update(
         {
           name,
-          password,
+          password: passwordHash,
           cpf,
           cargo,
           especialidade,
@@ -85,6 +103,8 @@ class UsuarioController {
       if (!usuario) {
         return res.status(404).json({ error: 'User not found' });
       }
+
+
       if (!bcrypt.compareSync(password, usuario.password)) {
         return res.status(401).json({ error: 'Invalid password' });
       }

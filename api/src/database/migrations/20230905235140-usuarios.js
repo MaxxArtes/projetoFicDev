@@ -6,27 +6,35 @@ module.exports = {
 
     await queryInterface.createTable('usuarios', {
       id: {
-        type: Sequelize.INTEGER, 
+        type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
       },
-      name: {type: Sequelize.TEXT,
+      name: {
+        type: Sequelize.TEXT,
         allowNull: false
       },
-      password: {type: Sequelize.TEXT,
+      password: {
+        type: Sequelize.TEXT,
         allowNull: false
       },
-      cpf: {type: Sequelize.TEXT,
+      cpf: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+        unique: true
+      },
+      cargo: {
+        type: Sequelize.TEXT,
         allowNull: false
       },
-      cargo: {type: Sequelize.TEXT,
+      especialidade: {
+        type: Sequelize.TEXT,
         allowNull: false
       },
-      especialidade: {type:Sequelize.TEXT,
-        allowNull: false
-      },
-      email: {type:Sequelize.TEXT,
-        allowNull: false
+      email: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+        unique: true
       }
     });
 
