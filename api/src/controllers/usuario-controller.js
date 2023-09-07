@@ -4,8 +4,13 @@ const jwt = require('jsonwebtoken');
 const { UsuarioModel } = require('../models/usuario-model');
 // const { UserView } = require('../views/user-view');
 const salt = bcrypt.genSaltSync(10);
+const { check, validationResult } = require('express-validator')
+const { Op } = require("sequelize");
 
-
+const loginValidations = [
+  check('email').isEmail().withMessage('email invalido'),
+  check('password').isLength({ min: 6 }).withMessage('A senha deve ter pelo menos 6 caracteres')
+];
 
 
 class UsuarioController {
@@ -87,15 +92,30 @@ class UsuarioController {
 
   async getAll(req, res) {
     try {
-      const usuarios = await UsuarioModel.findAll();
-      return res.status(200).json(usuarios);
+      const { name } = req.query; //parâmetro da consulta
+      let usuarios; //variável para armazenar os usuários
+      if (name) {
+        //se tiver o parâmetro de consulta, filtra por nome
+        usuarios = await UsuarioModel.findAll({ where: { name: { [Op.iLike]: '%' + name + '%' } } });
+      } else {
+        //se não tiver o parâmetro de consulta, retorna todos os usuários
+        usuarios = await UsuarioModel.findAll();
+      }
+      return res.status(200).json(usuarios); //retorna os usuários encontrados
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
+
   async login(req, res) {
     try {
+      const errors = validationResult(req); //pega os erros das validações
+      if (!errors.isEmpty()) {
+        //se tiver algum erro, retorna um status 400 com os erros
+        return res.status(400).json({ errors: errors.array() });
+      }
+      //se não tiver erro, continua com o login normalmente
       const { email, password } = req.body;
       const usuario = await UsuarioModel.findOne({
         where: { email }
@@ -117,6 +137,7 @@ class UsuarioController {
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
+
 }
 
 module.exports = new UsuarioController();
