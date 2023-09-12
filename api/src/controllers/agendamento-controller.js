@@ -43,7 +43,7 @@ class AgendamentoController {
           data,
           horario
         },
-        { where: { id } }
+        { where: { id_agendamento: id } }
       );
       return res.status(200).json(agendamento);
     } catch (error) {
@@ -55,7 +55,7 @@ class AgendamentoController {
   async delete(req, res) {
     try {
       const { id } = req.params;
-      await AgendamentoModel.destroy({ where: { id } });
+      await AgendamentoModel.destroy({ where: { id_agendamento: id } });
       return res.status(204).send();
     } catch (error) {
       console.error(error);
@@ -66,7 +66,7 @@ class AgendamentoController {
   async getById(req, res) {
     try {
       const { id } = req.params;
-      const agendamento = await AgendamentoModel.findByPk(id);
+      const agendamento = await AgendamentoModel.findByPk({ id_agendamento: id });
       if (!agendamento) {
         return res.status(404).json({ error: 'Appointment not found' });
       }
@@ -79,8 +79,16 @@ class AgendamentoController {
 
   async getAll(req, res) {
     try {
-      const agendamentos = await AgendamentoModel.findAll();
-      return res.status(200).json(agendamentos);
+      const { name } = req.query; //parâmetro da consulta
+      let agendamentos; //variável para armazenar os agendamentos
+      if (name) {
+        //se tiver o parâmetro de consulta, filtra por nome
+        agendamentos = await AgendamentoModel.findAll({ where: { name: { [Op.iLike]: '%' + name + '%' } } });
+      } else {
+        //se não tiver o parâmetro de consulta, retorna todos os agendamentos
+        agendamentos = await AgendamentoModel.findAll();
+      }
+      return res.status(200).json(agendamentos); //retorna os agendamentos encontrados
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal server error' });

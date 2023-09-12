@@ -16,14 +16,14 @@ const loginValidations = [
 class UsuarioController {
   async create(req, res) {
     try {
-      const { name, password, cpf, cargo, especialidade, email } = req.body;
+      const { nome, password, cpf, cargo, especialidade, email } = req.body;
 
       const passwordHash = bcrypt.hashSync(password, salt);
 
       console.log("o hash é :", passwordHash)
 
       const usuario = await UsuarioModel.create({
-        name,
+        nome,
         password: passwordHash,
         cpf,
         cargo,
@@ -40,7 +40,7 @@ class UsuarioController {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { name, password, cpf, cargo, especialidade, email } = req.body;
+      const { nome, password, cpf, cargo, especialidade, email } = req.body;
 
       let passwordHash;
       if (password) {
@@ -49,14 +49,14 @@ class UsuarioController {
 
       const usuario = await UsuarioModel.update(
         {
-          name,
+          nome,
           password: passwordHash,
           cpf,
           cargo,
           especialidade,
           email
         },
-        { where: { id } }
+        { where: { id_usuario: id } }
       );
       return res.status(200).json(usuario);
     } catch (error) {
@@ -68,22 +68,8 @@ class UsuarioController {
   async delete(req, res) {
     try {
       const { id } = req.params;
-      await UsuarioModel.destroy({ where: { id } });
+      await UsuarioModel.destroy({ where: { id_usuario: id } });
       return res.status(204).send();
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: 'Internal server error' });
-    }
-  }
-
-  async getById(req, res) {
-    try {
-      const { id } = req.params;
-      const usuario = await UsuarioModel.findByPk(id);
-      if (!usuario) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-      return res.status(200).json(usuario);
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal server error' });
@@ -92,21 +78,22 @@ class UsuarioController {
 
   async getAll(req, res) {
     try {
-      const { name } = req.query; //parâmetro da consulta
+      const { nome, page, limit } = req.query; //parâmetros da consulta
       let usuarios; //variável para armazenar os usuários
-      if (name) {
-        //se tiver o parâmetro de consulta, filtra por nome
-        usuarios = await UsuarioModel.findAll({ where: { name: { [Op.iLike]: '%' + name + '%' } } });
+      if (nome) {
+        //se tiver o parâmetro de nome, filtra por nome
+        usuarios = await paginate(UserModel, page, limit, { where: { nome: { [Op.iLike]: '%' + nome + '%' } } });
       } else {
-        //se não tiver o parâmetro de consulta, retorna todos os usuários
-        usuarios = await UsuarioModel.findAll();
+        //se não tiver o parâmetro de nome, retorna todos os usuários
+        usuarios = await paginate(UserModel, page, limit);
       }
-      return res.status(200).json(usuarios); //retorna os usuários encontrados
+      return res.status(200).json(usuarios); //retorna os usuários encontrados e paginados
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
+
 
   async login(req, res) {
     try {

@@ -2,9 +2,9 @@
 module.exports = {
     dialect: 'postgres',
     username: 'postgres',
-    password: '12345678',
-    host: process.env.HOST,
-    port: process.env.PORT_DB,
-    database: process.env.DATABASE,
+    password: 'Magurofg2.',
+    host: 'localhost',
+    port: 5432,
+    database: 'postgres',
     logging: false,
 };

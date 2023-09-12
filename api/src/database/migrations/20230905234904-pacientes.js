@@ -4,8 +4,8 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
 
-    await queryInterface.createTable('usuarios', {
-      id_usuario: {
+    await queryInterface.createTable('pacientes', {
+      id_paciente: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
@@ -14,34 +14,44 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false
       },
-      password: {
-        type: Sequelize.TEXT,
-        allowNull: false
-      },
-      cpf: {
-        type: Sequelize.TEXT,
-        allowNull: false,
-        unique: true
-      },
-      cargo: {
-        type: Sequelize.TEXT,
-        allowNull: false
-      },
-      especialidade: {
-        type: Sequelize.TEXT,
-        allowNull: false
-      },
       email: {
         type: Sequelize.TEXT,
-        allowNull: false,
-        unique: true
-      }
+        allowNull: false
+      },
+      tel: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
+      cel: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
+      CNS: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      CPF: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
+      sexo: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
+      data_nasc: {
+        type: Sequelize.DATE,
+        allowNull: false
+      },
+      endereco: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
     });
 
   },
 
   async down(queryInterface, Sequelize) {
 
-    await queryInterface.dropTable('usuarios');
+    await queryInterface.dropTable('pacientes');
   }
 };

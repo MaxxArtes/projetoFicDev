@@ -4,12 +4,15 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
 
-    await queryInterface.createTable('receitas', {
-      id: {type: Sequelize.INTEGER,
+    await queryInterface.createTable('agendametos', {
+      id_agendamento: {type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true
       },
-      name: {type: Sequelize.INTEGER,
+      nome_medico: {type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      especializacao: {type: Sequelize.INTEGER,
         allowNull: false
       },
       data: {type: Sequelize.INTEGER,
@@ -19,9 +22,6 @@ module.exports = {
         allowNull: false
       },
       unidade_saude: {type: Sequelize.INTEGER,
-        allowNull: false
-      },
-      descricao: {type: Sequelize.INTEGER,
         allowNull: false
       },
     });

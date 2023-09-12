@@ -5,28 +5,23 @@ module.exports = {
   async up(queryInterface, Sequelize) {
 
     await queryInterface.createTable('consultas', {
-      id: {type:Sequelize.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
+      id_consulta: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
       },
-      name: {type:Sequelize.TEXT,
+      historico_clinico: {
+        type: Sequelize.TEXT,
         allowNull: false
       },
-      sexo: {type:Sequelize.TEXT,
+      descricao: {
+        type: Sequelize.TEXT,
         allowNull: false
       },
-      data_nasc: {type:Sequelize.DATE,
+      receita: {
+        type: Sequelize.BOOLEAN,
         allowNull: false
-      },
-      endereco: {type:Sequelize.TEXT,
-        allowNull: false
-      },
-      historico_clinico: {type:Sequelize.TEXT,
-        allowNull: false
-      },
-      descricao: {type:Sequelize.TEXT,
-        allowNull: false
-      }    
+      }
     });
 
   },

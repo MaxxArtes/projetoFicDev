@@ -4,14 +4,11 @@ const { ConsultaModel } = require('../models/consulta-model');
 class ConsultaController {
   async create(req, res) {
     try {
-      const { name, sexo, data_nasc, endereco, historico_clinico, descricao } = req.body;
+      const { historico_clinico, descricao, receita } = req.body;
       const consulta = await ConsultaModel.create({
-        name,
-        sexo,
-        data_nasc,
-        endereco,
         historico_clinico,
-        descricao
+        descricao,
+        receita
       });
       return res.status(201).json(consulta);
     } catch (error) {
@@ -23,17 +20,14 @@ class ConsultaController {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { name, sexo, data_nasc, endereco, historico_clinico, descricao } = req.body;
+      const { historico_clinico, descricao, receita } = req.body;
       const consulta = await ConsultaModel.update(
         {
-          name,
-          sexo,
-          data_nasc,
-          endereco,
           historico_clinico,
-          descricao
+          descricao,
+          receita
         },
-        { where: { id } }
+        { where: { id_consulta: id } }
       );
       return res.status(200).json(consulta);
     } catch (error) {
@@ -45,7 +39,7 @@ class ConsultaController {
   async delete(req, res) {
     try {
       const { id } = req.params;
-      await ConsultaModel.destroy({ where: { id } });
+      await ConsultaModel.destroy({ where: { id_consulta: id } });
       return res.status(204).send();
     } catch (error) {
       console.error(error);
@@ -53,24 +47,19 @@ class ConsultaController {
     }
   }
 
-  async getById(req, res) {
-    try {
-      const { id } = req.params;
-      const consulta = await ConsultaModel.findByPk(id);
-      if (!consulta) {
-        return res.status(404).json({ error: 'Consultation not found' });
-      }
-      return res.status(200).json(consulta);
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: 'Internal server error' });
-    }
-  }
 
   async getAll(req, res) {
     try {
-      const consultas = await ConsultaModel.findAll();
-      return res.status(200).json(consultas);
+      const { name } = req.query; //parâmetro da consulta
+      let consultas; //variável para armazenar as consultas
+      if (name) {
+        //se tiver o parâmetro de consulta, filtra por nome
+        consultas = await ConsultaModel.findAll({ where: { name: { [Op.iLike]: '%' + name + '%' } } });
+      } else {
+        //se não tiver o parâmetro de consulta, retorna todas as consultas
+        consultas = await ConsultaModel.findAll();
+      }
+      return res.status(200).json(consultas); //retorna as consultas encontradas
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal server error' });
