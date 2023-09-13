@@ -51,6 +51,10 @@ class PacienteModel extends Model {
             sequelize: database
         });
     }
+    static associate(models) {
+        this.hasMany(models.AgendamentoModel, { foreignKey: 'id_paciente' });
+        this.hasMany(models.ConsultaModel, { foreignKey: 'id_paciente' });
+      }
 }
 
 module.exports = { PacienteModel };

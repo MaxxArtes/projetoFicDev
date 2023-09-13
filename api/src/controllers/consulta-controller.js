@@ -1,14 +1,16 @@
 const { ConsultaModel } = require('../models/consulta-model');
+//const filtrarPorData = require('./util/filtroData');
+
 // const { UserView } = require('../views/user-view');
 
 class ConsultaController {
   async create(req, res) {
     try {
-      const { historico_clinico, descricao, receita } = req.body;
+      const { historico_clinico, descricao, paciente } = req.body;
       const consulta = await ConsultaModel.create({
         historico_clinico,
         descricao,
-        receita
+        paciente
       });
       return res.status(201).json(consulta);
     } catch (error) {
@@ -20,12 +22,12 @@ class ConsultaController {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { historico_clinico, descricao, receita } = req.body;
+      const { historico_clinico, descricao, paciente } = req.body;
       const consulta = await ConsultaModel.update(
         {
           historico_clinico,
           descricao,
-          receita
+          paciente
         },
         { where: { id_consulta: id } }
       );

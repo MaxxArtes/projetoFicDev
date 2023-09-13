@@ -16,7 +16,7 @@ class ConsultaModel extends Model {
         type: DataTypes.TEXT,
         allowNull: false
       },
-      receita: {
+      paciente: {
         type: DataTypes.BOOLEAN,
         allowNull: false
       }
@@ -26,6 +26,9 @@ class ConsultaModel extends Model {
       timestamps: false,
       sequelize: database
     });
+  }
+  static associate(models) {
+    ConsultaModel.belongsTo(models.PacienteModel, { foreignKey: 'id_paciente' });
   }
 }
 

@@ -1,4 +1,5 @@
 const { PacienteModel } = require('../models/paciente-model');
+//const filtrarPorData = require('./util/filtroData');
 class PacienteController {
   async create(req, res) {
     try {

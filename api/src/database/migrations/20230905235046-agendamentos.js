@@ -4,7 +4,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
 
-    await queryInterface.createTable('agendametos', {
+    await queryInterface.createTable('agendamentos', {
       id_agendamento: {type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true
@@ -30,6 +30,6 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
 
-    await queryInterface.dropTable('receitas');
+    await queryInterface.dropTable('agendamentos');
   }
 };

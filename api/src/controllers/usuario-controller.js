@@ -7,6 +7,7 @@ const salt = bcrypt.genSaltSync(10);
 const { check, validationResult } = require('express-validator')
 const { Op } = require("sequelize");
 
+
 const loginValidations = [
   check('email').isEmail().withMessage('email invalido'),
   check('password').isLength({ min: 6 }).withMessage('A senha deve ter pelo menos 6 caracteres')
