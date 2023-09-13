@@ -35,6 +35,10 @@ class AgendamentoModel extends Model {
       sequelize: database
     });
   }
+  static associate(models) {
+    this.belongsTo(models.AgendamentoModel, { foreignKey: "id_agendamento" });
+  }
+
 }
 
 module.exports = { AgendamentoModel };  

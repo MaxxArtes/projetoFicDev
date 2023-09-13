@@ -27,6 +27,9 @@ class ConsultaModel extends Model {
       sequelize: database
     });
   }
+  static associate(models) {
+    this.belongsTo(models.ConsultaModel, { foreignKey: "id_consulta" });
+  }
 }
 
 module.exports = { ConsultaModel };

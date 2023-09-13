@@ -8,7 +8,7 @@ function authMiddleware(request, response, next) {
             const accessToken = token.split(' ')[1];
             jwt.verify(
                 accessToken,
-                process.env.TOKEN_SECRET,
+                process.env.SECRET,
                 (error, user) => {
                     if (error) {
                         return response.status(401).json({

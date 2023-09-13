@@ -8,7 +8,7 @@ class UsuarioModel extends Model {
         primaryKey: true,
         autoIncrement: true
       },
-      name: {
+      nome: {
         type: DataTypes.TEXT,
         allowNull: false
       },

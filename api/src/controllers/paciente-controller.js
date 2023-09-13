@@ -70,5 +70,6 @@ class PacienteController {
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
+
 } //adiciona essa chave extra para fechar a classe
 module.exports = new PacienteController()

@@ -6,6 +6,7 @@ const { UsuarioModel } = require('../models/usuario-model');
 const salt = bcrypt.genSaltSync(10);
 const { check, validationResult } = require('express-validator')
 const { Op } = require("sequelize");
+const paginate = require('../utils/paginacao');
 
 const loginValidations = [
   check('email').isEmail().withMessage('email invalido'),
@@ -58,7 +59,7 @@ class UsuarioController {
         },
         { where: { id_usuario: id } }
       );
-      return res.status(200).json(usuario);
+      return res.status(200).json({ mensage: "usuario editado com sucesso!" });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal server error' });
@@ -78,14 +79,15 @@ class UsuarioController {
 
   async getAll(req, res) {
     try {
-      const { nome, page, limit } = req.query; //parâmetros da consulta
+      const { page } = req.params;
+      const { nome, limit } = req.query; //parâmetros da consulta
       let usuarios; //variável para armazenar os usuários
       if (nome) {
         //se tiver o parâmetro de nome, filtra por nome
-        usuarios = await paginate(UserModel, page, limit, { where: { nome: { [Op.iLike]: '%' + nome + '%' } } });
+        usuarios = await paginate(UsuarioModel, page, limit, { where: { nome: { [Op.iLike]: '%' + nome + '%' } } });
       } else {
         //se não tiver o parâmetro de nome, retorna todos os usuários
-        usuarios = await paginate(UserModel, page, limit);
+        usuarios = await paginate(UsuarioModel, page, limit);
       }
       return res.status(200).json(usuarios); //retorna os usuários encontrados e paginados
     } catch (error) {
