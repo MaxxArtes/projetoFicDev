@@ -1,6 +1,8 @@
 //arquivo pagination.js
 //função para paginação
 async function paginate(model, page, limit) {
+    console.log("resulta da pagina: " + page);
+    limit = 5;
     //calcula o offset
     const offset = (page - 1) * limit;
     //busca os dados com limite e offset

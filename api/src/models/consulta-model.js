@@ -28,7 +28,11 @@ class ConsultaModel extends Model {
     });
   }
   static associate(models) {
+<<<<<<< HEAD
     ConsultaModel.belongsTo(models.PacienteModel, { foreignKey: 'id_paciente' });
+=======
+    this.belongsTo(models.ConsultaModel, { foreignKey: "id_consulta" });
+>>>>>>> e43bf017635aa5a69b6d1d81fa31535be163f35f
   }
 }
 
