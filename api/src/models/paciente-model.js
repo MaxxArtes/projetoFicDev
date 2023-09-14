@@ -52,15 +52,10 @@ class PacienteModel extends Model {
         });
     }
     static associate(models) {
-<<<<<<< HEAD
         this.hasMany(models.AgendamentoModel, { foreignKey: 'id_paciente' });
         this.hasMany(models.ConsultaModel, { foreignKey: 'id_paciente' });
-      }
-=======
-        this.hasMany(models.AgendamentoModel, { foreignKey: "id_paciente" });
-        this.hasMany(models.ConsultaModel, { foreignKey: "id_paciente" });
     }
->>>>>>> e43bf017635aa5a69b6d1d81fa31535be163f35f
 }
+
 
 module.exports = { PacienteModel };

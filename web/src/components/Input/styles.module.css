@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.input {
+    border: none;
+    padding: 0.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.message {
+    color: red;
+    font-size: 0.7rem;
+}
