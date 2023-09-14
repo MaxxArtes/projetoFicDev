@@ -23,7 +23,7 @@ export function Navigations() {
         <BrowserRouter>
             <AuthContextProvider>
                 <Routes>
-                    <Route path="/login" element={<Login />} />
+                    <Route path="/" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/foods" element={
                         <PrivateRoute>

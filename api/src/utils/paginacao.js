@@ -1,19 +1,27 @@
-//arquivo pagination.js
-//função para paginação
-async function paginate(model, page, limit) {
+async function paginate(model, page, limit, options = {}) {
     console.log("resulta da pagina: " + page);
     limit = 5;
-    //calcula o offset
+    // Calcula o offset
     const offset = (page - 1) * limit;
-    //busca os dados com limite e offset
-    const data = await model.findAll({ limit, offset });
-    //busca o total de registros
-    const count = await model.count();
-    //calcula o total de páginas
+
+    // Adiciona a cláusula WHERE se estiver presente nas opções
+    const queryOptions = { limit, offset };
+    if (options.where) {
+        queryOptions.where = options.where;
+    }
+
+    // Busca os dados com as opções de consulta
+    const data = await model.findAll(queryOptions);
+
+    // Busca o total de registros com base nas mesmas opções de consulta
+    const count = await model.count(queryOptions);
+
+    // Calcula o total de páginas
     const pages = Math.ceil(count / limit);
-    //retorna os dados, o total de registros e o total de páginas
+
+    // Retorna os dados, o total de registros e o total de páginas
     return { data, count, pages };
 }
 
-//exporta a função
+// Exporta a função
 module.exports = paginate;

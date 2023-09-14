@@ -5,8 +5,9 @@ const { UsuarioModel } = require('../models/usuario-model');
 // const { UserView } = require('../views/user-view');
 const salt = bcrypt.genSaltSync(10);
 const { check, validationResult } = require('express-validator')
-const { Op } = require("sequelize");
+const { Op } = require('sequelize');
 const paginate = require('../utils/paginacao');
+
 
 
 const loginValidations = [
@@ -81,21 +82,40 @@ class UsuarioController {
   async getAll(req, res) {
     try {
       const { page } = req.params;
-      const { nome, limit } = req.query; //parâmetros da consulta
-      let usuarios; //variável para armazenar os usuários
+      const { nome, limit } = req.query; // Parâmetros da consulta
+      let usuarios; // Variável para armazenar os usuários
+  
+      // Opções de filtro para o Sequelize
+      const filterOptions = {};
+
       if (nome) {
-        //se tiver o parâmetro de nome, filtra por nome
-        usuarios = await paginate(UsuarioModel, page, limit, { where: { nome: { [Op.iLike]: '%' + nome + '%' } } });
-      } else {
-        //se não tiver o parâmetro de nome, retorna todos os usuários
-        usuarios = await paginate(UsuarioModel, page, limit);
+        filterOptions.where = {
+          nome: {
+            [Op.iLike]: `%${nome}%`
+          }
+        };
+      
+        // Adicione a opção de collation para ignorar acentuações
+        filterOptions.where.nome = {
+          [Op.iLike]: `%${nome}%`
+        };
+        filterOptions.where.nome = {
+          [Op.iLike]: `%${nome}%`
+        };
       }
-      return res.status(200).json(usuarios); //retorna os usuários encontrados e paginados
+
+      // Chama a função paginate com as opções de filtro
+      usuarios = await paginate(UsuarioModel, page, limit, filterOptions);
+      
+  
+      return res.status(200).json(usuarios); // Retorna os usuários encontrados e paginados
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal server error' });
     }
-  }
+  }  
+  
+  
 
 
   async login(req, res) {
