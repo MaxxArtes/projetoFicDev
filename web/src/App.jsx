@@ -1,14 +1,7 @@
 import React from 'react';
-import LoginForm from './pages/login/index.jsx';
+import { Navigations } from './routes';
+import './global.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <LoginForm />
-      </header>
-    </div>
-  );
+export default function App() {
+  return <Navigations />;
 }
-
-export default App;

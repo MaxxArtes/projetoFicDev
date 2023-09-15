@@ -1,10 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-
-import { Login } from './pages/Login';
-import { Register } from './pages/Register';
-import { Foods } from './pages/Foods';
-
-import { AuthContextProvider } from './contexts/AuthContext';
+import { LoginForm } from './pages/Login';
+import { PaginaInicial } from './pages/servicos';
+import { AuthContextProvider } from './context/authcontext';
 
 export const isAuthenticate = () => {
     const token = sessionStorage.getItem('token');
@@ -23,11 +20,10 @@ export function Navigations() {
         <BrowserRouter>
             <AuthContextProvider>
                 <Routes>
-                    <Route path="/" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/foods" element={
+                    <Route index path="/" element={<LoginForm />} />
+                    <Route path="/PaginaInicial" element={
                         <PrivateRoute>
-                            <Foods />
+                            <PaginaInicial />
                         </PrivateRoute>
                     } />
                 </Routes>
