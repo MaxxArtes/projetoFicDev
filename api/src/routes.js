@@ -20,7 +20,7 @@ const routes = Router();
 
 // usuarios
 routes.post('/registerUsuario', UsuarioController.create);
-routes.post('/loginUsuario', loginValidations, UsuarioController.login);
+routes.post('/loginUsuario', UsuarioController.login);
 routes.put('/editarUsuario/:id', authMiddleware, UsuarioController.update);
 routes.delete('/deletarUsuario', authMiddleware, UsuarioController.delete);
 routes.get('/listarUsuarios/:page', UsuarioController.getAll);

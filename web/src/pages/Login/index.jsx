@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import styles from './styles.module.css';
-import axios from 'axios';
+import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
-
 
 export function LoginForm() {
     const [email, setEmail] = useState('');
@@ -11,24 +10,18 @@ export function LoginForm() {
     const [mostrarModal, setMostrarModal] = useState(false);
     const navigate = useNavigate();
 
-    //   const handleRecuperarSenhaClick = () => {
-    //     setMostrarModal(true);
-    //   };
-
-    const redirecionarParaPaginaInicial = () => {
-        navigate('/PaginaInicial');
-    };
+      const handleRecuperarSenhaClick = () => {
+        setMostrarModal(true);
+      };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('/api/loginUsuario', { email, senha });
-            if (response.data && response.data.success) {
-                console.log('Login bem-sucedido');
-                redirecionarParaPaginaInicial();
-            } else {
-                console.error('Erro de login');
-            }
+           const result = await api.post('/loginUsuario', { email, senha });
+           console.log(result);
+            sessionStorage.setItem('token', result.data.token);
+            navigate('/PaginaInicial');
+           
             
         } catch (error) {
             console.error('Erro ao fazer login', error);
@@ -41,10 +34,12 @@ export function LoginForm() {
 
     return (
         <main className={styles.contanier}>
-            <logo >
-                <img className={styles.logo} src="logo.png" alt="logo" />
-            </logo>
-            <login className={styles.login}>
+            <div className={styles.logo}>
+                <img src="logo.png" alt="logo" />
+            </div>
+
+
+            <div className={styles.login}>
                 <form onSubmit={handleSubmit}>
                     <h1 className={styles.h1}>Login</h1>
                     <br />
@@ -78,27 +73,33 @@ export function LoginForm() {
                             onClick={toggleMostrarSenha}
                             className={styles.showPasswordButton}
                         >
-                            {mostrarSenha ? 'Ocultar' : 'Mostrar'} senha
+                           
                         </button>
-                        {/* <a href="#" onClick={handleRecuperarSenhaClick} className={styles.h6}>
-                            Recuperar senha
-                        </a> */}
+
                     </label>
-                    {/* Renderize o modal quando mostrarModal for verdadeiro */}
+                    <h4 className={styles.h4} onClick={()=>handleRecuperarSenhaClick(true)}>Recuperar Senha</h4>
+                  
                     {mostrarModal && (
+
                         <div className={styles.modal}>
-                            {/* Conteúdo do modal */}
-                            <h2>Recuperar Senha</h2>
-                            {/* ... Outro conteúdo do modal ... */}
-                            <button onClick={() => setMostrarModal(false)}>Fechar</button>
+                            
+                            <h4>Recuperar senha</h4>
+                            {
+                                <div className="box">
+                                    <input type="cpf" placeholder='Digite seu cpf' />
+                                <div className="rectangle" />
+                                </div>
+                            
+                        }
+                            <button onClick={() => setMostrarModal(false)}>Enviar</button>
                         </div>
+
                     )}
                     <br />
-                    <button className={styles.button} type="submit"><h2 className={styles.h2}>Entrar</h2></button>
+                    <button className={styles.button1} type="submit"><h2 className={styles.entrar}>Entrar</h2></button>
                 </form>
-            </login>
+            </div>
         </main >
     );
 }
-
 

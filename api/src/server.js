@@ -9,8 +9,8 @@ const server = express();
 
 server.use(express.json());
 
-// Usa o cors com a variável do .env
-server.use(cors({ origin: 'http://localhost:3000' })); // Usa a variável ORIGIN do arquivo .env
+
+server.use(cors({ origin: 'http://localhost:3000' }));
 
 server.use(routes);
 

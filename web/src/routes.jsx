@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { LoginForm } from './pages/Login';
-import { PaginaInicial } from './pages/servicos';
+import { LoginForm } from './pages/login/index.jsx';
+import { PaginaInicial } from './pages/servicos/index.jsx';
 import { AuthContextProvider } from './context/authcontext';
 
 export const isAuthenticate = () => {
@@ -21,7 +21,8 @@ export function Navigations() {
             <AuthContextProvider>
                 <Routes>
                     <Route index path="/" element={<LoginForm />} />
-                    <Route path="/PaginaInicial" element={
+                    <Route path="/PaginaInicial"
+                     element={
                         <PrivateRoute>
                             <PaginaInicial />
                         </PrivateRoute>

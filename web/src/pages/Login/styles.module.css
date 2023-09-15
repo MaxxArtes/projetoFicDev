@@ -30,10 +30,13 @@
 }
 
 .button1{
+    margin-top: 50px;
+    margin: 20px 10px 5;
     width: 520px;
     height: 96px;
     border-radius: 15px;
     background: #04737C;
+    
 }
 
 .input{
@@ -75,6 +78,14 @@
     font-weight: 400;
     line-height: normal;
 }
+.entrar {
+    color: #ffffff;
+    font-family: Inter;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
 
 .modal {
         position: fixed;
@@ -100,4 +111,88 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+}
+
+.showPasswordButton{
+    display: inline-flex;  
+}
+
+.modal{
+    justify-content: flex-end;
+    display: flex;
+    flex-direction: column;
+    align-items: bottom;
+    width: 22vw;
+    height: 339px;
+    border-radius: 15px;
+    background: #B9DEE0;
+}
+
+.modal button{
+    margin-top: 30px;
+    margin: 20px 10px 5;
+    width: 100%;
+    height: 96px;
+    border-radius: 15px;
+    background: #04737C;
+    color: #ffffff;
+    font-family: Inter;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    cursor: pointer;
+}
+.h4 {
+    cursor: pointer;
+    padding: 10px;
+    justify-content: end;
+    align-items: center;
+    text-align: end;
+    gap: 10px;
+    color: #000;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.modal input {
+    width: 100%;
+    height: 96px;
+    border-radius: 15px;
+    border-radius: 15px;
+    background: #FFF;
+    padding: 10px 10px 10px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal ::placeholder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #636363;
+    font-family: Inter;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.modal h4 {
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: auto;
+    text-align: center;
+    gap: 10px;
+    color: #000;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
 }
