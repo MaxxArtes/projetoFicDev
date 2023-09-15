@@ -27,16 +27,16 @@ routes.get('/listarUsuarios/:page', UsuarioController.getAll);
 
 
 // atendimento
-routes.post('/agendamento', authMiddleware, AgendamentoController.create);
-routes.put('/editar', authMiddleware, AgendamentoController.update);
-routes.delete('/deletar', authMiddleware, AgendamentoController.delete);
+routes.post('/registerAgendamento', authMiddleware, AgendamentoController.create);
+routes.put('/editarAgendamento', authMiddleware, AgendamentoController.update);
+routes.delete('/deletarAgendamento', authMiddleware, AgendamentoController.delete);
 
 // consulta
-routes.post('/prontuario', authMiddleware, ConsultaController.create);
-routes.put('/editar', authMiddleware, ConsultaController.update);
-routes.delete('/deletar', authMiddleware, ConsultaController.delete);
+routes.post('/registrarProntuario', authMiddleware, ConsultaController.create);
+routes.put('/editarProntuario', authMiddleware, ConsultaController.update);
+routes.delete('/deletarProntuario', authMiddleware, ConsultaController.delete);
 
 // paciente
-routes.post('/paciente', authMiddleware, PacienteController.create);
+routes.post('/registrarPaciente', authMiddleware, PacienteController.create);
 
 module.exports = { routes };

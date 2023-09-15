@@ -23,12 +23,13 @@ export function LoginForm() {
         event.preventDefault();
         try {
             const response = await axios.post('/api/loginUsuario', { email, senha });
-            if (response.status === 200) {
+            if (response.data && response.data.success) {
                 console.log('Login bem-sucedido');
-                redirecionarParaPaginaInicial(); // Chama a função de redirecionamento
+                redirecionarParaPaginaInicial();
             } else {
                 console.error('Erro de login');
             }
+            
         } catch (error) {
             console.error('Erro ao fazer login', error);
         }
