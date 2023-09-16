@@ -4,7 +4,7 @@ const { check, validationResult } = require('express-validator');
 //cria um array de validações
 const loginValidations = [
   check('email').isEmail().withMessage('Invalid email'),
-  check('password').isLength({ min: 6 }).withMessage('Password must have at least 6 characters')
+  check('password').isLength({ min: 6 }).withMessage('Senha tem que conter mais que 6 characters')
 ];
 
 const UsuarioController = require('./controllers/usuario-controller');

@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      especializacao: {
+      especialidade: {
         type: Sequelize.INTEGER,
         allowNull: false
       },

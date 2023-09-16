@@ -196,3 +196,23 @@
     line-height: normal;
 
 }
+.inputcontainer {
+  position: relative;
+}
+
+.inputcontainer input {
+  padding-right: 30px;
+}
+
+.inputcontainer .icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background-image: url('../../../public/Group.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  cursor: pointer;
+}

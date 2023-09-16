@@ -5,24 +5,24 @@ import { useNavigate } from 'react-router-dom';
 
 export function LoginForm() {
     const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
+    const [password, setPassword] = useState('');
     const [mostrarSenha, setMostrarSenha] = useState(false);
     const [mostrarModal, setMostrarModal] = useState(false);
     const navigate = useNavigate();
 
-      const handleRecuperarSenhaClick = () => {
+    const handleRecuperarSenhaClick = () => {
         setMostrarModal(true);
-      };
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-           const result = await api.post('/loginUsuario', { email, senha });
-           console.log(result);
+            const result = await api.post('/loginUsuario', { email, password });
+            console.log(result);
             sessionStorage.setItem('token', result.data.token);
             navigate('/PaginaInicial');
-           
-            
+
+
         } catch (error) {
             console.error('Erro ao fazer login', error);
         }
@@ -66,31 +66,33 @@ export function LoginForm() {
                             minLength='6'
                             title='A senha precisa ser maior que 6 caracteres.'
                             type={mostrarSenha ? 'text' : 'password'}
-                            value={senha}
-                            onChange={(e) => setSenha(e.target.value)} />
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)} />
+
                         <button
                             type="button"
                             onClick={toggleMostrarSenha}
                             className={styles.showPasswordButton}
                         >
-                           
+
                         </button>
 
                     </label>
-                    <h4 className={styles.h4} onClick={()=>handleRecuperarSenhaClick(true)}>Recuperar Senha</h4>
-                  
+                    <h4 className={styles.h4} onClick={() => handleRecuperarSenhaClick(true)}>Recuperar Senha</h4>
+
                     {mostrarModal && (
 
                         <div className={styles.modal}>
-                            
+
                             <h4>Recuperar senha</h4>
                             {
-                                <div className="box">
+                                <div className={styles.inputcontainer}>
                                     <input type="cpf" placeholder='Digite seu cpf' />
-                                <div className="rectangle" />
+                                    <span className={styles.icon} ></span>
+                                    <div className="rectangle" />
                                 </div>
-                            
-                        }
+
+                            }
                             <button onClick={() => setMostrarModal(false)}>Enviar</button>
                         </div>
 
@@ -102,4 +104,3 @@ export function LoginForm() {
         </main >
     );
 }
-

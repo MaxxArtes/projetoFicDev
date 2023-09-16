@@ -1,0 +1,160 @@
+/* styles.module.css */
+
+/* Style for the Usuarios component container */
+.ADMINUSUARIOS {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 20px;
+}
+
+/* Style for the table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+/* Style for table headers */
+table th {
+  background-color: #f2f2f2;
+  text-align: left;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+/* Style for table data rows */
+table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+/* Style for the 'ACÕES' column */
+td.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Style for the buttons in 'ACÕES' column */
+td.actions button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* Hover effect for buttons */
+td.actions button:hover {
+  background-color: #0056b3;
+}
+
+/* Style for table row hover effect */
+table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+/* styles.module.css (or create a new CSS module for the modal) */
+
+/* Modal container styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background overlay */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.adicionar{
+  align-items: center;
+  background-color: #FFF;
+  border-radius: 15px;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  width: 438px;
+  height: 343px;
+}
+
+/* Modal content styles */
+.modal h4 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.contmodal {
+  align-items: center;
+  justify-content: center;
+  background: #FFF;
+  display: flex;
+  flex-direction: row;
+}
+
+/* Input container styles */
+.inputcontainer {
+  border-radius: 15px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inputcontainer input {
+  border-radius: 15px;
+  background: #D9D9D9;
+  padding: 10px;
+  /* border: 1px solid #ccc; */
+  border-radius: 5px;
+}
+.inputcontainer1 input {
+  border-radius: 15px;
+  background: #D9D9D9;
+  padding: 10px;
+  /* border: 1px solid #ccc; */
+  border-radius: 5px;
+  width: 402px;
+  margin-bottom: 10px;
+}
+
+/* Icon or icon placeholder styles (adjust as needed) */
+
+
+/* Button styles */
+.modal button {
+  width: 402px;
+  margin-top: 10px;
+  padding: 10px 50px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  background: #029BA8;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.25);
+}
+
+.modal select {
+  height: 40px;
+  background: #D9D9D9;
+}
+.modal p {
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+/* Hover effect for buttons */
+.modal button:hover {
+  background-color: #0056b3;
+  text-decoration: underline; /* Adicione essa linha para criar uma linha de baixo no texto em hover */
+}
+/* Hover effect for buttons */
+.modal p:hover {
+  color: red;
+  text-decoration: underline; /* Adicione essa linha para criar uma linha de baixo no texto em hover */
+}
+

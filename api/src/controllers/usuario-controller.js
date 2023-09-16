@@ -126,7 +126,7 @@ class UsuarioController {
         return res.status(400).json({ errors: errors.array() });
       }
       //se não tiver erro, continua com o login normalmente
-      const { email, senha } = req.body;
+      const { email, password } = req.body;
       const usuario = await UsuarioModel.findOne({
         where: { email }
       });
@@ -135,8 +135,8 @@ class UsuarioController {
       }
 
 
-      if (!bcrypt.compareSync(senha, usuario.password)) {
-        return res.status(401).json({ error: 'Invalid password' });
+      if (!bcrypt.compareSync(password, usuario.password)) {
+        return res.status(401).json({ error: 'Senha invalida' });
       }
       const token = jwt.sign({ id: usuario.id }, process.env.SECRET, {
         expiresIn: 86400

@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './styles.module.css';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+
 
 export function PaginaInicial() {
     return (
@@ -14,7 +16,9 @@ export function PaginaInicial() {
             <div className={styles.overlapgroup}>
                 <button className={styles.rectangle}>atendimento</button><br />
                 <button className={styles.rectangle1}>consulta</button><br />
-                <button className={styles.rectangle}>adm</button><br />
+                <Link to="/Usuarios">
+                    <button className={styles.rectangle}>adm</button>
+                </Link>
             </div>
         </div>
     );
