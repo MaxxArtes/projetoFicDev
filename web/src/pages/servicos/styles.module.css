@@ -1,58 +1,22 @@
 /* styles.module.css */
 .paginainicial {
-    background-color: #b8dde0;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
-    align-items: center;
-}
-
-.overlapwrapper {
-    background-color: #b8dde0;
-    height: 1080px;
-    width: 1920px;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    width: 1920px;
-    height: 1080px;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-}
-
-.overlap {
-
-    position: relative;
-    top: 2px;
-    width: 80%px;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-}
-
-.overlapgroup {
-    width: 80%;
-    height: 80%;
-    flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.05);
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    align-items: center;
-    justify-content: center;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    height: 100vh;
+}
+
+.element {
+    margin-bottom: 40px;
+    height: 180px;
 }
 
 .rectangle {
-    justify-content: space-between;
-    align-items: center;
-    justify-content: center;
-    background-color: #ffffff0d;
     box-shadow: 0px 4px 4px #00000040;
     height: 692px;
-    left: 0;
-    top: 168px;
+    color: white;
     width: 100%;
     height: 96px;
     border-radius: 15px;
@@ -60,33 +24,21 @@
     cursor: pointer;
 }
 
-.element {
-    justify-content: center;
-    display: flex;
-    left: 575px;
-    position: absolute;
-    top: 0;
-    width: 12vw;
-    height: 180px;
-    margin-left: 11%;
-    margin-top: auto;
-}
-
-.frame {
-    align-items: flex-start;
-    display: inline-flex;
-    flex-direction: column;
-    gap: 10px;
-    left: 49px;
-    padding: 10px;
-    position: absolute;
-    top: 386px;
-}
-
-.div {
-    border-radius: 15px;
+.rectangle1 {
+    margin: 40px 0px;
+    box-shadow: 0px 4px 4px #00000040;
+    height: 692px;
+    color: white;
+    width: 100%;
     height: 96px;
-    position: relative;
-    width: 1577px;
+    border-radius: 15px;
+    background: #04737C;
+    cursor: pointer;
 }
 
+.overlapgroup {
+    padding: 18px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
