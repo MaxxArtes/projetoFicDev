@@ -16,7 +16,7 @@ export function PaginaInicial() {
             <div className={styles.overlapgroup}>
                 <button className={styles.rectangle}>atendimento</button><br />
                 <button className={styles.rectangle1}>consulta</button><br />
-                <Link to="/Usuarios">
+                <Link to="/Usuarios/">
                     <button className={styles.rectangle}>adm</button>
                 </Link>
             </div>

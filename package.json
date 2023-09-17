@@ -11,9 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "anychart": "^8.11.1",
     "axios": "^1.5.0",
     "bcrypt": "^5.1.1",
-    "bootstrap": "^5.3.1",
+    "bootstrap": "^5.3.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",

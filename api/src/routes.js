@@ -22,7 +22,7 @@ const routes = Router();
 routes.post('/registerUsuario', UsuarioController.create);
 routes.post('/loginUsuario', UsuarioController.login);
 routes.put('/editarUsuario/:id', authMiddleware, UsuarioController.update);
-routes.delete('/deletarUsuario', authMiddleware, UsuarioController.delete);
+routes.delete('/deletarUsuario/:id', authMiddleware, UsuarioController.delete);
 routes.get('/listarUsuarios/:page', UsuarioController.getAll);
 
 
