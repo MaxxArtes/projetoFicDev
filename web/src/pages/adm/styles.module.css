@@ -158,3 +158,22 @@ table tbody tr:hover {
   text-decoration: underline; /* Adicione essa linha para criar uma linha de baixo no texto em hover */
 }
 
+.page {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.aumentar{
+  cursor: pointer;
+}
+
+.diminuir{
+  cursor: pointer;
+}
+.aumentar:hover{
+  background-color: #0056b3;
+}
+.diminuir:hover{
+  background-color: #0056b3;
+}

@@ -12,27 +12,46 @@ export function Usuarios() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
-
+    const [page, setPage] = useState(1); // Página atual
+    const [totalPages, setTotalPages] = useState(0); // Total de páginas
 
     const handleRecuperarSenhaClick = () => {
         setMostrarModal(true);
     };
 
+    function aumentar() {
+        if (page < totalPages) {
+            setPage(page + 1); // Aumentar a página em 1, desde que não seja a última página
+        }
+    }
+
+    function diminuir() {
+        if (page > 1) {
+            setPage(page - 1); // Diminuir a página em 1, desde que não seja a primeira página
+        }
+    }
+
+
+
+    
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await api.get('/listarUsuarios/3');
+                const response = await api.get(`/listarUsuarios/${page}`);
                 const userData = response.data; // Assuming the API returns an array of user data
                 setUsers(userData.data); // Update the state with user data
-                console.log(userData);
+
+                // Calculate the number of pages and store it in state
+                const calculatedTotalPages = Math.ceil(userData.count / 5);
+                setTotalPages(calculatedTotalPages);
             } catch (error) {
                 console.error('Erro ao fazer login', error);
             }
         };
 
-        fetchUsers(); // Call the function to fetch user data when the component mounts
-    }, []);
+        fetchUsers(); // Call the function to fetch user data when the component mounts or when the page changes
+    }, [page]);
 
     const handleSubmit = async () => {
         try {
@@ -88,6 +107,7 @@ export function Usuarios() {
             <table>
                 <thead>
                     <tr>
+                        <th>id</th>
                         <th>NOME</th>
                         <th>CARGO</th>
                         <th>CPF</th>
@@ -97,24 +117,36 @@ export function Usuarios() {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((user, index) => (
-                        <tr key={index}>
-                            <td>{user.nome}</td>
-                            <td>{user.cargo}</td>
-                            <td>{user.cpf}</td>
-                            <td>{user.email}</td>
-                            <td className={styles.button}><button>editar</button><button>deletar</button></td>
-                            {/* Replace 'email' with the actual property name */}
-                            {/* Render other user data as needed */}
-                        </tr>
-                    ))}
+                {users.map((user, index) => (
+    <tr key={index}>
+        <td>{user.id}</td>
+        <td>{user.nome}</td>
+        <td>{user.cargo}</td>
+        <td>{user.cpf}</td>
+        <td>{user.email}</td>
+        <td className={styles.button}>
+            <button>editar</button>
+            <button>deletar</button>
+        </td>
+    </tr>
+))}
+
                 </tbody>
             </table>
+            <div className={styles.page}>
+                <div className={styles.diminuir}>
+                    <button onClick={() => diminuir()}>diminuir</button>
+                </div>
+                <div>
+                    <p id='page'>{page}</p>
+                </div>
+                <div className={styles.aumentar}>
+                    <button onClick={() => aumentar()}>aumentar</button>
+                </div>
+            </div>
 
             {mostrarModal && (
-
                 <div className={styles.modal}>
-
                     <div className={styles.adicionar}>
                         <div>
                             <h4>adicionar</h4>
@@ -125,17 +157,19 @@ export function Usuarios() {
                                     value={nome}
                                     onChange={(e) => setNome(e.target.value)} // Adicione o manipulador para o campo "nome"
                                 />
+                           
+
                             </div>
                         </div>
                         {
                             <div className={styles.contmodal}>
 
                                 <div className={styles.inputcontainer}>
-                                <select value={cargo} onChange={(e) => setCargo(e.target.value)}>
-    <option value="">Selecione o cargo</option>
-    <option value="Atendente">Atendente</option>
-    <option value="Médico">Médico</option>
-  </select>
+                                    <select value={cargo} onChange={(e) => setCargo(e.target.value)}>
+                                        <option value="">Selecione o cargo</option>
+                                        <option value="Atendente">Atendente</option>
+                                        <option value="Médico">Médico</option>
+                                    </select>
                                     <input
                                         type="text"
                                         placeholder='Digite sua especialização'
@@ -172,13 +206,13 @@ export function Usuarios() {
                             </div>
 
                         }
-                    <button onClick={handleSubmit}>adicionar</button>
-                    <p onClick={() => setMostrarModal(false)}>cancelar</p>
-                </div>
+                        <button onClick={handleSubmit}>adicionar</button>
+                        <p onClick={() => setMostrarModal(false)}>cancelar</p>
+                    </div>
                 </div>
 
-    )
-}
+            )
+            }
         </div >
 
     );
