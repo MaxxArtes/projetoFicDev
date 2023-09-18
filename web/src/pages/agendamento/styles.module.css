@@ -1,141 +1,258 @@
 /* styles.module.css */
 
-.ADMINUSUARIOS {
+/* Estilos globais */
+body {
+  width: 100vw;
+  height: 100vw;
+  margin: 0;
   font-family: Arial, sans-serif;
 }
 
-h1 {
-  font-size: 24px;
-  margin-bottom: 16px;
+/* Estilos do container principal */
+.ATENDIMENTO {
+  background-color: #b8dde0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  height: 100vw;
+  align-items: center;
 }
 
-table {
+.ATENDIMENTO header {
+  width: 100vw;
+  /* height: 100vw; */
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Estilos do cabeçalho */
+header {
+  width: 100vw;
+  /* height: 100vw; */
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  border-collapse: collapse;
-  border: 1px solid #ddd;
+  background-color: #04737c;
+  padding: 10px 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
+.table th {
+  text-align: center;
 }
 
-th {
-  background-color: #f2f2f2;
+.table img {
+  width: 20px;
+  margin-left: 1px;
+  margin-right: 1px;
 }
 
-tr:nth-child(even) {
-  background-color: #f2f2f2;
+.header h1 {
+  color: white;
+  margin: 0;
+  font-size: 24px;
 }
 
-tr:hover {
-  background-color: #ddd;
+.textRight {
+  text-align: right;
+}
+
+.exit-to-app {
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+  fill: white;
+}
+
+/* Estilos do conteúdo */
+.content {
+  width: 100%;
+  max-width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.formControl {
+  flex-grow: 1;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0 10px;
+  font-size: 16px;
+  width: 100%;
 }
 
 .button {
+  background-color: #04737c;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  height: 40px;
   display: flex;
-  gap: 8px;
+  align-items: center;
 }
 
-.modal {
-  position: fixed;
-  top: 0;
+.button img {
+  margin-left: 5px;
+  width: 20px;
+  height: 20px;
+  ;
+}
+
+.content h1 {
+  margin-bottom: 25px;
+  color: #000;
+  font-family: Inter;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.pesquisa {
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+}
+
+.search {
+  height: 100%;
+  width: 100%;
+  fill: white;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -10px;
+  margin-left: -10px;
+}
+
+.col {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding: 10px;
+}
+
+.card {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+}
+
+.cardBody {
+  padding: 20px;
+}
+
+h2 {
+  font-size: 20px;
+  margin-top: 0;
+}
+
+.primaryButton {
+  background-color: #04737c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+/* Estilos da paginação */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pageNumber {
+  font-size: 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  border-radius: 50px;
+  box-shadow: 0px 0px 40px #04737c;
+  height: 72px;
+  width: 72px;
   left: 0;
+  top: 0;
+  background-color: #d9d9d9;
+  /* 
+  position: fixed;
+  */
+}
+
+.lightButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.circledRight {
+  height: 24px;
+  width: 24px;
+  fill: #04737c;
+}
+
+/* Estilos do rodapé */
+footer {
+  width: 100%;
+  background-color: #04737c;
+  padding: 10px 0;
+  text-align: center;
+  box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.userProfile {
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.accountCircle {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+
+}
+
+/* Estilos de responsividade (ajuste conforme necessário) */
+@media (max-width: 768px) {
+  .col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+.navdiv {
+  align-items: center;
+  display: flex;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  text-align: center;
-  transition: opacity 0.2s;
-  opacity: 1;
+  justify-content: flex-end
 }
 
-.adicionar {
-  background-color: white;
-  border-radius: 4px;
-  padding: 16px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  max-width: 600px;
+.navdiv img {
+  cursor: pointer;
+}
+
+.navdiv button {
+  display: flex;
+  flex-direction: row;
   width: 100%;
+  height: 100%;
 }
 
-.adicionar h4 {
-  font-size: 20px;
-  margin-bottom: 16px;
-}
-
-.inputcontainer1 {
-  margin-bottom: 16px;
-}
-
-.inputcontainer {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-select {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-button {
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-p {
-  font-size: 14px;
-  color: #007bff;
-  cursor: pointer;
-}
-
-.page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 16px;
-}
-
-.diminuir,
-.aumentar {
-  margin: 0 8px;
-}
-
-.diminuir button,
-.aumentar button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  padding: 8px 16px;
-}
-
-.diminuir button:hover,
-.aumentar button:hover {
-  background-color: #0056b3;
-}
-
-#page {
-  font-size: 18px;
-}
+/* Adicione mais media queries conforme necessário para dispositivos menores */

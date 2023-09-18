@@ -9,23 +9,23 @@ class AgendamentoModel extends Model {
         autoIncrement: true
       },
       nome_medico: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.TEXT,
         allowNull: false
       },
       especializacialidade: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.TEXT,
         allowNull: false
       },
       data: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DATE,
         allowNull: false
       },
       horario: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.TIME,
         allowNull: false
       },
       unidade_saude: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.TEXT,
         allowNull: false
       },
     }, {

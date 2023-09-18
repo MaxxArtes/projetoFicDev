@@ -10,23 +10,23 @@ module.exports = {
       autoIncrement: true
       },
       nome_medico: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.TEXT,
         allowNull: false
       },
       especialidade: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.TEXT,
         allowNull: false
       },
       data: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DATE,
         allowNull: false
       },
       horario: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.TIME,
         allowNull: false
       },
       unidade_saude: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.TEXT,
         allowNull: false
       },
     });

@@ -16,18 +16,6 @@ export function PrivateRoute({ children }) {
     return children;
 }
 
-// export const getToken = () => {
-//     return sessionStorage.getItem('token');
-// };
-
-// export function PrivateRoute({ children }) {
-//     
-//     if (!token) {
-//         return <Navigate to="/" replace />;
-//     }
-//     return children;
-// }
-
 export function Navigations() {
     return (
         <BrowserRouter>

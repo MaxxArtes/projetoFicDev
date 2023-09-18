@@ -27,7 +27,7 @@ module.exports = {
         allowNull: false
       },
       CNS: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.TEXT,
         allowNull: false
       },
       CPF: {

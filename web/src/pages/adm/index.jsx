@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
+import React, { PureComponent } from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export function Usuarios() {
     const navigate = useNavigate();
@@ -59,8 +61,6 @@ export function Usuarios() {
         console.log('HANDLE USERDATA: ', user);
         setMostrarModal(true);
     };
-
-
     async function handleDeleteUser(userId) {
         try {
             const accessToken = sessionStorage.getItem("token");
@@ -88,8 +88,7 @@ export function Usuarios() {
             console.error('Erro na solicitação:', error);
         }
     }
-
-    const handleSaveUser = async () => {
+    const handleSaveUser = async (fetchUsers) => {
         try {
             if (password !== rePassword) {
                 console.error('As senhas não correspondem.');
@@ -114,11 +113,12 @@ export function Usuarios() {
                     },
                 })
                 : await api.post('/registerUsuario', updatedUserData);
+                console.log("RESULT RESPONSE :",response);
 
             if (response.status === 200 || response.status === 204) {
                 console.log('Usuário editado com sucesso!', response.data);
-
                 setSelectedUsers(selectedUsers.filter(id => id !== userData.id_usuario));
+                console.log('AQUI')
                 const usersResponse = await api.get(`/listarUsuarios/${page}`);
                 const userData = usersResponse.data;
                 setUsers(userData.data);
@@ -126,7 +126,7 @@ export function Usuarios() {
                 const calculatedTotalPages = Math.ceil(userData.count / 5);
                 setTotalPages(calculatedTotalPages);
 
-                // Após a exclusão bem-sucedida, faça a solicitação GET para buscar dados atualizados
+              
             } else {
                 console.error('Erro ao editar o usuário:', response.data);
             }
@@ -140,13 +140,15 @@ export function Usuarios() {
             setRePassword('');
             setEditPassword(''); // Limpe o estado editPassword
             setUserData(null); // Defina o estado userData como null após a edição
-
-
             setMostrarModal(false);
             setIsEditMode(false);
 
+            
+
 
             // Atualize a lista de usuários após a edição
+            fetchUsers()
+
             const updatedUsers = users.map((user) =>
                 user.id_usuario === userData.id_usuario ? response.data : user
             );
@@ -155,7 +157,6 @@ export function Usuarios() {
             console.error('Erro ao editar usuário', error);
         }
     };
-
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -212,65 +213,67 @@ export function Usuarios() {
     };
 
     return (
-        <div className={styles.ADMINUSUARIOS}>
-            <div className={styles.nav}>
-                <div>
-                    <h1>USUÁRIOS</h1>
-                </div>
-                <div>
-                    <button onClick={handleVoltarParaPaginaInicial}>Voltar para Página Inicial</button>
-                    <button onClick={handleSair}>Sair</button>
-                </div>
+        <div className={styles.ADMINUSUARIOS}> {/* Aplicar classe para o container principal */}
+          <div className={styles.nav}>
+            <div>
+              <h1>USUÁRIOS</h1>
+              <div>
+                <h1>dashboards</h1>
+              </div>
             </div>
-            <br />
-            <button onClick={() => handleRecuperarSenhaClick(true)}>adicionar</button>
-            <table>
-                <thead>
-                    <tr>
-                        <th className={styles.acoes}>Selecionar</th>
-                        <th className={styles.acoes}>id</th>
-                        <th className={styles.acoes}>NOME</th>
-                        <th className={styles.acoes}>CARGO</th>
-                        <th className={styles.acoes}>CPF</th>
-                        <th className={styles.acoes}>E-MAIL</th>
-                        <th className={styles.acoes}>ACÕES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map((user, index) => (
-                        <tr key={index}>
-                            <td className={styles.acoes}>
-                                <input
-                                    type="checkbox"
-                                    onChange={() => handleUserSelection(user.id_usuario)}
-                                    checked={selectedUsers.includes(user.id_usuario)}
-                                />
-                            </td>
-                            <td className={styles.acoes}>{user.id_usuario}</td>
-                            <td className={styles.acoes}>{user.nome}</td>
-                            <td className={styles.acoes}>{user.cargo}</td>
-                            <td className={styles.acoes}>{user.cpf}</td>
-                            <td className={styles.acoes}>{user.email}</td>
-                            <td className={styles.button}>
-                                <button onClick={() => handleEditButtonClick(user)}>editar</button>
-
-                                <button onClick={() => handleDeleteUser(user.id_usuario)}>deletar</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <div className={styles.page}>
-                <div className={styles.diminuir}>
-                    <button onClick={() => diminuir()}>diminuir</button>
-                </div>
-                <div>
-                    <p id='page'>{page}</p>
-                </div>
-                <div className={styles.aumentar}>
-                    <button onClick={() => aumentar()}>aumentar</button>
-                </div>
+            <div>
+              <button onClick={handleVoltarParaPaginaInicial}>Voltar para Página Inicial</button>
+              <button onClick={handleSair}>Sair</button>
             </div>
+          </div>
+          <br />
+          <button onClick={() => handleRecuperarSenhaClick(true)} className={styles.button}>adicionar</button> {/* Aplicar classe para o botão de adicionar */}
+          <table className={styles.table}> {/* Aplicar classe para a tabela */}
+            <thead>
+              <tr>
+                <th className={styles.acoes}>Selecionar</th>
+                <th className={styles.acoes}>id</th>
+                <th className={styles.acoes}>NOME</th>
+                <th className={styles.acoes}>CARGO</th>
+                <th className={styles.acoes}>CPF</th>
+                <th className={styles.acoes}>E-MAIL</th>
+                <th className={styles.acoes}>ACÕES</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user, index) => (
+                <tr key={index}>
+                  <td className={styles.acoes}>
+                    <input
+                      type="checkbox"
+                      onChange={() => handleUserSelection(user.id_usuario)}
+                      checked={selectedUsers.includes(user.id_usuario)}
+                    />
+                  </td>
+                  <td className={styles.acoes}>{user.id_usuario}</td>
+                  <td className={styles.acoes}>{user.nome}</td>
+                  <td className={styles.acoes}>{user.cargo}</td>
+                  <td className={styles.acoes}>{user.cpf}</td>
+                  <td className={styles.acoes}>{user.email}</td>
+                  <td className={styles.button}>
+                    <button onClick={() => handleEditButtonClick(user)} className={styles.primaryButton}>editar</button> {/* Aplicar classe para o botão de editar */}
+                    <button onClick={() => handleDeleteUser(user.id_usuario)} className={styles.primaryButton}>deletar</button> {/* Aplicar classe para o botão de deletar */}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className={styles.pagination}> {/* Aplicar classe para a paginação */}
+            <div className={styles.diminuir}>
+              <button onClick={() => diminuir()} className={styles.lightButton}>diminuir</button> {/* Aplicar classe para o botão de diminuir */}
+            </div>
+            <div>
+              <p id='page' className={styles.pageNumber}>{page}</p> {/* Aplicar classe para o número da página */}
+            </div>
+            <div className={styles.aumentar}>
+              <button onClick={() => aumentar()} className={styles.lightButton}>aumentar</button> {/* Aplicar classe para o botão de aumentar */}
+            </div>
+          </div>
             {mostrarModal && (
                 <div className={styles.modal}>
                     console.log('MOSTRAMODAL USERDATA: ',userData)
@@ -386,3 +389,4 @@ export function Usuarios() {
         </div>
     );
 }
+

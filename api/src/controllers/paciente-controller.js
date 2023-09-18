@@ -1,5 +1,8 @@
 const { PacienteModel } = require('../models/paciente-model');
-//const filtrarPorData = require('./util/filtroData');
+const paginate = require('../utils/paginacao');
+const { Op } = require('sequelize');
+
+
 class PacienteController {
   async create(req, res) {
     try {
@@ -55,22 +58,34 @@ class PacienteController {
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
-  async getAll(req, res) {
-    try {
-      const { nome } = req.query; //parâmetro da consulta
-      let pacientes; //variável para armazenar os pacientes
-      if (nome) {
-        //se tiver o parâmetro de consulta, filtra por nome
-        pacientes = await PacienteModel.findAll({ where: { nome: { [Op.iLike]: '%' + nome + '%' } } });
-      } else {
-        //se não tiver o parâmetro de consulta, retorna todos os pacientes
-        pacientes = await PacienteModel.findAll();
-      } return res.status(200).json(pacientes); //retorna os pacientes encontrados 
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: 'Internal server error' });
+
+    async getAll(req, res) {
+      try {
+        const { page } = req.params;
+        const { nome, limit } = req.query; // Parâmetros da consulta
+        let pacientes; // Variável para armazenar os pacientes
+    
+        // Opções de filtro para o Sequelize
+        const filterOptions = {};
+    
+        if (nome) {
+          // Adicione a opção de filtro por nome, ignorando acentuações
+          filterOptions.where = {
+            nome: {
+              [Op.iLike]: `%${nome}%`
+            }
+          };
+        }
+    
+        // Chama a função paginate com as opções de filtro
+        pacientes = await paginate(PacienteModel, page, limit, filterOptions);
+    
+        return res.status(200).json(pacientes); // Retorna os pacientes encontrados e paginados
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
     }
   }
 
-} //adiciona essa chave extra para fechar a classe
 module.exports = new PacienteController()

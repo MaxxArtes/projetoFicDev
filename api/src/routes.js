@@ -38,6 +38,6 @@ routes.delete('/deletarProntuario', authMiddleware, ConsultaController.delete);
 
 // paciente
 routes.post('/registrarPaciente', authMiddleware, PacienteController.create);
-routes.get('/listarUsuarios/:page', PacienteController.getAll);
+routes.get('/listarPacientes/:page', PacienteController.getAll);
 
 module.exports = { routes };
