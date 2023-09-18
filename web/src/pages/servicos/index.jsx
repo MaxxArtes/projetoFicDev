@@ -14,7 +14,9 @@ export function PaginaInicial() {
                 src="logo.png"
             />
             <div className={styles.overlapgroup}>
-                <button className={styles.rectangle}>atendimento</button><br />
+                <Link to="/agendamento/">
+                    <button className={styles.rectangle}>atendimento</button><br />
+                </Link>
                 <button className={styles.rectangle1}>consulta</button><br />
                 <Link to="/Usuarios/">
                     <button className={styles.rectangle}>adm</button>

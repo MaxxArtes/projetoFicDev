@@ -21,7 +21,6 @@ module.exports = {
       cpf: {
         type: Sequelize.TEXT,
         allowNull: false,
-        unique: true
       },
       cargo: {
         type: Sequelize.TEXT,

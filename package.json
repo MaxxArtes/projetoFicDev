@@ -5,7 +5,9 @@
   "scripts": {
     "start": "nodemon api/src/server.js",
     "app": "nodemon web/src/app.jsx",
-    "populate": "node api/src/scripts/populate.js"
+    "migrate": "npx sequelize db:migrate",
+    "populate": "node api/src/scripts/populate.js",
+    "droptable" : "node api/src/scripts/droptable.js"
   },
   "keywords": [],
   "author": "",

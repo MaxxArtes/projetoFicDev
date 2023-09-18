@@ -139,13 +139,3 @@ p {
 #page {
   font-size: 18px;
 }
-
-.nav {
-  display: flex;
-  justify-content: space-between;
-}
-.acoes{
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}

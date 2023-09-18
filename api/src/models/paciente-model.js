@@ -25,7 +25,7 @@ class PacienteModel extends Model {
                 allowNull: false
             },
             CNS: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.TEXT,
                 allowNull: false
             },
             CPF: {
