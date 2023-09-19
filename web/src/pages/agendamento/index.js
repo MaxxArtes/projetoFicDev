@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns'; // Importe a função de formatação de datas
 
 export function Agendamentos() {
     const navigate = useNavigate();
@@ -10,9 +11,15 @@ export function Agendamentos() {
     const [mostrarModal, setMostrarModal] = useState(false);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [query, setQuery] = useState(''); // Estado para armazenar o valor da consulta
 
     const handleVoltarParaPaginaInicial = () => {
         navigate('/PaginaInicial');
+    };
+
+    const handleSearchClick = (query) => {
+        setQuery(query);
+        setPage(1); // Volta para a primeira página ao iniciar uma nova pesquisa
     };
 
     const handleSair = () => {
@@ -45,21 +52,21 @@ export function Agendamentos() {
     }
 
     useEffect(() => {
-        const fetchPacientes = async () => {
+        const fetchUsers = async () => {
             try {
-                const response = await api.get(`/listarPacientes/${page}`);
-                const pacienteData = response.data;
-                setPacientes(pacienteData.data);
+                const response = await api.get(`/listarPacientes/${page}?nome=${query}`);
+                const userData = response.data;
+                setPacientes(userData.data);
 
-                const calculatedTotalPages = Math.ceil(pacienteData.count / 5);
+                const calculatedTotalPages = Math.ceil(userData.count / 5);
                 setTotalPages(calculatedTotalPages);
             } catch (error) {
-                console.error('Erro ao listar pacientes', error);
+                console.error('Erro ao buscar usuários', error);
             }
         };
 
-        fetchPacientes();
-    }, [page]);
+        fetchUsers();
+    }, [page, query]);
 
     return (
         <div className={styles.ATENDIMENTO}>
@@ -83,7 +90,15 @@ export function Agendamentos() {
                         <h1>Agendamentos</h1>
                     </div>
                     <div className={styles.inputGroup}>
-                        <input className={styles.formControl} placeholder="Pesquisar" />
+                        <input
+                            className={styles.formControl}
+                            placeholder="Pesquisar"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                        />
+                        <button className={styles.button} onClick={() => handleSearchClick(query)}>
+                            Pesquisar
+                        </button>
                         <button className={styles.button}>
                             <p1 onClick={() => handleRecuperarSenhaClick(true)}>cadastrar</p1>
                             <img className={styles.search} alt="Search" src="adicao.png" />
@@ -111,19 +126,19 @@ export function Agendamentos() {
                         {pacientes.map(paciente => (
                             <tr key={paciente.id_paciente}>
                                 <td className={styles.acoes}>
-                                    <input
+                                    <input className={styles.tablevalues}
                                         type="checkbox"
                                         onChange={() => handlePacienteSelection(paciente.id_paciente)}
                                         checked={selectedPacientes.includes(paciente.id_paciente)}
                                     />
                                 </td>
-                                <td>{paciente.nome}</td>
-                                <td>{paciente.email}</td>
-                                <td>{paciente.tel}</td>
-                                <td>{paciente.cel}</td>
-                                <td>{paciente.data_nasc}</td>
-                                <td>{paciente.CNS}</td>
-                                <td>{paciente.CPF}</td>
+                                <td className={styles.tablevalues}>{paciente.nome}</td>
+                                <td className={styles.tablevalues}>{paciente.email}</td>
+                                <td className={styles.tablevalues}>{paciente.tel}</td>
+                                <td className={styles.tablevalues}>{paciente.cel}</td>
+                                <td className={styles.tablevalues}>{format(new Date(paciente.data_nasc), 'dd/MM/yyyy')}</td>
+                                <td className={styles.tablevalues}>{paciente.CNS}</td>
+                                <td className={styles.tablevalues}>{paciente.CPF}</td>
                                 <td>
                                     <button className={styles.primaryButton}>Agendar</button>
                                 </td>

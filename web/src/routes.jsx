@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LoginForm } from './pages/Login/index.jsx';
 import { PaginaInicial } from './pages/servicos/index.jsx';
 import { AuthContextProvider } from './context/authcontext';
-import { Usuarios} from './pages/adm/index.jsx';
+import { Usuarios } from './pages/adm/index.jsx';
 import { Agendamentos } from './pages/agendamento/index.js';
 export const isAuthenticate = () => {
     return sessionStorage.getItem('token');
@@ -28,19 +28,19 @@ export function Navigations() {
                                 <PaginaInicial />
                             </PrivateRoute>
                         } />
-                <Route path="/Usuarios"
+                    <Route path="/Usuarios"
                         element={
                             <PrivateRoute>
                                 <Usuarios />
                             </PrivateRoute>
                         } />
-                <Route path="/Agendamentos"
+                    <Route path="/Agendamentos"
                         element={
                             <PrivateRoute>
                                 <Agendamentos />
                             </PrivateRoute>
                         } />
-                    </Routes>
+                </Routes>
             </AuthContextProvider>
         </BrowserRouter>
     );

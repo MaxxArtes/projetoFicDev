@@ -1,20 +1,20 @@
-
 .contanier {
     height: 100vh;
-    width: 100%;
+    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
     justify-content: space-between;
 }
-.logo{
-    width: 1000px;
+
+.logo {
+    width: 100%;
     height: 900px;
     align-items: flex-start;
     justify-content: space-between;
 }
 
-.login{
+.login {
     width: 556px;
     height: 692px;
     align-items: center;
@@ -29,17 +29,17 @@
     gap: 10px;
 }
 
-.button1{
+.button1 {
     margin-top: 50px;
     margin: 20px 10px 5;
     width: 520px;
     height: 96px;
     border-radius: 15px;
     background: #04737C;
-    
+
 }
 
-.input{
+.input {
     width: 520px;
     height: 96px;
     border-radius: 15px;
@@ -57,7 +57,7 @@
 }
 
 
-.h1{
+.h1 {
     display: flex;
     padding: 10px;
     justify-content: center;
@@ -70,6 +70,7 @@
     font-weight: 400;
     line-height: normal;
 }
+
 .h2 {
     color: #000;
     font-family: Inter;
@@ -78,6 +79,7 @@
     font-weight: 400;
     line-height: normal;
 }
+
 .entrar {
     color: #ffffff;
     font-family: Inter;
@@ -88,16 +90,16 @@
 }
 
 .modal {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        padding: 20px;
-        z-index: 1000;
-        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-        text-align: center;
-      }
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    z-index: 1000;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
 
 .a {
     display: inline-flex;
@@ -113,11 +115,11 @@
     line-height: normal;
 }
 
-.showPasswordButton{
-    display: inline-flex;  
+.showPasswordButton {
+    display: inline-flex;
 }
 
-.modal{
+.modal {
     justify-content: flex-end;
     display: flex;
     flex-direction: column;
@@ -128,7 +130,7 @@
     background: #B9DEE0;
 }
 
-.modal button{
+.modal button {
     margin-top: 30px;
     margin: 20px 10px 5;
     width: 100%;
@@ -143,6 +145,7 @@
     line-height: normal;
     cursor: pointer;
 }
+
 .h4 {
     cursor: pointer;
     padding: 10px;
@@ -170,7 +173,7 @@
     gap: 10px;
 }
 
-.modal ::placeholder{
+.modal ::placeholder {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -181,6 +184,7 @@
     font-weight: 400;
     line-height: normal;
 }
+
 .modal h4 {
     padding: 10px;
     justify-content: center;
@@ -196,23 +200,24 @@
     line-height: normal;
 
 }
+
 .inputcontainer {
-  position: relative;
+    position: relative;
 }
 
 .inputcontainer input {
-  padding-right: 30px;
+    padding-right: 30px;
 }
 
 .inputcontainer .icon {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  background-image: url('../../../public/Group.png');
-  background-repeat: no-repeat;
-  background-position: center center;
-  cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background-image: url('../../../public/Group.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    cursor: pointer;
 }

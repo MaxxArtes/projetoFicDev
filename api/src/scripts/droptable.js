@@ -5,7 +5,7 @@ const client = new Client({
   user: 'postgres',
   host: 'localhost',
   database: 'postgres',
-  password: '123',
+  password: 'Magurofg2.',
   port: 5432, // Porta padrão do PostgreSQL
 });
 

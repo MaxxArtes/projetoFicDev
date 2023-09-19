@@ -6,8 +6,8 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background-color:#B9DEE0;
+    background-color: #B9DEE0;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
