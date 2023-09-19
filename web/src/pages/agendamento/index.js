@@ -2,17 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
+import { ModalAgendamento } from '../../components/modalagendamento/modalAgendamento.js';
+import { ModalCadastrarPaciente } from '../../components/modalpaciente/modalPaciente';
 
 export function Agendamentos() {
+    
     const navigate = useNavigate();
     const [selectedPacientes, setSelectedPacientes] = useState([]);
     const [pacientes, setPacientes] = useState([]);
-    const [mostrarModal, setMostrarModal] = useState(false);
+    const [mostrarAgendamentoModal, setMostrarAgendamentoModal] = useState(false);
+    const [mostrarCadastroPacienteModal, setMostrarCadastroPacienteModal] = useState(false);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
     const handleVoltarParaPaginaInicial = () => {
         navigate('/PaginaInicial');
+    };
+
+    const handleAgendarClick = () => {
+        setMostrarAgendamentoModal(true);
     };
 
     const handleSair = () => {
@@ -21,7 +29,7 @@ export function Agendamentos() {
     };
 
     const handleRecuperarSenhaClick = () => {
-        setMostrarModal(true);
+        setMostrarCadastroPacienteModal(true);
     };
 
     function aumentar() {
@@ -64,16 +72,16 @@ export function Agendamentos() {
     return (
         <div className={styles.ATENDIMENTO}>
             <header>
-                <div>
-                    <img alt="voltar" src="Account.png" />
-                </div>
-                <div className={styles.header}>
-                    <h1>Atendimento</h1>
+                <div className={styles.esq}>
+                    <img alt="voltar" src="logo.png" />
+                    <div className={styles.header}>
+                        <h1>Atendimento</h1>
+                    </div>
                 </div>
                 <div className={styles.navdiv}>
-                    <img onClick={handleVoltarParaPaginaInicial} alt="voltar" src="Arrow.png" />
-                    <img alt="voltar" src="Account.png" />
-                    <img onClick={handleSair} alt="voltar" src="sair.png" />
+                    <img onClick={handleVoltarParaPaginaInicial} alt="voltar" src="voltar.png" />
+                    <img alt="perfil" src="perfil.png" />
+                    <img onClick={handleSair} alt="sair" src="sair.png" />
                 </div>
             </header>
 
@@ -85,9 +93,10 @@ export function Agendamentos() {
                     <div className={styles.inputGroup}>
                         <input className={styles.formControl} placeholder="Pesquisar" />
                         <button className={styles.button}>
-                            <p1 onClick={() => handleRecuperarSenhaClick(true)}>cadastrar</p1>
+                            <button className={styles.button} onClick={handleRecuperarSenhaClick}>Cadastrar Paciente</button>
                             <img className={styles.search} alt="Search" src="adicao.png" />
                         </button>
+
                     </div>
                 </div>
 
@@ -96,13 +105,13 @@ export function Agendamentos() {
                         <tr>
                             <th>Selecionar</th>
                             <th>Nome do Paciente</th>
-                            <th>e-mail</th>
-                            <th>tel</th>
-                            <th>cel</th>
+                            <th>E-mail</th>
+                            <th>Tel</th>
+                            <th>Cel</th>
                             <th>Data de Nascimento</th>
                             <th>CNS</th>
                             <th>CPF</th>
-                            <th>sexo</th>
+                            <th>Sexo</th>
                             <th>Agendar</th>
                             <th>Ação</th>
                         </tr>
@@ -124,9 +133,11 @@ export function Agendamentos() {
                                 <td>{paciente.data_nasc}</td>
                                 <td>{paciente.CNS}</td>
                                 <td>{paciente.CPF}</td>
+                                <td>{paciente.sexo}</td>
                                 <td>
-                                    <button className={styles.primaryButton}>Agendar</button>
+                                    <button className={styles.primaryButton} onClick={handleAgendarClick}>Agendar</button>
                                 </td>
+
                                 <td>
                                     <img alt="Editar" src="edit.png" />
                                     <img alt="Excluir" src="lixo.png" />
@@ -148,12 +159,13 @@ export function Agendamentos() {
                     </button>
                 </div>
             </footer>
-
-            {mostrarModal && (
-                <div className={styles.modal}>
-                    {/* Coloque o conteúdo do modal aqui */}
-                </div>
+            {mostrarAgendamentoModal && (
+                <ModalAgendamento mostrarModal={mostrarAgendamentoModal} onClose={() => setMostrarAgendamentoModal(false)} />
             )}
+            {mostrarCadastroPacienteModal && (
+                <ModalCadastrarPaciente mostrarModal={mostrarCadastroPacienteModal} onClose={() => setMostrarCadastroPacienteModal(false)} />
+            )}
+
         </div>
     );
 }

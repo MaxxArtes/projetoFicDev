@@ -1,0 +1,88 @@
+/* CSS para o modal RegisterAgendamento */
+
+/* Classe para esconder o modal */
+.modalHidden {
+    display: flex;
+}
+
+/* Estilo para o modal visível */
+.modal {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    position:absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 20%;
+    height: 46%;
+    background-color: rgb(255, 255, 255)
+}
+
+/* Conteúdo do modal */
+.modal-content {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 60%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Botão para fechar o modal */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Estilo para o título do modal */
+.modal h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Estilo para rótulos e campos de entrada */
+label {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Estilo para o botão de registro */
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
