@@ -30,6 +30,7 @@ routes.get('/listarUsuarios/:page', UsuarioController.getAll);
 routes.post('/registerAgendamento', authMiddleware, AgendamentoController.create);
 routes.put('/editarAgendamento', authMiddleware, AgendamentoController.update);
 routes.delete('/deletarAgendamento', authMiddleware, AgendamentoController.delete);
+routes.get('/listarAgendamento', authMiddleware, AgendamentoController.getAll);
 
 // consulta
 routes.post('/registrarProntuario', authMiddleware, ConsultaController.create);
