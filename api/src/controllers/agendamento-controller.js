@@ -10,19 +10,13 @@ require('dotenv').config();
 class AgendamentoController {
   async create(req, res) {
     try {
-      const { nome, email, tel, cel, CNS, CPF, endereco, nome_medico, especialidade, data, horario } = req.body;
+      const { nome_medico, especialidade, data, horario, unidade_saude } = req.body;
       const agendamento = await AgendamentoModel.create({
-        nome,
-        email,
-        tel,
-        cel,
-        CNS,
-        CPF,
-        endereco,
         nome_medico,
         especialidade,
         data,
-        horario
+        horario,
+        unidade_saude
       });
       return res.status(201).json(agendamento);
     } catch (error) {
@@ -105,20 +99,15 @@ class AgendamentoController {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { nome, email, tel, cel, CNS, CPF, endereco, nome_medico, especialidade, data, horario } = req.body;
+      const { nome_medico, especialidade, data, horario, unidade_saude } = req.body;
       const agendamento = await AgendamentoModel.update(
         {
-          nome,
-          email,
-          tel,
-          cel,
-          CNS,
-          CPF,
-          endereco,
           nome_medico,
           especialidade,
           data,
-          horario
+          horario,
+          unidade_saude,
+          especialidade,
         },
         { where: { id_agendamento: id } }
       );
@@ -157,15 +146,15 @@ class AgendamentoController {
   async getAll(req, res) {
     try {
       const { nome } = req.query; //parâmetro da consulta
-      let consultas; //variável para armazenar as consultas
+      let agendamentos; //variável para armazenar as consultas
       if (nome) {
         //se tiver o parâmetro de nome, filtra por nome
-        consultas = await paginate(ConsultaModel, page, limit, { where: { nome: { [Op.iLike]: '%' + nome + '%' } } });
+        agendamentos = await paginate(AgendamentoModel, page, limit, { where: { nome: { [Op.iLike]: '%' + nome + '%' } } });
       } else {
         //se não tiver o parâmetro de nome, retorna todas as consultas
-        consultas = await paginate(ConsultaModel, page, limit);
+        agendamentos = await paginate(AgendamentoModel, page, limit);
       }
-      return res.status(200).json(consultas); //retorna as consultas encontradas e paginadas
+      return res.status(200).json(agendamentos); //retorna as consultas encontradas e paginadas
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal server error' });

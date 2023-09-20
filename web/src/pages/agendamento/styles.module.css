@@ -23,6 +23,11 @@
   height: 50%;
 }
 
+.tablevalues {
+  text-align: center;
+  align-items: center;
+}
+
 .ATENDIMENTO header {
   width: 100vw;
   /* height: 100vw; */

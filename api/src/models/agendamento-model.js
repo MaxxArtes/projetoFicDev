@@ -12,7 +12,7 @@ class AgendamentoModel extends Model {
         type: DataTypes.TEXT,
         allowNull: false
       },
-      especializacialidade: {
+      especialidade: {
         type: DataTypes.TEXT,
         allowNull: false
       },

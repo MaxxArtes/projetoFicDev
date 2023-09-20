@@ -1,0 +1,12 @@
+const path = require('path');
+
+module.exports = {
+<<<<<<< HEAD
+    config: path.resolve('api', 'src', 'database', 'config.js'),
+    'migrations-path': path.resolve('api', 'src', 'database', 'migrations')
+};
+=======
+    config: path.resolve('api','src', 'database', 'config.js'),
+    'migrations-path': path.resolve('api', 'src', 'database', 'migrations')
+};
+>>>>>>> d5272bf347d5ce3a94ae5b68875e87d05541e457

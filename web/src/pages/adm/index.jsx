@@ -2,13 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 // import React, { PureComponent } from 'react';
 // import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+=======
+>>>>>>> 9205e8ad32ecfcdb9a18c577b15bec1d1da3b667
 
 export function Usuarios() {
     const navigate = useNavigate();
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [users, setUsers] = useState([]);
+    const [totalMedicos, setTotalMedicos] = useState();
+    const [totalAtendentes, setTotalAtendentes] = useState();
     const [mostrarModal, setMostrarModal] = useState(false);
     const [nome, setNome] = useState('');
     const [cargo, setCargo] = useState('');
@@ -21,14 +26,14 @@ export function Usuarios() {
     const [totalPages, setTotalPages] = useState(0);
     const [isEditMode, setIsEditMode] = useState(false);
     const [userData, setUserData] = useState(null);
-    const [editPassword, setEditPassword] = useState(''); // Adicione um estado para a senha durante a edição
+    const [editPassword, setEditPassword] = useState('');
 
     const handleVoltarParaPaginaInicial = () => {
         navigate('/PaginaInicial');
     };
 
     const handleSair = () => {
-        sessionStorage.removeItem('token'); // Remova o token do sessionStorage
+        sessionStorage.removeItem('token');
         navigate('/');
     };
 
@@ -36,45 +41,43 @@ export function Usuarios() {
         setMostrarModal(true);
     };
 
-    function aumentar() {
+    const aumentar = () => {
         if (page < totalPages) {
             setPage(page + 1);
         }
-    }
+    };
 
-    function diminuir() {
+    const diminuir = () => {
         if (page > 1) {
             setPage(page - 1);
         }
-    }
+    };
 
-    function handleUserSelection(userId) {
+    const handleUserSelection = (userId) => {
         if (selectedUsers.includes(userId)) {
             setSelectedUsers(selectedUsers.filter(id => id !== userId));
         } else {
             setSelectedUsers([...selectedUsers, userId]);
         }
-    }
+    };
+
     const handleEditButtonClick = (user) => {
         setIsEditMode(true);
-        setUserData(user); // Defina o estado userData com os dados do usuário existente
-        console.log('HANDLE USERDATA: ', user);
+        setUserData(user);
         setMostrarModal(true);
     };
-    async function handleDeleteUser(userId) {
+
+    const handleDeleteUser = async (userId) => {
         try {
             const accessToken = sessionStorage.getItem("token");
-            console.log("accessToken: ", accessToken);
             const response = await api.delete(`/deletarUsuario/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 }
             });
-            console.log(response)
 
             if (response.status === 200 || response.status === 204) {
                 setSelectedUsers(selectedUsers.filter(id => id !== userId));
-                // Após a exclusão bem-sucedida, faça a solicitação GET para buscar dados atualizados
                 const usersResponse = await api.get(`/listarUsuarios/${page}`);
                 const userData = usersResponse.data;
                 setUsers(userData.data);
@@ -87,8 +90,9 @@ export function Usuarios() {
         } catch (error) {
             console.error('Erro na solicitação:', error);
         }
-    }
-    const handleSaveUser = async (fetchUsers) => {
+    };
+
+    const handleSaveUser = async () => {
         try {
             if(rePassword){
             if (password !== rePassword) {
@@ -106,7 +110,6 @@ export function Usuarios() {
                 password: isEditMode ? editPassword : password,
             };
 
-
             const accessToken = sessionStorage.getItem("token");
             const response = isEditMode
                 ? await api.put(`/editarUsuario/${userData.id_usuario}`, updatedUserData, {
@@ -115,24 +118,20 @@ export function Usuarios() {
                     },
                 })
                 : await api.post('/registerUsuario', updatedUserData);
-                console.log("RESULT RESPONSE :",response);
 
             if (response.status === 200 || response.status === 204) {
-                console.log('Usuário editado com sucesso!', response.data);
                 setSelectedUsers(selectedUsers.filter(id => id !== userData.id_usuario));
-                console.log('AQUI')
                 const usersResponse = await api.get(`/listarUsuarios/${page}`);
                 const userData = usersResponse.data;
                 setUsers(userData.data);
 
                 const calculatedTotalPages = Math.ceil(userData.count / 5);
                 setTotalPages(calculatedTotalPages);
-
-              
             } else {
                 console.error('Erro ao editar o usuário:', response.data);
             }
 
+            // Limpe os campos após a conclusão
             setNome('');
             setCargo('');
             setEspecialidade('');
@@ -140,31 +139,27 @@ export function Usuarios() {
             setEmail('');
             setPassword('');
             setRePassword('');
-            setEditPassword(''); // Limpe o estado editPassword
-            setUserData(null); // Defina o estado userData como null após a edição
+            setEditPassword('');
+            setUserData(null);
             setMostrarModal(false);
             setIsEditMode(false);
 
-            
-
-
-            // Atualize a lista de usuários após a edição
-            fetchUsers()
-
-            const updatedUsers = users.map((user) =>
-                user.id_usuario === userData.id_usuario ? response.data : user
-            );
-            setUsers(updatedUsers);
         } catch (error) {
             console.error('Erro ao editar usuário', error);
         }
     };
+
     useEffect(() => {
         const fetchUsers = async () => {
             try {
                 const response = await api.get(`/listarUsuarios/${page}`);
                 const userData = response.data;
                 setUsers(userData.data);
+                const result = await api.get('/totalUsuarios');
+                setTotalAtendentes(result.data.totalAtendentes.count);
+                setTotalMedicos(result.data.totalMedicos.count);
+                console.log(result.data.totalAtendentes.count);
+                
 
                 const calculatedTotalPages = Math.ceil(userData.count / 5);
                 setTotalPages(calculatedTotalPages);
@@ -197,6 +192,7 @@ export function Usuarios() {
 
                 console.log('Usuário registrado com sucesso!', response.data);
 
+                // Limpe os campos após a conclusão
                 setNome('');
                 setCargo('');
                 setEspecialidade('');
@@ -215,74 +211,84 @@ export function Usuarios() {
     };
 
     return (
-        <div className={styles.ADMINUSUARIOS}> {/* Aplicar classe para o container principal */}
-          <div className={styles.nav}>
-            <div>
-              <h1>USUÁRIOS</h1>
-              <div>
-                <h1>dashboards</h1>
-              </div>
+        <div className={styles.ADMINUSUARIOS}>
+            <div className={styles.nav}>
+                <div>
+                    <h1>USUÁRIOS</h1>
+                    <div>
+                    </div>
+                </div>
+                <div>
+                    <button onClick={handleVoltarParaPaginaInicial}>Voltar para Página Inicial</button>
+                    <button onClick={handleSair}><img onClick={handleSair} alt="voltar" src="sair.png" /></button>
+                </div>
             </div>
-            <div>
-              <button onClick={handleVoltarParaPaginaInicial}>Voltar para Página Inicial</button>
-              <button onClick={handleSair}>Sair</button>
+            <br />
+
+
+            <div className={styles.pesquisarnome}>
+                <div className={styles.pesquisa}>
+                    <div className={styles.h1}></div>
+                    <div className={styles.inputGroup}>
+                        <input className={styles.formControl} placeholder="Pesquisar" />
+                        <button className={styles.button}>
+                            <button onClick={() => handleRecuperarSenhaClick(true)} className={styles.button}>adicionar</button>
+                        </button>
+                    </div>
+                </div>
             </div>
-          </div>
-          <br />
-          <button onClick={() => handleRecuperarSenhaClick(true)} className={styles.button}>adicionar</button> {/* Aplicar classe para o botão de adicionar */}
-          <table className={styles.table}> {/* Aplicar classe para a tabela */}
-            <thead>
-              <tr>
-                <th className={styles.acoes}>Selecionar</th>
-                <th className={styles.acoes}>id</th>
-                <th className={styles.acoes}>NOME</th>
-                <th className={styles.acoes}>CARGO</th>
-                <th className={styles.acoes}>CPF</th>
-                <th className={styles.acoes}>E-MAIL</th>
-                <th className={styles.acoes}>ACÕES</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user, index) => (
-                <tr key={index}>
-                  <td className={styles.acoes}>
-                    <input
-                      type="checkbox"
-                      onChange={() => handleUserSelection(user.id_usuario)}
-                      checked={selectedUsers.includes(user.id_usuario)}
-                    />
-                  </td>
-                  <td className={styles.acoes}>{user.id_usuario}</td>
-                  <td className={styles.acoes}>{user.nome}</td>
-                  <td className={styles.acoes}>{user.cargo}</td>
-                  <td className={styles.acoes}>{user.cpf}</td>
-                  <td className={styles.acoes}>{user.email}</td>
-                  <td className={styles.button}>
-                    <button onClick={() => handleEditButtonClick(user)} className={styles.primaryButton}>editar</button> {/* Aplicar classe para o botão de editar */}
-                    <button onClick={() => handleDeleteUser(user.id_usuario)} className={styles.primaryButton}>deletar</button> {/* Aplicar classe para o botão de deletar */}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className={styles.pagination}> {/* Aplicar classe para a paginação */}
-            <div className={styles.diminuir}>
-              <button onClick={() => diminuir()} className={styles.lightButton}>diminuir</button> {/* Aplicar classe para o botão de diminuir */}
-            </div>
-            <div>
-              <p id='page' className={styles.pageNumber}>{page}</p> {/* Aplicar classe para o número da página */}
-            </div>
-            <div className={styles.aumentar}>
-              <button onClick={() => aumentar()} className={styles.lightButton}>aumentar</button> {/* Aplicar classe para o botão de aumentar */}
-            </div>
-          </div>
+            <table className={styles.table}>
+                <thead>
+                    <tr>
+                        <th className={styles.acoes}>Selecionar</th>
+                        <th className={styles.acoes}>id</th>
+                        <th className={styles.acoes}>NOME</th>
+                        <th className={styles.acoes}>CARGO</th>
+                        <th className={styles.acoes}>CPF</th>
+                        <th className={styles.acoes}>E-MAIL</th>
+                        <th className={styles.acoes}>ACÕES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users.map((user, index) => (
+                        <tr key={index}>
+                            <td className={styles.acoes}>
+                                <input
+                                    type="checkbox"
+                                    onChange={() => handleUserSelection(user.id_usuario)}
+                                    checked={selectedUsers.includes(user.id_usuario)}
+                                />
+                            </td>
+                            <td className={styles.acoes}>{user.id_usuario}</td>
+                            <td className={styles.acoes}>{user.nome}</td>
+                            <td className={styles.acoes}>{user.cargo}</td>
+                            <td className={styles.acoes}>{user.cpf}</td>
+                            <td className={styles.acoes}>{user.email}</td>
+                            <td className={styles.button}>
+                                <button onClick={() => handleEditButtonClick(user)} className={styles.primaryButton}>editar</button>
+                                <button onClick={() => handleDeleteUser(user.id_usuario)} className={styles.primaryButton}>deletar</button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <footer>
+                <div className={styles.pagination}>
+                    <button onClick={diminuir} className={styles.pageNumber}>
+                        <img className={styles.circledRight} alt="<" src="./Circled1.png" />
+                    </button>
+                    <button className={styles.pageNumber}>{page}</button>
+                    <button onClick={aumentar} className={styles.pageNumber}>
+                        <img className={styles.circledRight} alt=">" src='./Circled.png' />
+                    </button>
+                </div>
+            </footer>
             {mostrarModal && (
                 <div className={styles.modal}>
-                    console.log('MOSTRAMODAL USERDATA: ',userData)
                     <div className={styles.adicionar}>
-                        <div>
-                            <h4>{isEditMode ? 'Editar Usuário' : 'Adicionar Usuário'}</h4>
-                            <div className={styles.inputcontainer1}>
+                        <h4>{isEditMode ? 'Editar Usuário' : 'Adicionar Usuário'}</h4>
+                        <div className={styles.contmodal}>
+                            <div className={styles.inputcontainer}>
                                 <input
                                     type="text"
                                     placeholder="Digite seu nome"
@@ -295,10 +301,6 @@ export function Usuarios() {
                                         }
                                     }}
                                 />
-                            </div>
-                        </div>
-                        <div className={styles.contmodal}>
-                            <div className={styles.inputcontainer}>
                                 <select
                                     value={isEditMode ? userData.cargo : cargo}
                                     onChange={(e) => {
@@ -354,7 +356,7 @@ export function Usuarios() {
                                 <input
                                     type="password"
                                     placeholder="Digite sua senha"
-                                    value={isEditMode ? userData.password : password} // Defina o valor do campo de senha com o valor de senha quando estiver no modo de edição
+                                    value={isEditMode ? userData.password : password}
                                     onChange={(e) => {
                                         if (isEditMode) {
                                             setUserData({ ...userData, password: e.target.value });
@@ -366,7 +368,7 @@ export function Usuarios() {
                                 <input
                                     type="password"
                                     placeholder="Digite novamente sua senha"
-                                    value={isEditMode ? userData.rePassword : rePassword} // Defina o valor do campo de rePassword com o valor de rePassword quando estiver no modo de edição
+                                    value={isEditMode ? userData.rePassword : rePassword}
                                     onChange={(e) => {
                                         if (isEditMode) {
                                             setUserData({ ...userData, rePassword: e.target.value });
@@ -377,18 +379,18 @@ export function Usuarios() {
                                 />
                             </div>
                         </div>
-                        <button onClick={isEditMode ? () => handleSaveUser(userData.id_usuario) : handleSubmit}>
-                            {isEditMode ? 'Salvar' : 'Adicionar'}
-                        </button>
-                        <p onClick={() => setMostrarModal(false)}>cancelar</p>
+                        <div className={styles.botao}>
+                            <button onClick={isEditMode ? () => handleSaveUser(userData.id_usuario) : handleSubmit}>
+                                {isEditMode ? 'Salvar' : 'Adicionar'}
+                            </button>
+                            <p onClick={() => setMostrarModal(false)}>cancelar</p>
+                        </div>
                     </div>
                 </div>
             )}
-
-
-
-
+            <h1>dashboards</h1>
+            <h1>total de Atendentes {totalAtendentes}</h1>
+            <h1>total de Medicos {totalMedicos}</h1>
         </div>
     );
 }
-
