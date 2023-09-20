@@ -1,103 +1,107 @@
 require('../database');
-const bcrypt = require('bcrypt');
-const salt = bcrypt.genSaltSync(10);
-const { UsuarioModel } = require('../models/usuario-model');
+const { AgendamentoModel } = require('../models/agendamento-model');
 
-const usuarios = [
-    {
-      nome: "João Paulo",
-      password: "123456",
-      cpf: "12345678901",
-      cargo: "médico",
-      especialidade: "clínico geral",
-      email: "med1@mail.com"
-    },
-    {
-      nome: "Maria Silva",
-      password: "456789",
-      cpf: "23456789012",
-      cargo: "atendente",
-      especialidade: "cardiologia",
-      email: "atendente1@mail.com"
-    },
-    {
-      nome: "Lucia Santos",
-      password: "789123",
-      cpf: "34567890123",
-      cargo: "médico",
-      especialidade: "pediatria",
-      email: "med2@mail.com"
-    },
-    {
-      nome: "José Almeida",
-      password: "987654",
-      cpf: "45678901234",
-      cargo: "atendente",
-      especialidade: "cirurgia",
-      email: "atendente2@mail.com"
-    },
-    {
-      nome: "Ana Pereira",
-      password: "654321",
-      cpf: "56789012345",
-      cargo: "médico",
-      especialidade: "dermatologia",
-      email: "med3@mail.com"
-    },
-    {
-      nome: "Pedro Costa",
-      password: "321789",
-      cpf: "67890123456",
-      cargo: "atendente",
-      especialidade: "ortopedia",
-      email: "atendente3@mail.com"
-    },
-    {
-      nome: "Rita Fernandes",
-      password: "111222",
-      cpf: "78901234567",
-      cargo: "médico",
-      especialidade: "psiquiatria",
-      email: "med4@mail.com"
-    },
-    {
-      nome: "Fernando Santos",
-      password: "222333",
-      cpf: "89012345678",
-      cargo: "atendente",
-      especialidade: "neurologia",
-      email: "atendente4@mail.com"
-    },
-    {
-      nome: "Luisa Oliveira",
-      password: "333444",
-      cpf: "90123456789",
-      cargo: "médico",
-      especialidade: "ginecologia",
-      email: "med5@mail.com"
-    },
-    {
-      nome: "Carlos Rodrigues",
-      password: "444555",
-      cpf: "01234567890",
-      cargo: "atendente",
-      especialidade: "radiologia",
-      email: "atendente5@mail.com"
-    }
-  ];
+const agendamentos = [
+  {
+    "id_paciente": 1,
+    nome_medico: "Dr. Anderson",
+    especialidade: "Cardiologia",
+    data: "2023-09-20",
+    horario: "08:30",
+    unidade_saude: "Hospital Central"
+  },
+  {
+    "id_paciente": 2,
+    nome_medico: "Dra. Maria",
+    especialidade: "Pediatria",
+    data: "2023-09-22",
+    horario: "10:00",
+    unidade_saude: "Clinica Infantil"
+  },
+  {
+    "id_paciente": 3,
+    nome_medico: "Dr. Silva",
+    especialidade: "Ortopedia",
+    data: "2023-09-25",
+    horario: "15:45",
+    unidade_saude: "Hospital Ortopédico"
+  },
+  {
+    "id_paciente": 4,
+    nome_medico: "Dra. Garcia",
+    especialidade: "Dermatologia",
+    data: "2023-09-26",
+    horario: "14:15",
+    unidade_saude: "Clínica Dermatológica"
+  },
+  {
+    "id_paciente": 5,
+    nome_medico: "Dr. Souza",
+    especialidade: "Oftalmologia",
+    data: "2023-09-27",
+    horario: "11:30",
+    unidade_saude: "Clínica de Oftalmologia"
+  },
+  {
+    "id_paciente": 6,
+    nome_medico: "Dra. Lima",
+    especialidade: "Ginecologia",
+    data: "2023-09-28",
+    horario: "09:00",
+    unidade_saude: "Hospital da Mulher"
+  },
+  {
+    "id_paciente": 7,
+    nome_medico: "Dr. Pereira",
+    especialidade: "Neurologia",
+    data: "2023-09-29",
+    horario: "13:45",
+    unidade_saude: "Clínica Neurológica"
+  },
+  {
+    "id_paciente": 8,
+    nome_medico: "Dra. Santos",
+    especialidade: "Oncologia",
+    data: "2023-09-30",
+    horario: "16:20",
+    unidade_saude: "Hospital do Câncer"
+  },
+  {
+    "id_paciente": 9,
+    nome_medico: "Dr. Almeida",
+    especialidade: "Urologia",
+    data: "2023-10-03",
+    horario: "08:15",
+    unidade_saude: "Clínica Urológica"
+  },
+  {
+    "id_paciente": 10,
+    nome_medico: "Dra. Costa",
+    especialidade: "Psiquiatria",
+    data: "2023-10-05",
+    horario: "10:30",
+    unidade_saude: "Clínica Psiquiátrica"
+  }
+
+];
 
 (async () => {
-    for (let usuario of usuarios) {
-        const teste = await UsuarioModel.create({
-            nome: usuario.nome,
-            password: bcrypt.hashSync(usuario.password, salt), 
-            cpf: usuario.cpf, 
-            cargo: usuario.cargo,
-            especialidade: usuario.especialidade,
-            email: usuario.email 
-        });
+  try {
+    for (let agendamento of agendamentos) {
+      const novoAgendamento = await AgendamentoModel.create({
+        nome_medico: agendamento.nome_medico,
+        especialidade: agendamento.especialidade,
+        data: agendamento.data,
+        horario: agendamento.horario,
+        unidade_saude: agendamento.unidade_saude,
+        id_paciente: agendamento.id_paciente
+      });
 
-        console.log("seasesaesaesa", teste);
+      console.log("Agendamento cadastrado:", novoAgendamento);
     }
-    console.log('Tudo cadastrado!');
+
+    console.log('Todos os agendamentos fictícios cadastrados!');
+  } catch (error) {
+    console.error("Erro ao cadastrar agendamentos fictícios:", error);
+  }
 })();

@@ -7,6 +7,8 @@ export function Usuarios() {
     const navigate = useNavigate();
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [users, setUsers] = useState([]);
+    const [totalMedicos, setTotalMedicos] = useState();
+    const [totalAtendentes, setTotalAtendentes] = useState();
     const [mostrarModal, setMostrarModal] = useState(false);
     const [nome, setNome] = useState('');
     const [cargo, setCargo] = useState('');
@@ -146,6 +148,11 @@ export function Usuarios() {
                 const response = await api.get(`/listarUsuarios/${page}`);
                 const userData = response.data;
                 setUsers(userData.data);
+                const result = await api.get('/totalUsuarios');
+                setTotalAtendentes(result.data.totalAtendentes.count);
+                setTotalMedicos(result.data.totalMedicos.count);
+                console.log(result.data.totalAtendentes.count);
+                
 
                 const calculatedTotalPages = Math.ceil(userData.count / 5);
                 setTotalPages(calculatedTotalPages);
@@ -202,7 +209,6 @@ export function Usuarios() {
                 <div>
                     <h1>USUÁRIOS</h1>
                     <div>
-                        <h1>dashboards</h1>
                     </div>
                 </div>
                 <div>
@@ -375,6 +381,9 @@ export function Usuarios() {
                     </div>
                 </div>
             )}
+            <h1>dashboards</h1>
+            <h1>total de Atendentes {totalAtendentes}</h1>
+            <h1>total de Medicos {totalMedicos}</h1>
         </div>
     );
 }

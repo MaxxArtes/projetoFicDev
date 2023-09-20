@@ -113,7 +113,21 @@ class UsuarioController {
       console.error(error);
       return res.status(500).json({ error: 'Internal server error' });
     }
-  }  
+  }
+
+  async totalUsuarios(req, res) {
+    try {
+      const result = await UsuarioModel.sequelize.query("SELECT cargo, COUNT(*) FROM usuarios GROUP BY cargo");
+
+      return res.status(200).json({totalAtendentes: result[0][0], totalMedicos: result[0][1]}); 
+      
+      } catch (error) {
+      // Trate erros aqui
+      console.error(error);
+      res.status(500).send('Erro interno do servidor ', error);
+    }
+  }
+  
   
   
 

@@ -8,7 +8,8 @@
     "app": "nodemon web/src/app.jsx",
     "migrate": "npx sequelize db:migrate",
     "populate1": "node api/src/scripts/populate1.js",
-    "populate2": "node api/src/scripts/populate2.js"
+    "populate2": "node api/src/scripts/populate2.js",
+    "populate3": "node api/src/scripts/populate3.js"
   },
   "keywords": [],
   "author": "",

@@ -28,8 +28,8 @@ routes.get('/listarUsuarios/:page', UsuarioController.getAll);
 
 // atendimento
 routes.post('/registerAgendamento', authMiddleware, AgendamentoController.create);
-routes.put('/editarAgendamento', authMiddleware, AgendamentoController.update);
-routes.delete('/deletarAgendamento', authMiddleware, AgendamentoController.delete);
+routes.put('/editarAgendamento/:id', authMiddleware, AgendamentoController.update);
+routes.delete('/deletarAgendamento/:id', authMiddleware, AgendamentoController.delete);
 
 // consulta
 routes.post('/registrarProntuario', authMiddleware, ConsultaController.create);
@@ -40,4 +40,6 @@ routes.delete('/deletarProntuario', authMiddleware, ConsultaController.delete);
 routes.post('/registrarPaciente', authMiddleware, PacienteController.create);
 routes.get('/listarPacientes/:page', PacienteController.getAll);
 
+//dash
+routes.get('/totalUsuarios', UsuarioController.totalUsuarios); 
 module.exports = { routes };
