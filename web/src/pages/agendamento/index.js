@@ -8,14 +8,23 @@ export function Agendamentos() {
     const navigate = useNavigate();
     const [selectedPacientes, setSelectedPacientes] = useState([]);
     const [pacientes, setPacientes] = useState([]);
-    const [mostrarModal, setMostrarModal] = useState(false);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [query, setQuery] = useState(''); // Estado para armazenar o valor da consulta
+    const [nomeMedico, setNomeMedico] = useState('');
+    const [especialidade, setEspecialidade] = useState('');
+    const [data, setData] = useState('');
+    const [horario, setHorario] = useState('');
+    const [unidadeSaude, setUnidadeSaude] = useState('');
+    const [agendamentoData, setAgendamentoData] = useState(null);
+    const [mostrarModal, setMostrarModal] = useState(false);
+    const [isEditMode, setIsEditMode] = useState(false);
 
     const handleVoltarParaPaginaInicial = () => {
         navigate('/PaginaInicial');
     };
+    
+
 
     const handleSearchClick = (query) => {
         setQuery(query);
@@ -25,6 +34,12 @@ export function Agendamentos() {
     const handleSair = () => {
         sessionStorage.removeItem('token'); // Remova o token do sessionStorage
         navigate('/');
+    };
+
+    const handleEditButtonClick = (agendamento) => {
+        setIsEditMode(true);
+        setAgendamentoData(agendamento);
+        setMostrarModal(true);
     };
 
     const handleRecuperarSenhaClick = () => {
@@ -50,6 +65,123 @@ export function Agendamentos() {
             setSelectedPacientes([...selectedPacientes, pacienteId]);
         }
     }
+
+    const handleEditAgendamento = async (agendamentoId) => {
+        try {
+            const accessToken = sessionStorage.getItem("token");
+            const response = await api.get(`/editarAgendamento/${agendamentoId}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+    
+            if (response.status === 200) {
+                const agendamentoData = response.data;
+    
+                // Defina os valores dos campos do modal com os dados do agendamento
+                setNomeMedico(agendamentoData.nome_medico);
+                setEspecialidade(agendamentoData.especialidade);
+                setData(agendamentoData.data);
+                setHorario(agendamentoData.horario);
+                setUnidadeSaude(agendamentoData.unidade_saude);
+    
+                // Outras configurações necessárias, como definir o estado de edição e userData, e mostrar o modal
+                setAgendamentoData(agendamentoData);
+                setIsEditMode(true);
+                setMostrarModal(true);
+            } else {
+                console.error('Erro ao editar o agendamento:', response.data);
+            }
+        } catch (error) {
+            console.error('Erro ao editar o agendamento:', error);
+        }
+    };
+
+    const handleSubmit = async () => {
+        try {
+            if (nomeMedico && especialidade && data && horario && unidadeSaude) {
+                const agendamentoData = {
+                    nome_medico: nomeMedico,
+                    especialidade: especialidade,
+                    data: data,
+                    horario: horario,
+                    unidade_saude: unidadeSaude,
+                };
+    
+                const accessToken = sessionStorage.getItem("token");
+                const response = await api.post('/registerAgendamento', agendamentoData, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
+    
+                if (response.status === 200 || response.status === 201) {
+                    console.log('Agendamento registrado com sucesso!', response.data);
+    
+                    // Limpe os campos após a conclusão
+                    setNomeMedico('');
+                    setEspecialidade('');
+                    setData('');
+                    setHorario('');
+                    setUnidadeSaude('');
+                    setAgendamentoData(null);
+    
+                    setMostrarModal(false);
+                } else {
+                    console.error('Erro ao registrar o agendamento:', response.data);
+                }
+            } else {
+                console.error('Por favor, preencha todos os campos obrigatórios.');
+            }
+        } catch (error) {
+            console.error('Erro ao registrar o agendamento:', error);
+        }
+    };
+    
+    
+
+    const handleSaveAgendamento = async () => {
+        try {
+            const updatedAgendamentoData = {
+                nome_medico: isEditMode ? agendamentoData.nome_medico : nomeMedico,
+                especialidade: isEditMode ? agendamentoData.especialidade : especialidade,
+                data: isEditMode ? agendamentoData.data : data,
+                horario: isEditMode ? agendamentoData.horario : horario,
+                unidade_saude: isEditMode ? agendamentoData.unidade_saude : unidadeSaude,
+            };
+    
+            const accessToken = sessionStorage.getItem("token");
+            const response = isEditMode
+                ? await api.put(`/editarAgendamento/${agendamentoData.id_agendamento}`, updatedAgendamentoData, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                })
+                : await api.post('/registerAgendamento', updatedAgendamentoData);
+    
+            if (response.status === 200 || response.status === 204) {
+                // Atualize a lista de agendamentos após a conclusão
+                const agendamentosResponse = await api.get('/listarAgendamento');
+                const agendamentoData = agendamentosResponse.data;
+                setAgendamentoData(agendamentoData);
+    
+                // Limpe os campos após a conclusão
+                setNomeMedico('');
+                setEspecialidade('');
+                setData('');
+                setHorario('');
+                setUnidadeSaude('');
+                setAgendamentoData(null);
+                setMostrarModal(false);
+                setIsEditMode(false);
+            } else {
+                console.error('Erro ao criar/editar o agendamento:', response.data);
+            }
+        } catch (error) {
+            console.error('Erro ao criar/editar agendamento:', error);
+        }
+    };
+    
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -166,7 +298,86 @@ export function Agendamentos() {
 
             {mostrarModal && (
                 <div className={styles.modal}>
-                    {/* Coloque o conteúdo do modal aqui */}
+                    {mostrarModal && (
+    <div className={styles.modal}>
+        <div className={styles.adicionar}>
+            <h4>{isEditMode ? 'Editar Usuário' : 'Adicionar Usuário'}</h4>
+            <div className={styles.contmodal}>
+                <div className={styles.inputcontainer}>
+                    {/* ... Outros campos existentes ... */}
+                    <input
+                        type="text"
+                        placeholder="Nome do Médico"
+                        value={isEditMode ? agendamentoData.nome_medico : nomeMedico}
+                        onChange={(e) => {
+                            if (isEditMode) {
+                                setAgendamentoData({ ...agendamentoData, nome_medico: e.target.value });
+                            } else {
+                                setNomeMedico(e.target.value);
+                            }
+                        }}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Especialidade"
+                        value={isEditMode ? agendamentoData.especialidade : especialidade}
+                        onChange={(e) => {
+                            if (isEditMode) {
+                                setAgendamentoData({ ...agendamentoData, especialidade: e.target.value });
+                            } else {
+                                setEspecialidade(e.target.value);
+                            }
+                        }}
+                    />
+                    <input
+                        type="date"
+                        placeholder="Data"
+                        value={isEditMode ? agendamentoData.data : data}
+                        onChange={(e) => {
+                            if (isEditMode) {
+                                setAgendamentoData({ ...agendamentoData, data: e.target.value });
+                            } else {
+                                setData(e.target.value);
+                            }
+                        }}
+                    />
+                    <input
+                        type="time"
+                        placeholder="Horário"
+                        value={isEditMode ? agendamentoData.horario : horario}
+                        onChange={(e) => {
+                            if (isEditMode) {
+                                setAgendamentoData({ ...agendamentoData, horario: e.target.value });
+                            } else {
+                                setHorario(e.target.value);
+                            }
+                        }}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Unidade de Saúde"
+                        value={isEditMode ? agendamentoData.unidade_saude : unidadeSaude}
+                        onChange={(e) => {
+                            if (isEditMode) {
+                                setAgendamentoData({ ...agendamentoData, unidade_saude: e.target.value });
+                            } else {
+                                setUnidadeSaude(e.target.value);
+                            }
+                        }}
+                    />
+                </div>
+                {/* ... Outros campos existentes ... */}
+            </div>
+            <div className={styles.botao}>
+                <button onClick={isEditMode ? () => handleEditAgendamento(agendamentoData.id_agendamento) : handleSubmit}>
+                    {isEditMode ? 'Salvar' : 'Adicionar'}
+                </button>
+                <p onClick={() => setMostrarModal(false)}>cancelar</p>
+            </div>
+        </div>
+    </div>
+)}
+
                 </div>
             )}
         </div>

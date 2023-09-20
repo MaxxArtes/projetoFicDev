@@ -28,8 +28,14 @@ routes.get('/listarUsuarios/:page', UsuarioController.getAll);
 
 // atendimento
 routes.post('/registerAgendamento', authMiddleware, AgendamentoController.create);
+<<<<<<< HEAD
 routes.put('/editarAgendamento/:id', authMiddleware, AgendamentoController.update);
 routes.delete('/deletarAgendamento/:id', authMiddleware, AgendamentoController.delete);
+=======
+routes.put('/editarAgendamento', authMiddleware, AgendamentoController.update);
+routes.delete('/deletarAgendamento', authMiddleware, AgendamentoController.delete);
+routes.get('/listarAgendamento', authMiddleware, AgendamentoController.getAll);
+>>>>>>> d5272bf347d5ce3a94ae5b68875e87d05541e457
 
 // consulta
 routes.post('/registrarProntuario', authMiddleware, ConsultaController.create);
