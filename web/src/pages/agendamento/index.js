@@ -6,18 +6,30 @@ import { ModalAgendamento } from '../../components/modalagendamento/modalAgendam
 import { ModalCadastrarPaciente } from '../../components/modalpaciente/modalPaciente';
 
 export function Agendamentos() {
-    
+
     const navigate = useNavigate();
-    const [selectedPacientes, setSelectedPacientes] = useState([]);
-    const [pacientes, setPacientes] = useState([]);
     const [mostrarAgendamentoModal, setMostrarAgendamentoModal] = useState(false);
     const [mostrarCadastroPacienteModal, setMostrarCadastroPacienteModal] = useState(false);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [agendamentos, setAgendamentos] = useState([]);
+    const [selectedAgendamentos, setSelectedAgendamentos] = useState([]);
+    // const [userData, setUserData] = useState(null);
+    // const [agendamento]
 
     const handleVoltarParaPaginaInicial = () => {
         navigate('/PaginaInicial');
     };
+
+    
+
+    function handleAgendamentoSelection(agendamentoId) {
+        if (selectedAgendamentos.includes(agendamentoId)) {
+          setSelectedAgendamentos(selectedAgendamentos.filter(id => id !== agendamentoId));
+        } else {
+          setSelectedAgendamentos([...selectedAgendamentos, agendamentoId]);
+        }
+      }
 
     const handleAgendarClick = () => {
         setMostrarAgendamentoModal(true);
@@ -44,29 +56,29 @@ export function Agendamentos() {
         }
     }
 
-    function handlePacienteSelection(pacienteId) {
-        if (selectedPacientes.includes(pacienteId)) {
-            setSelectedPacientes(selectedPacientes.filter(id => id !== pacienteId));
-        } else {
-            setSelectedPacientes([...selectedPacientes, pacienteId]);
-        }
-    }
+    
 
     useEffect(() => {
-        const fetchPacientes = async () => {
+        const fetchagendamentos = async () => {
             try {
-                const response = await api.get(`/listarPacientes/${page}`);
-                const pacienteData = response.data;
-                setPacientes(pacienteData.data);
-
-                const calculatedTotalPages = Math.ceil(pacienteData.count / 5);
+                const response = await api.get(`/agendamentos/1`);
+                console.log(response);
+                const userData = response.data[0];
+                setAgendamentos(userData);
+                const calculatedTotalPages = Math.ceil(userData.count / 5);
                 setTotalPages(calculatedTotalPages);
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar agendamentos');
+                }
+                const agendamentosData = await response.json();
+                setAgendamentos(agendamentosData); // Define os agendamentos no estado
             } catch (error) {
-                console.error('Erro ao listar pacientes', error);
+                console.error(error);
+                // Tratar erros (exemplo: exibir uma mensagem de erro na sua página web)
             }
         };
 
-        fetchPacientes();
+        fetchagendamentos();
     }, [page]);
 
     return (
@@ -104,40 +116,36 @@ export function Agendamentos() {
                     <thead>
                         <tr>
                             <th>Selecionar</th>
+                            <th>id_a/id_p</th>
                             <th>Nome do Paciente</th>
-                            <th>E-mail</th>
-                            <th>Tel</th>
-                            <th>Cel</th>
-                            <th>Data de Nascimento</th>
-                            <th>CNS</th>
-                            <th>CPF</th>
-                            <th>Sexo</th>
+                            <th>Nome do Medico</th>
+                            <th>Data</th>
+                            <th>Especialidade</th>
+                            <th>Hora</th>
                             <th>Agendar</th>
                             <th>Ação</th>
                         </tr>
                     </thead>
+
                     <tbody>
-                        {pacientes.map(paciente => (
-                            <tr key={paciente.id_paciente}>
+                        {agendamentos.map(agendamentoItem => (
+                            <tr key={agendamentoItem.id_agendamento}>
                                 <td className={styles.acoes}>
                                     <input
                                         type="checkbox"
-                                        onChange={() => handlePacienteSelection(paciente.id_paciente)}
-                                        checked={selectedPacientes.includes(paciente.id_paciente)}
+                                        onChange={() => handleAgendamentoSelection(agendamentoItem.id_agendamento)}
+                                        checked={selectedAgendamentos.includes(agendamentoItem.id_agendamento)}
                                     />
                                 </td>
-                                <td>{paciente.nome}</td>
-                                <td>{paciente.email}</td>
-                                <td>{paciente.tel}</td>
-                                <td>{paciente.cel}</td>
-                                <td>{paciente.data_nasc}</td>
-                                <td>{paciente.CNS}</td>
-                                <td>{paciente.CPF}</td>
-                                <td>{paciente.sexo}</td>
+                                <td>{agendamentoItem.id_agendamento} / {agendamentoItem.id_paciente}</td>                                                                
+                                <td>{agendamentoItem.nome}</td>
+                                <td>{agendamentoItem.nome_medico}</td>
+                                <td>{agendamentoItem.especialidade}</td>
+                                <td>{agendamentoItem.data}</td>
+                                <td>{agendamentoItem.horario}</td>
                                 <td>
-                                    <button className={styles.primaryButton} onClick={handleAgendarClick}>Agendar</button>
+                                    <button className={styles.primaryButton} onClick={() => handleAgendarClick(agendamentoItem.id_agendamento)}>Agendar</button>
                                 </td>
-
                                 <td>
                                     <img alt="Editar" src="edit.png" />
                                     <img alt="Excluir" src="lixo.png" />

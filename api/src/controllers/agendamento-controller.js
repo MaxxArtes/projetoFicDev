@@ -1,7 +1,11 @@
 const { AgendamentoModel } = require('../models/agendamento-model');
-//const filtrarPorData = require('./util/filtroData');
+const { UsuarioModel } = require('../models/usuario-model');
+const paginate = require('../utils/paginacao');
+const { Op } = require('sequelize');
+require('dotenv').config();
 
-// const { UserView } = require('../views/user-view');
+
+
 
 class AgendamentoController {
   async create(req, res) {
@@ -26,6 +30,77 @@ class AgendamentoController {
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
+
+  async consultarAgendamentosEndpoint(req, res) {
+    try {
+
+      const agendamentoController = new AgendamentoController;
+      const { page } = req.params;
+      const { nome, limit } = req.query; // Parâmetros da consulta
+      let agendamentos;
+      
+      // Opções de filtro para o Sequelize
+       const filterOptions = {};
+      
+       if (nome) {
+           filterOptions.where = {
+               nome: {
+                   [Op.iLike]: `%${nome}%`
+                 }
+               };
+            
+               // Adicione a opção de collation para ignorar acentuações
+               filterOptions.where.nome = {
+                   [Op.iLike]: `%${nome}%`
+                 };
+                 filterOptions.where.nome = {
+                     [Op.iLike]: `%${nome}%`
+                   };
+                 }
+                
+                // Chama a função paginate com as opções de filtro
+                agendamentos = await  agendamentoController.consultarAgendamentos();
+                
+       
+
+      // Responda com os resultados da consulta
+      return res.status(200).json(agendamentos);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro interno do servidor', error });
+    }
+  }
+
+  async consultarAgendamentos() {
+
+    try {
+      // Execute a consulta SQL
+      const query = `
+        SELECT
+          a.id_paciente,
+          a.id_agendamento,
+          p.nome,
+          a.nome_medico,
+          a.especialidade,
+          a.data,
+          a.horario
+        FROM
+          public.agendamentos AS a
+        INNER JOIN
+          public.pacientes AS p
+        ON
+          a.id_paciente = p.id_paciente;
+      `;
+      const  rows  = await AgendamentoModel.sequelize.query(query);
+      console.log(rows);
+      return rows;
+    } catch (error) {
+      console.error('Erro ao executar a consulta:', error);
+      throw error;
+    }
+  }
+
+
 
   async update(req, res) {
     try {

@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { check, validationResult } = require('express-validator');
+const { consultarAgendamentos } = require('./controllers/agendamento-controller.js');
 
 //cria um array de validações
 const loginValidations = [
@@ -30,6 +31,7 @@ routes.get('/listarUsuarios/:page', UsuarioController.getAll);
 routes.post('/registerAgendamento', authMiddleware, AgendamentoController.create);
 routes.put('/editarAgendamento', authMiddleware, AgendamentoController.update);
 routes.delete('/deletarAgendamento', authMiddleware, AgendamentoController.delete);
+routes.get('/agendamentos/:page', AgendamentoController.consultarAgendamentosEndpoint);
 
 // consulta
 routes.post('/registrarProntuario', authMiddleware, ConsultaController.create);

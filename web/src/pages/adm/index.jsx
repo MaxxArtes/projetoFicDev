@@ -90,10 +90,12 @@ export function Usuarios() {
     }
     const handleSaveUser = async (fetchUsers) => {
         try {
+            if(rePassword){
             if (password !== rePassword) {
                 console.error('As senhas não correspondem.');
                 return;
             }
+        }
 
             const updatedUserData = {
                 nome: isEditMode ? userData.nome : nome,

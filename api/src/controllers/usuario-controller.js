@@ -2,7 +2,6 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { UsuarioModel } = require('../models/usuario-model');
-// const { UserView } = require('../views/user-view');
 const salt = bcrypt.genSaltSync(10);
 const { check, validationResult } = require('express-validator')
 const { Op } = require('sequelize');

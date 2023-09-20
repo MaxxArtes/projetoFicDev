@@ -7,6 +7,7 @@ import { Agendamentos } from './pages/agendamento/index.js';
 import { ModalAgendamento } from './components/modalagendamento/modalAgendamento.js';
 import { RegisterAgendamento } from './components/registeragendamento/registerAgendamente.js';
 import { ModalCadastrarPaciente } from './components/modalpaciente/modalPaciente.js';
+
 export const isAuthenticate = () => {
     return sessionStorage.getItem('token');
 };
