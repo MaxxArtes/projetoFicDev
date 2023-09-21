@@ -44,12 +44,9 @@ export function Navigations() {
                                 <Agendamentos />
                             </PrivateRoute>
                         } />
-<<<<<<< HEAD
                     <Route path="/ModalAgendamento" element={<ModalAgendamento />} />
                     <Route path="/registerAgendamento" element={<RegisterAgendamento />} />
                     <Route path="/ModalCadastrarPaciente" element={<ModalCadastrarPaciente />} />
-=======
->>>>>>> 9205e8ad32ecfcdb9a18c577b15bec1d1da3b667
                 </Routes>
             </AuthContextProvider>
         </BrowserRouter>

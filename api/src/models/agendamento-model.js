@@ -1,4 +1,5 @@
 const { Model, DataTypes } = require("sequelize");
+const { PacienteModel } = require("./paciente-model");
 
 class AgendamentoModel extends Model {
   static init(database) {

@@ -1,26 +1,60 @@
-async function paginate(customQueryFunction, page, limit, filterOptions = {}) {
-  console.log("resulta da pagina2: " + page);
+const { Sequelize, QueryTypes } = require('sequelize');
+
+async function paginate(model, page, limit, filterOptions = {}) {
   limit = 10;
-  // Calcula o offset
   const offset = (page - 1) * limit;
 
-  // Adiciona a cláusula WHERE se estiver presente nas opções
-  const queryOptions = { limit, offset };
-  if (filterOptions.where) {
-    queryOptions.where = filterOptions.where;
-  }
+  // Construa a cláusula WHERE com base nas opções de filtro
+  const whereClause = filterOptions.where || '';
 
-  // Execute a consulta personalizada e obtenha os dados
-  const data = await customQueryFunction(queryOptions);
+  // Construa a consulta SQL
+  const query = `
+    SELECT 
+      agendamento.*,
+      paciente.id_paciente,
+      paciente.nome as nome_paciente
+    FROM
+      agendamentos AS agendamento
+    LEFT JOIN
+      pacientes AS paciente
+    ON
+      agendamento.id_paciente = paciente.id_paciente
+    WHERE
+      1=1 ${whereClause}
+    LIMIT
+      ${limit}
+    OFFSET
+      ${offset}
+  `;
 
-  // Execute uma segunda consulta para obter o total de registros
-  const count = await customQueryFunction({}).length;
+  // Execute a consulta SQL
+  const data = await model.sequelize.query(query, {
+    type: QueryTypes.SELECT,
+  });
+  console.log('DATA PAGIANÇÃO: ',data);
 
-  // Calcula o total de páginas
+  // Execute a consulta SQL para contar o total de registros
+  const countQuery = `
+    SELECT 
+      COUNT(*) AS count
+    FROM
+      agendamentos AS agendamento
+    LEFT JOIN
+      pacientes AS paciente
+    ON
+      agendamento.id_paciente = paciente.id_paciente
+    WHERE
+      1=1 ${whereClause}
+  `;
+
+  const countResult = await model.sequelize.query(countQuery, {
+    type: QueryTypes.SELECT,
+  });
+
+  const count = countResult[0].count;
+
   const pages = Math.ceil(count / limit);
-  console.log('PAGINA, PAGINAÇÃO: ' + pages);
 
-  // Retorna os dados, o total de registros e o total de páginas
   return { data, count, pages };
 }
 

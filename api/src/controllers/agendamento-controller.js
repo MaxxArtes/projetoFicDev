@@ -1,6 +1,5 @@
 const { AgendamentoModel } = require('../models/agendamento-model');
-const { UsuarioModel } = require('../models/usuario-model');
-const paginate = require('../utils/paginacao');
+const paginate = require('../utils/pagination.js');
 const { Op } = require('sequelize');
 require('dotenv').config();
 
@@ -27,10 +26,8 @@ class AgendamentoController {
 
   async consultarAgendamentosEndpoint(req, res) {
     try {
-
-      const agendamentoController = new AgendamentoController;
       const { page } = req.params;
-      const { nome, limit } = req.query; // Parâmetros da consulta
+      const { nome } = req.query; // Parâmetros da consulta
       let agendamentos;
       
       // Opções de filtro para o Sequelize
@@ -42,20 +39,10 @@ class AgendamentoController {
                    [Op.iLike]: `%${nome}%`
                  }
                };
-            
-               // Adicione a opção de collation para ignorar acentuações
-               filterOptions.where.nome = {
-                   [Op.iLike]: `%${nome}%`
-                 };
-                 filterOptions.where.nome = {
-                     [Op.iLike]: `%${nome}%`
-                   };
-                 }
-                
+              }
+                console.log("estou aqui")
                 // Chama a função paginate com as opções de filtro
-                agendamentos = await  agendamentoController.consultarAgendamentos();
-                
-       
+                agendamentos = await  paginate(AgendamentoModel, page, filterOptions);       
 
       // Responda com os resultados da consulta
       return res.status(200).json(agendamentos);
@@ -65,34 +52,6 @@ class AgendamentoController {
     }
   }
 
-  async consultarAgendamentos() {
-
-    try {
-      // Execute a consulta SQL
-      const query = `
-        SELECT
-          a.id_paciente,
-          a.id_agendamento,
-          p.nome,
-          a.nome_medico,
-          a.especialidade,
-          a.data,
-          a.horario
-        FROM
-          public.agendamentos AS a
-        INNER JOIN
-          public.pacientes AS p
-        ON
-          a.id_paciente = p.id_paciente;
-      `;
-      const  rows  = await AgendamentoModel.sequelize.query(query);
-      console.log(rows);
-      return rows;
-    } catch (error) {
-      console.error('Erro ao executar a consulta:', error);
-      throw error;
-    }
-  }
 
 
 
@@ -160,6 +119,19 @@ class AgendamentoController {
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
+
+  // async totalAgendamentos(req, res) {
+  //   try {
+  //     const result = await AgendamentoModel.sequelize.query("SELECT id_agendamento, COUNT(*) FROM agendamentos GROUP BY especialidade");
+
+  //     return res.status(200).json({totalAtendentes: result[0][0], totalMedicos: result[0][1]}); 
+      
+  //     } catch (error) {
+  //     // Trate erros aqui
+  //     console.error(error);
+  //     res.status(500).send('Erro interno do servidor ', error);
+  //   }
+  // }
 
 }
 

@@ -2,11 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
-<<<<<<< HEAD
 // import React, { PureComponent } from 'react';
 // import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-=======
->>>>>>> 9205e8ad32ecfcdb9a18c577b15bec1d1da3b667
 
 export function Usuarios() {
     const navigate = useNavigate();
@@ -81,7 +78,7 @@ export function Usuarios() {
                 const usersResponse = await api.get(`/listarUsuarios/${page}`);
                 const userData = usersResponse.data;
                 setUsers(userData.data);
-
+                
                 const calculatedTotalPages = Math.ceil(userData.count / 5);
                 setTotalPages(calculatedTotalPages);
             } else {
@@ -152,16 +149,19 @@ export function Usuarios() {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
+                
                 const response = await api.get(`/listarUsuarios/${page}`);
+                console.log(response);
                 const userData = response.data;
                 setUsers(userData.data);
                 const result = await api.get('/totalUsuarios');
                 setTotalAtendentes(result.data.totalAtendentes.count);
                 setTotalMedicos(result.data.totalMedicos.count);
-                console.log(result.data.totalAtendentes.count);
                 
-
+                
+                console.log('USERDATA.COUNT', userData. count)
                 const calculatedTotalPages = Math.ceil(userData.count / 5);
+                console.log(calculatedTotalPages)
                 setTotalPages(calculatedTotalPages);
             } catch (error) {
                 console.error('Erro ao fazer login', error);
