@@ -150,11 +150,11 @@ export function Agendamentos() {
 
 
 
-    // const handleEditButtonClick = (agendamento) => {
-    //     setIsEditMode(true);
-    //     setAgendamentoData(agendamento);
-    //     setMostrarModal(true);
-    // };
+    const handleEditButtonClick = (agendamento) => {
+        setIsEditMode(true);
+        setAgendamentoData(agendamento);
+        setMostrarModal(true);
+    };
 
     // const handleRecuperarSenhaClick = () => {
     //     setMostrarCadastroPacienteModal(true);
@@ -261,8 +261,8 @@ export function Agendamentos() {
                                     <button onClick={() => handleregistrarClick(true)} className={styles.button}>agendar</button>
                                 </td>
                                 <td>
-                                    <img alt="Editar" src="edit.png" />
-                                    <img alt="Excluir" src="lixo.png" />
+                                    <img onClick={handleEditButtonClick(true)} alt="Editar" src="edit.png" />
+                                    <img  alt="Excluir" src="lixo.png" />
                                 </td>
                             </tr>
                         ))}

@@ -126,6 +126,43 @@ class UsuarioController {
       res.status(500).send('Erro interno do servidor ', error);
     }
   }
+
+  async verificarUsuarioPorEmail(req, res) {
+    console.log('aqui');
+    try {
+      const { email } = req.params;
+      const user = await UsuarioModel.findOne({ where: { email } }); // Procura um usuário com o email fornecido
+
+      if (user) {
+        // Se o usuário com o email existir, retorne os dados do usuário
+        return res.status(200).json(user);
+      } else {
+        // Se o usuário não for encontrado, retorne um status 404 (Not Found)
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+      }
+    } catch (error) {
+      console.error('Erro ao verificar o usuário', error);
+      return res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+  }
+
+  async buscarUsuarioPorNome(req, res) {
+    const { nome } = req.params;
+
+    try {
+        // Use o método 'findOne' do Sequelize para buscar um usuário por nome
+        const user = await UsuarioModel.findOne({ where: { nome } });
+
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Erro ao buscar usuário por nome', error);
+        res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+};
   
   
   

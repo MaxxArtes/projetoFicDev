@@ -17,10 +17,13 @@ export function LoginForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
+            
+            sessionStorage.setItem('userEmail',email);
             const result = await api.post('/loginUsuario', { email, password });
-            console.log(result);
+            
             sessionStorage.setItem('token', result.data.token);
             navigate('/PaginaInicial');
+            
 
 
         } catch (error) {

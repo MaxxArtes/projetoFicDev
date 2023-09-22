@@ -25,6 +25,8 @@ routes.post('/loginUsuario', UsuarioController.login);
 routes.put('/editarUsuario/:id', authMiddleware, UsuarioController.update);
 routes.delete('/deletarUsuario/:id', authMiddleware, UsuarioController.delete);
 routes.get('/listarUsuarios/:page', UsuarioController.getAll);
+routes.get('/verificarUsuarioPorEmail/:email', UsuarioController.verificarUsuarioPorEmail);
+routes.get('/buscarUsuarioPorNome/:nome', UsuarioController.buscarUsuarioPorNome);
 
 
 // atendimento
