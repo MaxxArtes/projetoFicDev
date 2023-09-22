@@ -207,6 +207,11 @@ body {
   align-items: center;
   margin-top: 20px;
 }
+.circledRight {
+  height: 24px;
+  width: 24px;
+  fill: #04737c;
+}
 
 .pageNumber {
   font-size: 20px;
@@ -217,6 +222,19 @@ body {
   height: 40px;
   width: 40px;
   background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pageNumber1 {
+  font-size: 20px;
+  margin: 0 10px;
+  /* cursor: pointer; */
+  border-radius: 50px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  height: 40px;
+  width: 40px;
+  /* background-color: #fff; */
   display: flex;
   justify-content: center;
   align-items: center;

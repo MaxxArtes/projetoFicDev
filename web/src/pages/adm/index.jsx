@@ -275,10 +275,12 @@ export function Usuarios() {
             <footer>
                 <div className={styles.pagination}>
                     <button onClick={diminuir} className={styles.pageNumber}>
+                            
                         <img className={styles.circledRight} alt="<" src="./Circled1.png" />
                     </button>
-                    <button className={styles.pageNumber}>{page}</button>
+                    <button className={styles.pageNumber1}>{page}</button>
                     <button onClick={aumentar} className={styles.pageNumber}>
+                        
                         <img className={styles.circledRight} alt=">" src='./Circled.png' />
                     </button>
                 </div>
