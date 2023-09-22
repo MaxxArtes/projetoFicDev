@@ -78,7 +78,7 @@ export function Usuarios() {
                 const usersResponse = await api.get(`/listarUsuarios/${page}`);
                 const userData = usersResponse.data;
                 setUsers(userData.data);
-                
+
                 const calculatedTotalPages = Math.ceil(userData.count / 5);
                 setTotalPages(calculatedTotalPages);
             } else {
@@ -91,12 +91,12 @@ export function Usuarios() {
 
     const handleSaveUser = async () => {
         try {
-            if(rePassword){
-            if (password !== rePassword) {
-                console.error('As senhas não correspondem.');
-                return;
+            if (rePassword) {
+                if (password !== rePassword) {
+                    console.error('As senhas não correspondem.');
+                    return;
+                }
             }
-        }
 
             const updatedUserData = {
                 nome: isEditMode ? userData.nome : nome,
@@ -149,7 +149,7 @@ export function Usuarios() {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                
+
                 const response = await api.get(`/listarUsuarios/${page}`);
                 console.log(response);
                 const userData = response.data;
@@ -157,9 +157,9 @@ export function Usuarios() {
                 const result = await api.get('/totalUsuarios');
                 setTotalAtendentes(result.data.totalAtendentes.count);
                 setTotalMedicos(result.data.totalMedicos.count);
-                
-                
-                console.log('USERDATA.COUNT', userData. count)
+
+
+                console.log('USERDATA.COUNT', userData.count)
                 const calculatedTotalPages = Math.ceil(userData.count / 5);
                 console.log(calculatedTotalPages)
                 setTotalPages(calculatedTotalPages);

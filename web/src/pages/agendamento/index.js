@@ -40,15 +40,15 @@ export function Agendamentos() {
         setMostrarModal(true);
     };
 
-    const aumentar = () => {
-        if (page < 2) {
-            setPage(page+1);
-            console.log('aumentar: ',page);
+    async function aumentar() {
+        if (page <  totalPages) {
+            setPage(page + 1);
+            console.log('aumentar: ', page);
         }
     };
     const diminuir = () => {
         if (page > 1) {
-            setPage(page-1);
+            setPage(page - 1);
         }
     };
     const handleSubmit = async () => {
@@ -110,7 +110,7 @@ export function Agendamentos() {
                 const usersResponse = await api.get(`/agendamentos/${page}`);
                 const agendamentoData = usersResponse.data;
                 setAgendamentos(agendamentoData.data);
-                
+
 
                 const calculatedTotalPages = Math.ceil(agendamentoData.count / 5);
                 setTotalPages(calculatedTotalPages);
@@ -168,11 +168,11 @@ export function Agendamentos() {
                 console.log(response);
                 const agendamentoData = response.data.data;
                 setAgendamentos(agendamentoData);
-                console.log('agendamento data : ',agendamentoData);
-                
+                console.log('agendamento data : ', agendamentoData);
+
                 const calculatedTotalPages = Math.ceil(response.data.count / 10);
                 setTotalPages(calculatedTotalPages);
-                console.log('total pages : ',calculatedTotalPages);
+                console.log('total pages : ', calculatedTotalPages);
                 if (!response.ok) {
                     throw new Error('Erro ao buscar agendamentos');
                 }
@@ -257,7 +257,7 @@ export function Agendamentos() {
                                 <td>{agendamentoItem.especialidade}</td>
                                 <td>{agendamentoItem.data}</td>
                                 <td>{agendamentoItem.horario}</td>
-                                <td>
+                                <td className={styles.agendar}>
                                     <button onClick={() => handleregistrarClick(true)} className={styles.button}>agendar</button>
                                 </td>
                                 <td>
