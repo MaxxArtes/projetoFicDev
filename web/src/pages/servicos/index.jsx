@@ -100,14 +100,14 @@ export function PaginaInicial() {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                    const response = await api.get(`/buscarUsuarioPorNome/${nome}`);
-                    console.log(response);
-                    const userData = response.data;
+                const response = await api.get(`/buscarUsuarioPorNome/${nome}`);
+                console.log(response);
+                const userData = response.data;
 
-                    // Certifique-se de que userData é um único usuário, não uma lista de usuários
-                    if (userData) {
-                        setUsers([userData]); // Coloque os dados do usuário em um array para ser compatível com users.map
-                    }
+                // Certifique-se de que userData é um único usuário, não uma lista de usuários
+                if (userData) {
+                    setUsers([userData]); // Coloque os dados do usuário em um array para ser compatível com users.map
+                }
             } catch (error) {
                 console.error('Erro ao fazer login', error);
             }
@@ -129,7 +129,7 @@ export function PaginaInicial() {
                     <div className={styles.imagem}><img alt="voltar" src="logo.png" />
                     </div>
                     <div className={styles.navdiv}>
-                        <img onClick={() => handleEditButtonClick(this.userEmail)} alt="perfil" src="perfil.png" />
+                        <img alt="perfil" src="perfil.png" />
                         <img onClick={handleSair} alt="sair" src="sair.png" />
                     </div>
                 </div>
@@ -161,10 +161,6 @@ export function PaginaInicial() {
                     </div>
                 </table>
             </header>
-
-
-
-
             <div className={styles.overlapgroup}>
                 <Link to="/Agendamentos">
                     <button className={styles.rectangle}>atendimento</button>

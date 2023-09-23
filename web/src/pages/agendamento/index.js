@@ -1,61 +1,64 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { api } from '../../services/api';
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
 
-
 export function Agendamentos() {
-
+    let [agendamentos, setAgendamentos] = React.useState([]);
+    let [totalPages, setTotalPages] = React.useState(0);
+    const [page, setPage] = React.useState(1);
     const navigate = useNavigate();
-    const [mostrarModal, setMostrarModal] = useState(false);
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState();
-    const [agendamentos, setAgendamentos] = useState([]);
-    const [query, setQuery] = useState('');
-    const [agendamentoData, setAgendamentoData] = useState(null);
-    const [nomeMedico, setNomeMedico] = useState(agendamentoData ? agendamentoData.nomeMedico : '');
-    const [data, setData] = useState(agendamentoData ? agendamentoData.data : '');
-    const [especialidade, setEspecialidade] = useState(agendamentoData ? agendamentoData.especialidade : '');
-    const [hora, setHora] = useState(agendamentoData ? agendamentoData.hora : '');
-    const [isEditMode, setIsEditMode] = useState(false);
-    const [nome, setNome] = useState('');
-    const [selectedAgendamentos, setSelectedAgendamentos] = useState([]);
-
+    let [mostrarModal, setMostrarModal] = React.useState(false);
+    let query = '';
+    let [agendamentoData, setAgendamentoData] = React.useState(null);
+    let nomeMedico = '';
+    let data = '';
+    let especialidade = '';
+    let hora = '';
+    let [isEditMode, setIsEditMode] = React.useState(false);
+    let nome = '';
+    let selectedAgendamentos = [];
 
     const handleVoltarParaPaginaInicial = () => {
         navigate('/PaginaInicial');
     };
+
     const handleSair = () => {
-        sessionStorage.removeItem('token'); // Remova o token do sessionStorage
+        sessionStorage.removeItem('token');
         navigate('/');
     };
+
     const handleAgendamentoSelection = (userId) => {
-        if (setSelectedAgendamentos.includes(userId)) {
-            setSelectedAgendamentos(selectedAgendamentos.filter(id => id !== userId));
+        if (selectedAgendamentos.includes(userId)) {
+            selectedAgendamentos = selectedAgendamentos.filter(id => id !== userId);
         } else {
-            setSelectedAgendamentos([...selectedAgendamentos, userId]);
+            selectedAgendamentos = [...selectedAgendamentos, userId];
         }
     };
+
     const handleregistrarClick = () => {
+        setIsEditMode(false);
         setMostrarModal(true);
     };
 
     async function aumentar() {
-        if (page <  totalPages) {
+        if (page < totalPages) {
             setPage(page + 1);
             console.log('aumentar: ', page);
+            console.log('total: ', totalPages);
         }
-    };
+    }
+
     const diminuir = () => {
         if (page > 1) {
             setPage(page - 1);
         }
     };
+
     const handleSubmit = async () => {
         try {
             if (nome && nomeMedico && especialidade && data && hora) {
-
-                const agendamentoData = {
+                let agendamentoData = {
                     nome,
                     nomeMedico,
                     especialidade,
@@ -67,16 +70,15 @@ export function Agendamentos() {
 
                 console.log('Agendamento registrado com sucesso!', response.data);
 
-                // Limpe os campos após a conclusão
-                setNome('');
-                setNomeMedico('');
-                setEspecialidade('');
-                setData('');
-                setHora('');
-                setAgendamentoData(null);
+                // Limpar os campos após a conclusão
+                nome = '';
+                nomeMedico = '';
+                especialidade = '';
+                data = '';
+                hora = '';
+                setAgendamentoData(null)
                 setMostrarModal(false);
                 setIsEditMode(false);
-
 
                 setMostrarModal(false);
             } else {
@@ -86,6 +88,7 @@ export function Agendamentos() {
             console.error('Erro ao registrar Agendamento', error);
         }
     };
+
     const handleSaveUser = async () => {
         try {
             const updatedAgendamentoData = {
@@ -106,85 +109,66 @@ export function Agendamentos() {
                 : await api.post('/registerAgendamento', updatedAgendamentoData);
 
             if (response.status === 200 || response.status === 204) {
-                setSelectedAgendamentos(setSelectedAgendamentos.filter(id => id !== agendamentoData.id_usuario));
+                selectedAgendamentos = selectedAgendamentos.filter(id => id !== agendamentoData.id_usuario);
                 const usersResponse = await api.get(`/agendamentos/${page}`);
                 const agendamentoData = usersResponse.data;
-                setAgendamentos(agendamentoData.data);
-
+                agendamentos = agendamentoData.data;
 
                 const calculatedTotalPages = Math.ceil(agendamentoData.count / 5);
-                setTotalPages(calculatedTotalPages);
+                totalPages = calculatedTotalPages;
             } else {
                 console.error('Erro ao editar o usuário:', response.data);
             }
 
-            // Limpe os campos após a conclusão
-            setNome('');
-            setNomeMedico('');
-            setEspecialidade('');
-            setData('');
-            setHora('');
-            setAgendamentoData(null);
+            // Limpar os campos após a conclusão
+            nome = '';
+            nomeMedico = '';
+            especialidade = '';
+            data = '';
+            hora = '';
+            setAgendamentoData(null)
             setMostrarModal(false);
             setIsEditMode(false);
+            if (handleSaveUser()) {
+                return
+            };
 
         } catch (error) {
             console.error('Erro ao editar usuário', error);
         }
     };
 
-
-
-
-
-
-
-    // function handleAgendamentoSelection(agendamentoId) {
-    //     if (selectedAgendamentos.includes(agendamentoId)) {
-    //         setSelectedAgendamentos(selectedAgendamentos.filter(id => id !== agendamentoId));
-    //     } else {
-    //         setSelectedAgendamentos([...selectedAgendamentos, agendamentoId]);
-    //     }
-    // }
-
-
-
-
-    const handleEditButtonClick = (agendamento) => {
+    const handleEditButtonClick = (agendamentoItem) => {
+        console.log('agendamento', agendamentoItem);
         setIsEditMode(true);
-        setAgendamentoData(agendamento);
+        setAgendamentoData(agendamentoItem);
         setMostrarModal(true);
+
     };
 
-    // const handleRecuperarSenhaClick = () => {
-    //     setMostrarCadastroPacienteModal(true);
-    // };
-
-
     useEffect(() => {
-        const fetchagendamentos = async () => {
+        const fetchAgendamentos = async () => {
             try {
                 const response = await api.get(`/agendamentos/${page}`);
                 console.log(response);
                 const agendamentoData = response.data.data;
-                setAgendamentos(agendamentoData);
+                setAgendamentos(agendamentoData); // Atualize o estado usando setAgendamentos
                 console.log('agendamento data : ', agendamentoData);
 
                 const calculatedTotalPages = Math.ceil(response.data.count / 10);
-                setTotalPages(calculatedTotalPages);
+                setTotalPages(calculatedTotalPages); // Atualize o estado usando setTotalPages
                 console.log('total pages : ', calculatedTotalPages);
                 if (!response.ok) {
                     throw new Error('Erro ao buscar agendamentos');
                 }
-                const agendamentosData = await response.json();
-                setAgendamentos(agendamentosData); // Define os agendamentos no estado
+
             } catch (error) {
                 console.error(error);
-                // Tratar erros (exemplo: exibir uma mensagem de erro na sua página web)
             }
         };
 
-        fetchagendamentos();
+        fetchAgendamentos();
+
     }, [page]);
 
     return (
@@ -213,7 +197,7 @@ export function Agendamentos() {
                             className={styles.formControl}
                             placeholder="Pesquisar"
                             value={query}
-                            onChange={(e) => setQuery(e.target.value)}
+                            onChange={(e) => query = e.target.value}
                         />
                         <button className={styles.button} >
                             Pesquisar
@@ -222,7 +206,6 @@ export function Agendamentos() {
                             <button className={styles.button} >Cadastrar Paciente</button>
                             <img className={styles.search} alt="Search" src="adicao.png" />
                         </button>
-
                     </div>
                 </div>
 
@@ -242,8 +225,8 @@ export function Agendamentos() {
                     </thead>
 
                     <tbody>
-                        {agendamentos.map(agendamentoItem => (
-                            <tr key={agendamentoItem.id_agendamento}>
+                        {agendamentos.map((agendamentoItem, index) => (
+                            <tr key={index}>
                                 <td className={styles.acoes}>
                                     <input className={styles.tablevalues}
                                         type="checkbox"
@@ -258,11 +241,16 @@ export function Agendamentos() {
                                 <td>{agendamentoItem.data}</td>
                                 <td>{agendamentoItem.horario}</td>
                                 <td className={styles.agendar}>
-                                    <button onClick={() => handleregistrarClick(true)} className={styles.button}>agendar</button>
+                                    <button onClick={() => handleregistrarClick(agendamentoItem.id_agendamento)} className={styles.button}>agendar</button>
                                 </td>
                                 <td>
-                                    <img onClick={handleEditButtonClick(true)} alt="Editar" src="edit.png" />
-                                    <img  alt="Excluir" src="lixo.png" />
+                                    <button>
+                                        <img onClick={() => handleEditButtonClick(agendamentoItem.id_agendamento)} alt="Editar" src="edit.png" />
+                                    </button>
+                                    <button>
+                                        {/* onClick={() => handleDeleteUser(user.id_usuario)} */}
+                                        <img alt="Excluir" src="lixo.png" />
+                                    </button>
                                 </td>
                             </tr>
                         ))}
@@ -293,9 +281,9 @@ export function Agendamentos() {
                                     value={isEditMode ? agendamentoData.nome : nome}
                                     onChange={(e) => {
                                         if (isEditMode) {
-                                            setAgendamentoData({ ...agendamentoData, nome: e.target.value });
+                                            agendamentoData = { ...agendamentoData, nome: e.target.value };
                                         } else {
-                                            setNome(e.target.value);
+                                            nome = e.target.value;
                                         }
                                     }}
                                 />
@@ -305,9 +293,9 @@ export function Agendamentos() {
                                     value={isEditMode ? agendamentoData.nomeMedico : nomeMedico}
                                     onChange={(e) => {
                                         if (isEditMode) {
-                                            setAgendamentoData({ ...agendamentoData, especialidade: e.target.value });
+                                            agendamentoData = { ...agendamentoData, especialidade: e.target.value };
                                         } else {
-                                            setNomeMedico(e.target.value);
+                                            nomeMedico = e.target.value;
                                         }
                                     }}
                                 />
@@ -318,9 +306,9 @@ export function Agendamentos() {
                                 value={isEditMode ? agendamentoData.data : data}
                                 onChange={(e) => {
                                     if (isEditMode) {
-                                        setAgendamentoData({ ...agendamentoData, data: e.target.value });
+                                        agendamentoData = { ...agendamentoData, data: e.target.value };
                                     } else {
-                                        setData(e.target.value);
+                                        data = e.target.value;
                                     }
                                 }}
                             />
@@ -330,27 +318,27 @@ export function Agendamentos() {
                                 value={isEditMode ? agendamentoData.especialidade : especialidade}
                                 onChange={(e) => {
                                     if (isEditMode) {
-                                        setAgendamentoData({ ...agendamentoData, especialidade: e.target.value });
+                                        agendamentoData = { ...agendamentoData, especialidade: e.target.value };
                                     } else {
-                                        setEspecialidade(e.target.value);
+                                        especialidade = e.target.value;
                                     }
                                 }}
                             />
                             <input
                                 type="time"
                                 placeholder="Digite a hora da consulta"
-                                value={isEditMode ? agendamentoData.especialidade : hora}
+                                value={isEditMode ? agendamentoData.hora : hora}
                                 onChange={(e) => {
                                     if (isEditMode) {
-                                        setAgendamentoData({ ...agendamentoData, hora: e.target.value });
+                                        agendamentoData = { ...agendamentoData, hora: e.target.value };
                                     } else {
-                                        setHora(e.target.value);
+                                        hora = e.target.value;
                                     }
                                 }}
                             />
                         </div>
                         <div className={styles.botao}>
-                            <button onClick={isEditMode ? () => handleSaveUser(agendamentoData.id_agendamento) : handleSubmit}>
+                            <button onClick={isEditMode ? () => handleSaveUser(agendamentoData) : handleSubmit}>
                                 {isEditMode ? 'Salvar' : 'Adicionar'}
                             </button>
                             <p onClick={() => setMostrarModal(false)}>cancelar</p>
@@ -359,5 +347,5 @@ export function Agendamentos() {
                 </div>
             )}
         </div>
-    )
+    );
 }
