@@ -38,7 +38,7 @@ export function Usuarios() {
         setMostrarModal(true);
     };
 
-    const aumentar = () => {
+    async function aumentar ()  {
         if (page < totalPages) {
             setPage(page + 1);
         }
@@ -160,7 +160,7 @@ export function Usuarios() {
 
 
                 console.log('USERDATA.COUNT', userData.count)
-                const calculatedTotalPages = Math.ceil(userData.count / 5);
+                const calculatedTotalPages = Math.ceil(userData.count / 10);
                 console.log(calculatedTotalPages)
                 setTotalPages(calculatedTotalPages);
             } catch (error) {

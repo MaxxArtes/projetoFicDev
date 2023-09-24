@@ -28,29 +28,28 @@ class AgendamentoController {
     try {
       const { page } = req.params;
       const { nome } = req.query; // Parâmetros da consulta
-      let agendamentos;
-      
+      let filterOptions = "";
       // Opções de filtro para o Sequelize
-       const filterOptions = {};
+      if(nome) {
+      filterOptions = `${nome}`;
       
-       if (nome) {
-           filterOptions.where = {
-               nome: {
-                   [Op.iLike]: `%${nome}%`
-                 }
-               };
-              }
-                console.log("estou aqui")
-                // Chama a função paginate com as opções de filtro
-                agendamentos = await  paginate(AgendamentoModel, page, filterOptions);       
-
+      // Chama a função paginate com as opções de filtro
+      const agendamentos = await paginate(AgendamentoModel, page, filterOptions);
+  
       // Responda com os resultados da consulta
       return res.status(200).json(agendamentos);
+    }
+    const agendamentos = await paginate(AgendamentoModel, page, filterOptions);
+  
+      // Responda com os resultados da consulta
+      return res.status(200).json(agendamentos);
+      
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Erro interno do servidor', error });
     }
   }
+  
 
 
 

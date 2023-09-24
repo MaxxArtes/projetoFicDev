@@ -9,15 +9,13 @@
     justify-content: center;
 }
 
-header {
-    margin-right: 50px;
-    width: 100vw;
-    /* height: 100vw; */
-    /* justify-content: space-between; */
+.header {
+    margin-left: 1170px;
+    /* display: flex;
+    flex-direction: column; */
+    justify-content:flex-end;
     align-items: center;
-    width: 100%;
     padding: 10px 20px;
-    box-shadow: 0px 5px 0px #04737c;
 
 }
 
@@ -42,19 +40,11 @@ header {
   .inputcontainer {
     display: grid;
     width: 100%;
-    /* align-items: center; */
     justify-content: center;
-    /* justify-items: center; */
-    /* position: relative; */
 
-    /* float: inline-end; */
-    /* justify-content: space-between; */
-    /* position: relative; */
 }
 
-/* .inputcontainer input {
-    padding-right: 30px;
-} */
+
 
 
   .adicionar h4 {
@@ -80,23 +70,25 @@ header {
     margin-right: 1px;
   }
 
-.table th,
-td {
-    
+.table td {
+    padding: 1px;
+    margin-right: 5px;
     text-align: center;
-    box-shadow: 1px 1px 1px #ffffff;
+    box-shadow: 0;
 }
 
 
 
 .table {
-    display: flex;
-    /* flex-direction: column; */
-    align-items: flex-end;
+    margin-left: 10px;
     justify-content: space-between;
+    display: flex;
+    align-items:center;
+    width: 1220px;
 }
 
 .imagem {
+    cursor: pointer;
     width: 100px;
     height: 100px;
     display: flex;
@@ -115,10 +107,9 @@ td {
 }
 
 .navdiv1 {
-    align-items: center;
+    margin-right: 500px;
     align-items: center;
     display: flex;
-    justify-content: space-between
 }
 
 .navdiv img {

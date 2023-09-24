@@ -1,11 +1,18 @@
 const { Sequelize, QueryTypes } = require('sequelize');
 
-async function paginate(model, page, limit, filterOptions = {}) {
+async function paginate(model, page, filterOptions) {
   limit = 10;
   const offset = (page - 1) * limit;
+  console.log("FILTER PAGINATION: ", filterOptions);
 
-  // Construa a cláusula WHERE com base nas opções de filtro
-  const whereClause = filterOptions.where || '';
+  // Inicialize a cláusula WHERE
+  let whereClause = '1=1';
+
+  // Adicione uma cláusula WHERE para filtrar nomes que começam com "Maria" (se for fornecido)
+  if (filterOptions) {
+    whereClause += ` AND LOWER(paciente.nome) LIKE LOWER('${filterOptions}%')`;
+    console.log("WHERECLAUSE PAGINATION: ",whereClause);
+  }
 
   // Construa a consulta SQL
   const query = `
@@ -20,18 +27,19 @@ async function paginate(model, page, limit, filterOptions = {}) {
     ON
       agendamento.id_paciente = paciente.id_paciente
     WHERE
-      1=1 ${whereClause}
+      ${whereClause}
     LIMIT
       ${limit}
     OFFSET
       ${offset}
   `;
 
+
   // Execute a consulta SQL
   const data = await model.sequelize.query(query, {
     type: QueryTypes.SELECT,
   });
-  console.log('DATA PAGIANÇÃO: ',data);
+  console.log('DATA PAGINAÇÃO: ', data);
 
   // Execute a consulta SQL para contar o total de registros
   const countQuery = `
@@ -44,7 +52,7 @@ async function paginate(model, page, limit, filterOptions = {}) {
     ON
       agendamento.id_paciente = paciente.id_paciente
     WHERE
-      1=1 ${whereClause}
+      ${whereClause}
   `;
 
   const countResult = await model.sequelize.query(countQuery, {

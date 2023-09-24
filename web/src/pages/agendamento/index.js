@@ -9,7 +9,7 @@ export function Agendamentos() {
     const [page, setPage] = React.useState(1);
     const navigate = useNavigate();
     let [mostrarModal, setMostrarModal] = React.useState(false);
-    let query = '';
+    let [query, setQuery] = React.useState("");
     let [agendamentoData, setAgendamentoData] = React.useState(null);
     let nomeMedico = '';
     let data = '';
@@ -18,6 +18,7 @@ export function Agendamentos() {
     let [isEditMode, setIsEditMode] = React.useState(false);
     let nome = '';
     let selectedAgendamentos = [];
+    
 
     const handleVoltarParaPaginaInicial = () => {
         navigate('/PaginaInicial');
@@ -36,9 +37,38 @@ export function Agendamentos() {
         }
     };
 
-    const handleregistrarClick = () => {
+    const handleregistrarClick = (agendamentoItem) => {
+        console.log(agendamentoItem)
         setIsEditMode(false);
+        setAgendamentoData(agendamentoItem);
         setMostrarModal(true);
+    };
+    async function handlePesquisar() {
+        if (query) {
+            console.log("QUERY: ", query);
+            selectedAgendamentos = selectedAgendamentos.filter(id => id !== agendamentoData.id_usuario);
+            const usersResponse = await api.get(`/agendamentos/${page}?nome=${query}`);
+            console.log(usersResponse)
+            const agendamentoData = usersResponse.data;
+            setAgendamentos(agendamentoData.data);
+
+            const calculatedTotalPages = Math.ceil(agendamentoData.count / 10);
+            totalPages = calculatedTotalPages;
+        }
+
+        else if (!query) {
+            const usersResponse = await api.get(`/agendamentos/${page}`);
+            const agendamentoData = usersResponse.data;
+            setAgendamentos(agendamentoData.data);
+
+            const calculatedTotalPages = Math.ceil(agendamentoData.count / 10);
+            totalPages = calculatedTotalPages;
+        }
+        
+        
+        else {
+            console.error('Erro ao pesquisar o usuário:', query);
+        }
     };
 
     async function aumentar() {
@@ -109,12 +139,12 @@ export function Agendamentos() {
                 : await api.post('/registerAgendamento', updatedAgendamentoData);
 
             if (response.status === 200 || response.status === 204) {
-                selectedAgendamentos = selectedAgendamentos.filter(id => id !== agendamentoData.id_usuario);
+
                 const usersResponse = await api.get(`/agendamentos/${page}`);
                 const agendamentoData = usersResponse.data;
-                agendamentos = agendamentoData.data;
+                setAgendamentos(agendamentoData.data);
 
-                const calculatedTotalPages = Math.ceil(agendamentoData.count / 5);
+                const calculatedTotalPages = Math.ceil(agendamentoData.count / 10);
                 totalPages = calculatedTotalPages;
             } else {
                 console.error('Erro ao editar o usuário:', response.data);
@@ -172,180 +202,184 @@ export function Agendamentos() {
     }, [page]);
 
     return (
-        <div className={styles.ATENDIMENTO}>
-            <header>
-                <div className={styles.esq}>
-                    <img alt="voltar" src="logo.png" />
-                    <div className={styles.header}>
-                        <h1>Atendimento</h1>
+        <div className={styles.geral} >
+            <div className={styles.ATENDIMENTO}>
+                <header>
+                    <div className={styles.esq}>
+                        <img alt="voltar" src="logo.png" />
+                        <div className={styles.header}>
+                            <h1>Atendimento</h1>
+                        </div>
                     </div>
-                </div>
-                <div className={styles.navdiv}>
-                    <img onClick={handleVoltarParaPaginaInicial} alt="voltar" src="voltar.png" />
-                    <img alt="perfil" src="perfil.png" />
-                    <img onClick={handleSair} alt="sair" src="sair.png" />
-                </div>
-            </header>
-
-            <div className={styles.content}>
-                <div className={styles.pesquisa}>
-                    <div className={styles.h1}>
-                        <h1>Agendamentos</h1>
+                    <div className={styles.navdiv}>
+                        <img onClick={handleVoltarParaPaginaInicial} alt="voltar" src="voltar.png" />
+                        <img alt="perfil" src="perfil.png" />
+                        <img onClick={handleSair} alt="sair" src="sair.png" />
                     </div>
-                    <div className={styles.inputGroup}>
-                        <input
-                            className={styles.formControl}
-                            placeholder="Pesquisar"
-                            value={query}
-                            onChange={(e) => query = e.target.value}
-                        />
-                        <button className={styles.button} >
-                            Pesquisar
-                        </button>
-                        <button className={styles.button}>
-                            <button className={styles.button} >Cadastrar Paciente</button>
-                            <img className={styles.search} alt="Search" src="adicao.png" />
-                        </button>
-                    </div>
-                </div>
+                </header>
+                <div className={styles.bloco}>
+                    <div className={styles.content}>
+                        <div className={styles.pesquisa}>
+                            <div className={styles.h1}>
+                                <h1>Agendamentos</h1>
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <input
+                                    className={styles.formControl}
+                                    placeholder="Pesquisar"
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                />
 
-                <table className={styles.table}>
-                    <thead>
-                        <tr>
-                            <th>Selecionar</th>
-                            <th>id_a/id_p</th>
-                            <th>Nome do Paciente</th>
-                            <th>Nome do Medico</th>
-                            <th>Data</th>
-                            <th>Especialidade</th>
-                            <th>Hora</th>
-                            <th>Agendar</th>
-                            <th>Ação</th>
-                        </tr>
-                    </thead>
+                                <button onClick={handlePesquisar} className={styles.button} >
+                                    Pesquisar
+                                </button>
+                                <button className={styles.button}>
+                                    <button className={styles.button} >Cadastrar Paciente</button>
+                                    <img className={styles.search} alt="Search" src="adicao.png" />
+                                </button>
+                            </div>
+                        </div>
 
-                    <tbody>
-                        {agendamentos.map((agendamentoItem, index) => (
-                            <tr key={index}>
-                                <td className={styles.acoes}>
+                        <table className={styles.table}>
+                            <thead>
+                                <tr>
+                                    {/* <th>Selecionar</th>
+                            <th>id_a/id_p</th> */}
+                                    <th>Nome do Paciente</th>
+                                    <th>Nome do Medico</th>
+                                    <th>Data</th>
+                                    <th>Especialidade</th>
+                                    <th>Hora</th>
+                                    <th>Agendar</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {agendamentos.map((agendamentoItem, index) => (
+                                    <tr key={index}>
+                                        {/* <td className={styles.acoes}>
                                     <input className={styles.tablevalues}
                                         type="checkbox"
                                         onChange={() => handleAgendamentoSelection(agendamentoItem.id_agendamento)}
                                         checked={selectedAgendamentos.includes(agendamentoItem.id_agendamento)}
                                     />
-                                </td>
-                                <td>{agendamentoItem.id_agendamento} / {agendamentoItem.id_paciente}</td>
-                                <td>{agendamentoItem.nome_paciente}</td>
-                                <td>{agendamentoItem.nome_medico}</td>
-                                <td>{agendamentoItem.especialidade}</td>
-                                <td>{agendamentoItem.data}</td>
-                                <td>{agendamentoItem.horario}</td>
-                                <td className={styles.agendar}>
-                                    <button onClick={() => handleregistrarClick(agendamentoItem.id_agendamento)} className={styles.button}>agendar</button>
-                                </td>
-                                <td>
-                                    <button>
-                                        <img onClick={() => handleEditButtonClick(agendamentoItem.id_agendamento)} alt="Editar" src="edit.png" />
-                                    </button>
-                                    <button>
-                                        {/* onClick={() => handleDeleteUser(user.id_usuario)} */}
-                                        <img alt="Excluir" src="lixo.png" />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-
-            <footer>
-                <div className={styles.pagination}>
-                    <button onClick={diminuir} className={styles.pageNumber}>
-                        <img className={styles.circledRight} alt="Página Anterior" src="./Circled1.png" />
-                    </button>
-                    <button className={styles.pageNumber}>{page}</button>
-                    <button onClick={aumentar} className={styles.pageNumber}>
-                        <img className={styles.circledRight} alt="Próxima Página" src="./Circled.png" />
-                    </button>
+                                </td> */}
+                                        {/* <td>{agendamentoItem.id_agendamento} / {agendamentoItem.id_paciente}</td> */}
+                                        <td>{agendamentoItem.nome_paciente}</td>
+                                        <td>{agendamentoItem.nome_medico}</td>
+                                        <td>{agendamentoItem.especialidade}</td>
+                                        <td>{agendamentoItem.data}</td>
+                                        <td>{agendamentoItem.horario}</td>
+                                        <td className={styles.agendar}>
+                                            <button onClick={() => handleregistrarClick(agendamentoItem.id_agendamento)} className={styles.button}>agendar</button>
+                                        </td>
+                                        <td>
+                                            <button>
+                                                <img onClick={() => handleEditButtonClick(agendamentoItem.id_agendamento)} alt="Editar" src="edit.png" />
+                                            </button>
+                                            <button>
+                                                {/* onClick={() => handleDeleteUser(user.id_usuario)} */}
+                                                <img alt="Excluir" src="lixo.png" />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </footer>
-            {mostrarModal && (
-                <div className={styles.modal}>
-                    <div className={styles.adicionar}>
-                        <h4>{isEditMode ? 'Editar Usuário' : 'Adicionar Usuário'}</h4>
-                        <div className={styles.contmodal}>
-                            <div className={styles.inputcontainer}>
+
+                <footer>
+                    <div className={styles.pagination}>
+                        <button onClick={diminuir} className={styles.pageNumber}>
+                            <img className={styles.circledRight} alt="Página Anterior" src="./Circled1.png" />
+                        </button>
+                        <button className={styles.pageNumber}>{page}</button>
+                        <button onClick={aumentar} className={styles.pageNumber}>
+                            <img className={styles.circledRight} alt="Próxima Página" src="./Circled.png" />
+                        </button>
+                    </div>
+                </footer>
+                {mostrarModal && (
+                    <div className={styles.modal}>
+                        <div className={styles.adicionar}>
+                            <div className={styles.contmodal}>
+                            <h4>{isEditMode ? 'Editar Usuário' : `Agendar Consulta para ${agendamentoData.nome}`}</h4>
+                                <div className={styles.inputcontainer}>
+                                    <input
+                                        type="text"
+                                        placeholder="Digite seu nome"
+                                        value={isEditMode ? agendamentoData.nome : nome}
+                                        onChange={(e) => {
+                                            if (isEditMode) {
+                                                agendamentoData = { ...agendamentoData, nome: e.target.value };
+                                            } else {
+                                                nome = e.target.value;
+                                            }
+                                        }}
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Digite o nome do medico"
+                                        value={isEditMode ? agendamentoData.nomeMedico : nomeMedico}
+                                        onChange={(e) => {
+                                            if (isEditMode) {
+                                                agendamentoData = { ...agendamentoData, especialidade: e.target.value };
+                                            } else {
+                                                nomeMedico = e.target.value;
+                                            }
+                                        }}
+                                    />
+                                </div>
                                 <input
-                                    type="text"
-                                    placeholder="Digite seu nome"
-                                    value={isEditMode ? agendamentoData.nome : nome}
+                                    type="date"
+                                    placeholder="Digite seu CPF"
+                                    value={isEditMode ? agendamentoData.data : data}
                                     onChange={(e) => {
                                         if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, nome: e.target.value };
+                                            agendamentoData = { ...agendamentoData, data: e.target.value };
                                         } else {
-                                            nome = e.target.value;
+                                            data = e.target.value;
                                         }
                                     }}
                                 />
                                 <input
                                     type="text"
-                                    placeholder="Digite o nome do medico"
-                                    value={isEditMode ? agendamentoData.nomeMedico : nomeMedico}
+                                    placeholder="Digite sua especialização"
+                                    value={isEditMode ? agendamentoData.especialidade : especialidade}
                                     onChange={(e) => {
                                         if (isEditMode) {
                                             agendamentoData = { ...agendamentoData, especialidade: e.target.value };
                                         } else {
-                                            nomeMedico = e.target.value;
+                                            especialidade = e.target.value;
+                                        }
+                                    }}
+                                />
+                                <input
+                                    type="time"
+                                    placeholder="Digite a hora da consulta"
+                                    value={isEditMode ? agendamentoData.hora : hora}
+                                    onChange={(e) => {
+                                        if (isEditMode) {
+                                            agendamentoData = { ...agendamentoData, hora: e.target.value };
+                                        } else {
+                                            hora = e.target.value;
                                         }
                                     }}
                                 />
                             </div>
-                            <input
-                                type="date"
-                                placeholder="Digite seu CPF"
-                                value={isEditMode ? agendamentoData.data : data}
-                                onChange={(e) => {
-                                    if (isEditMode) {
-                                        agendamentoData = { ...agendamentoData, data: e.target.value };
-                                    } else {
-                                        data = e.target.value;
-                                    }
-                                }}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Digite sua especialização"
-                                value={isEditMode ? agendamentoData.especialidade : especialidade}
-                                onChange={(e) => {
-                                    if (isEditMode) {
-                                        agendamentoData = { ...agendamentoData, especialidade: e.target.value };
-                                    } else {
-                                        especialidade = e.target.value;
-                                    }
-                                }}
-                            />
-                            <input
-                                type="time"
-                                placeholder="Digite a hora da consulta"
-                                value={isEditMode ? agendamentoData.hora : hora}
-                                onChange={(e) => {
-                                    if (isEditMode) {
-                                        agendamentoData = { ...agendamentoData, hora: e.target.value };
-                                    } else {
-                                        hora = e.target.value;
-                                    }
-                                }}
-                            />
-                        </div>
-                        <div className={styles.botao}>
-                            <button onClick={isEditMode ? () => handleSaveUser(agendamentoData) : handleSubmit}>
-                                {isEditMode ? 'Salvar' : 'Adicionar'}
-                            </button>
-                            <p onClick={() => setMostrarModal(false)}>cancelar</p>
+                            <div className={styles.botao}>
+                                <button onClick={isEditMode ? () => handleSaveUser(agendamentoData) : handleSubmit}>
+                                    {isEditMode ? 'Salvar' : 'Adicionar'}
+                                </button>
+                                <p onClick={() => setMostrarModal(false)}>cancelar</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 }

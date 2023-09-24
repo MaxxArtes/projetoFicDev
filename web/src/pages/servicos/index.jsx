@@ -3,7 +3,6 @@ import styles from './styles.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
 
-
 export function PaginaInicial() {
     const navigate = useNavigate();
     const [mostrarModal, setMostrarModal] = useState(false);
@@ -12,37 +11,37 @@ export function PaginaInicial() {
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
     const [userData, setUserData] = useState(null);
-    // const [user, setUser] = useState([]);
     const [users, setUsers] = useState([]);
+
+
+    async function handleVoltarParaPaginaInicial() {
+        window.location.reload();
+    };
     const handleSair = () => {
         sessionStorage.removeItem('token');
         navigate('/');
     };
-
-
-
 
     const handleEditButtonClick = (user) => {
         setUserData(user);
         setMostrarModal(true);
     };
 
-
     const handleSaveUser = async () => {
         try {
-            // if (rePassword) {
-            //     if (password !== rePassword) {
-            //         console.error('As senhas não correspondem.');
-            //         return;
-            //     }
-            // }
+            if (!password || !rePassword) {
+                setPassword(userData ? userData.password : '');
+                setRePassword(userData ? userData.password : '');
+            } else if (password !== rePassword) {
+                throw new Error('As senhas não correspondem.');
+            }
 
             const updatedUserData = {
                 nome: userData ? userData.nome : nome,
                 email: userData ? userData.email : email,
                 password: userData ? userData.password : password,
             };
-            debugger
+
             const accessToken = sessionStorage.getItem('token');
             const usersResponse = await api.put(`/editarUsuario/${userData.id_usuario}`, updatedUserData, {
                 headers: {
@@ -51,25 +50,18 @@ export function PaginaInicial() {
             });
 
             if (usersResponse.status === 200 || usersResponse.status === 204) {
-                const userData = usersResponse.data;
-                setUsers(userData.data);
-                console.error('Usuário editado com sucesso', usersResponse.data);
-                alert('Usuário editado com sucesso', usersResponse.data);
+                alert("Usuario atalizado com sucesso!!")
+                handleVoltarParaPaginaInicial(nome)
+                setMostrarModal(false);
             } else {
-                console.error('Erro ao editar o usuário:', usersResponse.data);
+                throw new Error(`Erro ao editar o usuário: ${usersResponse.data}`);
             }
-
-            // Limpar os campos após a conclusão
-            setNome('');
-            setEmail('');
-            setPassword('');
-            setRePassword('');
-            setUserData(null);
-            setMostrarModal(false);
         } catch (error) {
             console.error('Erro ao editar usuário', error);
+            // Exiba uma mensagem de erro amigável ao usuário aqui em vez de apenas no console
         }
     };
+
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -126,40 +118,31 @@ export function PaginaInicial() {
 
                 </div>
                 <div className={styles.navdiv1}>
-                    <div className={styles.imagem}><img alt="voltar" src="logo.png" />
+                    <div onClick={() => handleVoltarParaPaginaInicial(nome)} className={styles.imagem}><img alt="voltar" src="logo.png" />
                     </div>
                     <div className={styles.navdiv}>
-                        <img alt="perfil" src="perfil.png" />
-                        <img onClick={handleSair} alt="sair" src="sair.png" />
+                        <table className={styles.table}>
+                            <h1>paginainicial</h1>
+
+                            <div className={styles.header}>
+                                <tbody>
+                                    {users.map((user, index) => (
+                                        <tr key={index}>
+                                            {/* <td className={styles.acoes}>{user.id_usuario}</td> */}
+                                            <td className={styles.acoes}>{user.nome}</td>
+                                            <td className={styles.acoes}>{user.email}</td>
+                                            <td className={styles.button}>
+                                                <button onClick={() => handleEditButtonClick(user)} className={styles.primaryButton}>editar</button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </div>
+                            <img onClick={handleSair} alt="sair" src="sair.png" />
+                        </table>
                     </div>
                 </div>
-                <table className={styles.table}>
-                    <h1>paginainicial</h1>
 
-                    <div className={styles.header}>
-
-                        <thead>
-                            <tr>
-                                <th className={styles.acoes}>id</th>
-                                <th className={styles.acoes}>NOME</th>
-                                <th className={styles.acoes}>E-MAIL</th>
-                                <th className={styles.acoes}>ACÕES</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {users.map((user, index) => (
-                                <tr key={index}>
-                                    <td className={styles.acoes}>{user.id_usuario}</td>
-                                    <td className={styles.acoes}>{user.nome}</td>
-                                    <td className={styles.acoes}>{user.email}</td>
-                                    <td className={styles.button}>
-                                        <button onClick={() => handleEditButtonClick(user)} className={styles.primaryButton}>editar</button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </div>
-                </table>
             </header>
             <div className={styles.overlapgroup}>
                 <Link to="/Agendamentos">
