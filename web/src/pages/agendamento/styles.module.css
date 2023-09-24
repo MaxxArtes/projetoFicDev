@@ -1,4 +1,3 @@
-
 .ATENDIMENTO {
   align-items: stretch;
   justify-content: center;
@@ -8,7 +7,8 @@
   width: 80%;
   height: 80%;
 }
-.geral{
+
+.geral {
   align-items: stretch;
   display: flex;
   justify-content: center;
@@ -50,6 +50,41 @@
   align-items: center;
 }
 
+.tabs {
+  display: flex;
+}
+
+tabs .tab-content {
+  display: none;
+}
+
+.tabs input[type="radio"]:checked+label+.tab-content {
+  display: block;
+}
+
+.tabs input[type="radio"] {
+  display: none;
+}
+
+.tabs label {
+  padding: 10px;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.tabs .tab-content {
+  display: none;
+  padding: 10px;
+}
+
+.tabs input[type="radio"]:checked+label {
+  background-color: #ccc;
+}
+
+.tabs input[type="radio"]:checked+label+.tab-content {
+  display: block;
+}
+
 .ATENDIMENTO header {
   display: flex;
   justify-content: space-between;
@@ -60,6 +95,10 @@
 .table td {
   text-align: center;
   box-shadow: 1px 1px 1px #ffffff;
+}
+
+.table th {
+  font-weight: bold;
 }
 
 .table th {
@@ -213,13 +252,13 @@ h2 {
     margin-top: 59px;
     flex-direction: column; */
 
-.bloco{
+.bloco {
   width: 100%;
   background-color: #fff;
   border-top-right-radius: 15px;
   border-top-left-radius: 15px;
   display: flex;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
   flex-direction: column;
   height: 700px;
@@ -237,7 +276,7 @@ h2 {
 
 .table th,
 .table td {
-  
+
   text-align: center;
   padding: 10px;
   border: 1px solid #ccc;

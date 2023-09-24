@@ -18,7 +18,64 @@ export function Agendamentos() {
     let [isEditMode, setIsEditMode] = React.useState(false);
     let nome = '';
     let selectedAgendamentos = [];
-    
+
+    const [pacientes, setPacientes] = React.useState([]);
+    const [totalPagesPacientes, setTotalPagesPacientes] = React.useState(0);
+    const [pagePacientes, setPagePacientes] = React.useState(1);
+    const [mostrarModalPacientes, setMostrarModalPacientes] = React.useState(false);
+
+
+    // const handleAgendarClick = (pacienteId) => {
+    //     // Abra o modal de agendamento aqui, passando o pacienteId como prop
+    //     // O modal deve permitir a inserção dos detalhes do agendamento e a vinculação com o paciente selecionado
+
+    //     // Exemplo de como você pode abrir o modal:
+    //     setIsEditMode(false); // Certifique-se de que o modo de edição está desativado
+    //     setAgendamentoData({
+    //         nome_paciente: '', // Limpe os campos do agendamento
+    //         nome_medico: '',
+    //         especialidade: '',
+    //         data: '',
+    //         horario: '',
+    //     });
+    //     setMostrarModal(true); // Abra o modal de agendamento
+
+    //     // Além disso, você pode definir o paciente selecionado para ser usado ao salvar o agendamento
+    //     // Você pode armazenar o pacienteId em um estado
+    //     setSelectedPacienteId(pacienteId);
+    // };
+
+    useEffect(() => {
+        const fetchPacientes = async () => {
+            try {
+                console.log("PagePacientes: ", pagePacientes);
+                const response = await api.get(`/listarPacientes/${pagePacientes}`);
+                const pacientesData = response.data.data;
+                setPacientes(pacientesData); // Atualize o estado usando setPacientes
+
+                const calculatedTotalPages = Math.ceil(response.data.count / 10);
+                setTotalPagesPacientes(calculatedTotalPages); // Atualize o estado usando setTotalPagesPacientes
+            } catch (error) {
+                console.error('Erro ao buscar pacientes', error);
+            }
+        };
+
+        fetchPacientes(); // Chame a função imediatamente
+
+    }, [pagePacientes]);
+
+    async function aumentarPacientes() {
+        if (pagePacientes < totalPagesPacientes) {
+            setPagePacientes(pagePacientes + 1);
+        }
+    };
+
+    const diminuirPacientes = () => {
+        if (pagePacientes > 1) {
+            setPagePacientes(pagePacientes - 1);
+        }
+    };
+
 
     const handleVoltarParaPaginaInicial = () => {
         navigate('/PaginaInicial');
@@ -29,19 +86,15 @@ export function Agendamentos() {
         navigate('/');
     };
 
-    const handleAgendamentoSelection = (userId) => {
-        if (selectedAgendamentos.includes(userId)) {
-            selectedAgendamentos = selectedAgendamentos.filter(id => id !== userId);
-        } else {
-            selectedAgendamentos = [...selectedAgendamentos, userId];
-        }
-    };
 
-    const handleregistrarClick = (agendamentoItem) => {
-        console.log(agendamentoItem)
+    const handleregistrarClick = (pacienteItem) => {
+        console.log(pacienteItem)
         setIsEditMode(false);
-        setAgendamentoData(agendamentoItem);
+        setAgendamentoData(pacienteItem);
         setMostrarModal(true);
+    };
+    const handleregistrarPacientes = () => {
+        setMostrarModalPacientes(true);
     };
     async function handlePesquisar() {
         if (query) {
@@ -64,8 +117,8 @@ export function Agendamentos() {
             const calculatedTotalPages = Math.ceil(agendamentoData.count / 10);
             totalPages = calculatedTotalPages;
         }
-        
-        
+
+
         else {
             console.error('Erro ao pesquisar o usuário:', query);
         }
@@ -84,6 +137,48 @@ export function Agendamentos() {
             setPage(page - 1);
         }
     };
+
+    const handleDeletePaciente = async (id) => {
+        try {
+            // Fazer a solicitação de exclusão do paciente com base no ID
+            const response = await api.delete(`/deletarPacientes/${id}`);
+            if (response.status === 204) {
+                const response = await api.get(`/listarPacientes/${pagePacientes}`);
+                const pacientesData = response.data.data;
+                setPacientes(pacientesData); // Atualize o estado usando setPacientes
+
+                const calculatedTotalPages = Math.ceil(response.data.count / 10);
+                setTotalPagesPacientes(calculatedTotalPages); // Atualize o estado usando setTotalPagesPacientes
+            } else {
+                console.error('Erro ao excluir paciente');
+            }
+        } catch (error) {
+            console.error('Erro ao excluir paciente', error);
+        }
+    };
+
+
+
+    const handleDeleteAgendamento = async (id) => {
+        try {
+            // Fazer a solicitação de exclusão do agendamento com base no ID
+            const response = await api.delete(`/deletarAgendamento/${id}`);
+            if (response.status === 204) {
+                // Atualizar a lista de agendamentos após a exclusão
+                const usersResponse = await api.get(`/agendamentos/${page}`);
+                const agendamentoData = usersResponse.data;
+                setAgendamentos(agendamentoData.data);
+
+                const calculatedTotalPages = Math.ceil(agendamentoData.count / 10);
+                totalPages = calculatedTotalPages;
+            } else {
+                console.error('Erro ao excluir agendamento');
+            }
+        } catch (error) {
+            console.error('Erro ao excluir agendamento', error);
+        }
+    };
+
 
     const handleSubmit = async () => {
         try {
@@ -218,79 +313,78 @@ export function Agendamentos() {
                     </div>
                 </header>
                 <div className={styles.bloco}>
-                    <div className={styles.content}>
-                        <div className={styles.pesquisa}>
-                            <div className={styles.h1}>
-                                <h1>Agendamentos</h1>
-                            </div>
-                            <div className={styles.inputGroup}>
-                                <input
-                                    className={styles.formControl}
-                                    placeholder="Pesquisar"
-                                    value={query}
-                                    onChange={(e) => setQuery(e.target.value)}
-                                />
+                    <div class="tabs">
+                        <input type="radio" name="tab" id="tab1" checked />
+                        <label for="tab1">Tab 1</label>
+                        <div class="tab-content">
 
-                                <button onClick={handlePesquisar} className={styles.button} >
-                                    Pesquisar
-                                </button>
-                                <button className={styles.button}>
-                                    <button className={styles.button} >Cadastrar Paciente</button>
-                                    <img className={styles.search} alt="Search" src="adicao.png" />
-                                </button>
-                            </div>
-                        </div>
+                            <div className={styles.content}>
+                                <div className={styles.pesquisa}>
+                                    <div className={styles.h1}>
+                                        <h1>Agendamentos</h1>
+                                    </div>
+                                    <div className={styles.inputGroup}>
+                                        <input
+                                            className={styles.formControl}
+                                            placeholder="Pesquisar"
+                                            value={query}
+                                            onChange={(e) => setQuery(e.target.value)}
+                                        />
 
-                        <table className={styles.table}>
-                            <thead>
-                                <tr>
-                                    {/* <th>Selecionar</th>
+                                        <button onClick={handlePesquisar} className={styles.button} >
+                                            Pesquisar
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <table className={styles.table}>
+                                    <thead>
+                                        <tr>
+                                            {/* <th>Selecionar</th>
                             <th>id_a/id_p</th> */}
-                                    <th>Nome do Paciente</th>
-                                    <th>Nome do Medico</th>
-                                    <th>Data</th>
-                                    <th>Especialidade</th>
-                                    <th>Hora</th>
-                                    <th>Agendar</th>
-                                    <th>Ação</th>
-                                </tr>
-                            </thead>
+                                            <th>Nome do Paciente</th>
+                                            <th>Nome do Medico</th>
+                                            <th>Data</th>
+                                            <th>Especialidade</th>
+                                            <th>Hora</th>
+                                            <th>Ação</th>
+                                        </tr>
+                                    </thead>
 
-                            <tbody>
-                                {agendamentos.map((agendamentoItem, index) => (
-                                    <tr key={index}>
-                                        {/* <td className={styles.acoes}>
+                                    <tbody>
+                                        {agendamentos.map((agendamentoItem, index) => (
+                                            <tr key={index}>
+                                                {/* <td className={styles.acoes}>
                                     <input className={styles.tablevalues}
                                         type="checkbox"
                                         onChange={() => handleAgendamentoSelection(agendamentoItem.id_agendamento)}
                                         checked={selectedAgendamentos.includes(agendamentoItem.id_agendamento)}
                                     />
                                 </td> */}
-                                        {/* <td>{agendamentoItem.id_agendamento} / {agendamentoItem.id_paciente}</td> */}
-                                        <td>{agendamentoItem.nome_paciente}</td>
-                                        <td>{agendamentoItem.nome_medico}</td>
-                                        <td>{agendamentoItem.especialidade}</td>
-                                        <td>{agendamentoItem.data}</td>
-                                        <td>{agendamentoItem.horario}</td>
-                                        <td className={styles.agendar}>
-                                            <button onClick={() => handleregistrarClick(agendamentoItem.id_agendamento)} className={styles.button}>agendar</button>
-                                        </td>
-                                        <td>
-                                            <button>
-                                                <img onClick={() => handleEditButtonClick(agendamentoItem.id_agendamento)} alt="Editar" src="edit.png" />
-                                            </button>
-                                            <button>
-                                                {/* onClick={() => handleDeleteUser(user.id_usuario)} */}
-                                                <img alt="Excluir" src="lixo.png" />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                                {/* <td>{agendamentoItem.id_agendamento} / {agendamentoItem.id_paciente}</td> */}
+                                                <td>{agendamentoItem.nome_paciente}</td>
+                                                <td>{agendamentoItem.nome_medico}</td>
+                                                <td>{agendamentoItem.especialidade}</td>
+                                                <td>{agendamentoItem.data}</td>
+                                                <td>{agendamentoItem.horario}</td>
+                                                <td>
+                                                    <button>
+                                                        <img onClick={() => handleEditButtonClick(agendamentoItem.id_agendamento)} alt="Editar" src="edit.png" />
+                                                    </button>
+                                                    <button onClick={() => handleDeleteAgendamento(agendamentoItem.id_agendamento)}>
+                                                        <img alt="Excluir" src="lixo.png" />
+                                                    </button>
+
+
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
                 <footer>
                     <div className={styles.pagination}>
                         <button onClick={diminuir} className={styles.pageNumber}>
@@ -302,11 +396,179 @@ export function Agendamentos() {
                         </button>
                     </div>
                 </footer>
+
+                <div className={styles.bloco}>
+                    <div class="tabs">
+                        <input type="radio" name="tab" id="tab2" checked />
+                        <label for="tab2">Tab 12 </label>
+                        <div class="tab-content">
+                            <div className={styles.content}>
+                                <div className={styles.pesquisa}>
+                                    <div className={styles.h1}>
+                                        <h1>Pacientes</h1>
+                                    </div>
+                                    <div className={styles.inputGroup}>
+                                        <input
+                                            className={styles.formControl}
+                                            placeholder="Pesquisar"
+                                            value={query}
+                                            onChange={(e) => setQuery(e.target.value)}
+                                        />
+
+                                        <button onClick={handlePesquisar} className={styles.button}>
+                                            Pesquisar
+                                        </button>
+                                        <button className={styles.button}>
+                                            <button onClick={handleregistrarPacientes} className={styles.button} >Cadastrar Paciente</button>
+                                            <img className={styles.search} alt="Search" src="adicao.png" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <table className={styles.table}>
+                                    <thead>
+                                        <tr>
+                                            <th>Nome do Paciente</th>
+                                            <th>Email</th>
+                                            <th>Tel</th>
+                                            <th>Cel</th>
+                                            <th>CNS</th>
+                                            <th>CPF</th>
+                                            <th>Sexo</th>
+                                            <th>Data de Nascimento</th>
+                                            <th>Endereço</th>
+                                            <th>Agendar</th>
+                                            <th>Ação</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {pacientes.map((pacienteItem, index) => (
+                                            <tr key={index}>
+                                                <td>{pacienteItem.nome}</td>
+                                                <td>{pacienteItem.email}</td>
+                                                <td>{pacienteItem.tel}</td>
+                                                <td>{pacienteItem.cel}</td>
+                                                <td>{pacienteItem.CNS}</td>
+                                                <td>{pacienteItem.CPF}</td>
+                                                <td>{pacienteItem.sexo}</td>
+                                                <td>{pacienteItem.data_nasc}</td>
+                                                <td>{pacienteItem.endereco}</td>
+                                                <td className={styles.agendar}>
+                                                    <button onClick={() => handleregistrarClick(pacienteItem)} className={styles.button}>agendar</button>
+                                                </td>
+                                                <td>
+                                                    <button>
+                                                        <img onClick={() => handleEditButtonClick(pacienteItem)} alt="Editar" src="edit.png" />
+                                                    </button>
+                                                    <button onClick={() => handleDeletePaciente(pacienteItem.id_paciente)}>
+                                                        <img alt="Excluir" src="lixo.png" />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Paginação para Pacientes */}
+                <footer>
+                    <div className={styles.pagination}>
+                        <button onClick={diminuirPacientes} className={styles.pageNumber}>
+                            <img className={styles.circledRight} alt="Página Anterior" src="./Circled1.png" />
+                        </button>
+                        <button className={styles.pageNumber}>{pagePacientes}</button>
+                        <button onClick={aumentarPacientes} className={styles.pageNumber}>
+                            <img className={styles.circledRight} alt="Próxima Página" src="./Circled.png" />
+                        </button>
+                    </div>
+                </footer>
+
+                {mostrarModalPacientes && (
+                    <div className={styles.modal}>
+                        <div className={styles.adicionar}>
+                            <div className={styles.contmodal}>
+                                <h4>{isEditMode ? 'Editar usuario' : `Agendar Consulta para ${this.pacienteItem.nome}`}</h4>
+                                <div className={styles.inputcontainer}>
+                                    <input
+                                        type="text"
+                                        placeholder="Digite seu nome"
+                                        value={isEditMode ? agendamentoData.nome : nome}
+                                        onChange={(e) => {
+                                            if (isEditMode) {
+                                                agendamentoData = { ...agendamentoData, nome: e.target.value };
+                                            } else {
+                                                nome = e.target.value;
+                                            }
+                                        }}
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Digite o nome do medico"
+                                        value={isEditMode ? agendamentoData.nomeMedico : nomeMedico}
+                                        onChange={(e) => {
+                                            if (isEditMode) {
+                                                agendamentoData = { ...agendamentoData, especialidade: e.target.value };
+                                            } else {
+                                                nomeMedico = e.target.value;
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                <input
+                                    type="date"
+                                    placeholder="Digite seu CPF"
+                                    value={isEditMode ? agendamentoData.data : data}
+                                    onChange={(e) => {
+                                        if (isEditMode) {
+                                            agendamentoData = { ...agendamentoData, data: e.target.value };
+                                        } else {
+                                            data = e.target.value;
+                                        }
+                                    }}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Digite sua especialização"
+                                    value={isEditMode ? agendamentoData.especialidade : especialidade}
+                                    onChange={(e) => {
+                                        if (isEditMode) {
+                                            agendamentoData = { ...agendamentoData, especialidade: e.target.value };
+                                        } else {
+                                            especialidade = e.target.value;
+                                        }
+                                    }}
+                                />
+                                <input
+                                    type="time"
+                                    placeholder="Digite a hora da consulta"
+                                    value={isEditMode ? agendamentoData.hora : hora}
+                                    onChange={(e) => {
+                                        if (isEditMode) {
+                                            agendamentoData = { ...agendamentoData, hora: e.target.value };
+                                        } else {
+                                            hora = e.target.value;
+                                        }
+                                    }}
+                                />
+                            </div>
+                            <div className={styles.botao}>
+                                <button onClick={isEditMode ? () => handleSaveUser(agendamentoData) : handleSubmit}>
+                                    {isEditMode ? 'Salvar' : 'Adicionar'}
+                                </button>
+                                <p onClick={() => setMostrarModal(false)}>cancelar</p>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 {mostrarModal && (
                     <div className={styles.modal}>
                         <div className={styles.adicionar}>
                             <div className={styles.contmodal}>
-                            <h4>{isEditMode ? 'Editar Usuário' : `Agendar Consulta para ${agendamentoData.nome}`}</h4>
+                                <h4>{isEditMode ? 'Editar agendamento' : `Agendar Consulta para ${agendamentoData.nome}`}</h4>
                                 <div className={styles.inputcontainer}>
                                     <input
                                         type="text"
@@ -380,6 +642,6 @@ export function Agendamentos() {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }

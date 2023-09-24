@@ -53,6 +53,7 @@ export function PaginaInicial() {
                 alert("Usuario atalizado com sucesso!!")
                 handleVoltarParaPaginaInicial(nome)
                 setMostrarModal(false);
+                setEmail("")
             } else {
                 throw new Error(`Erro ao editar o usuário: ${usersResponse.data}`);
             }
@@ -113,10 +114,6 @@ export function PaginaInicial() {
         <div className={styles.paginainicial}>
 
             <header>
-                <div className={styles.esq}>
-
-
-                </div>
                 <div className={styles.navdiv1}>
                     <div onClick={() => handleVoltarParaPaginaInicial(nome)} className={styles.imagem}><img alt="voltar" src="logo.png" />
                     </div>
