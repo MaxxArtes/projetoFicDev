@@ -48,6 +48,7 @@ routes.delete('/deletarProntuario/:id', authMiddleware, ConsultaController.delet
 routes.post('/registrarPaciente', authMiddleware, PacienteController.create);
 routes.get('/listarPacientes/:page', PacienteController.getAll);
 routes.delete('/deletarPacientes/:id', PacienteController.delete);
+routes.delete('/editarPacientes/:id', PacienteController.update);
 
 //dash
 routes.get('/totalUsuarios', UsuarioController.totalUsuarios); 

@@ -333,7 +333,7 @@ footer {
 
 .agendar {
   justify-content: center;
-  display: flex;
+  /* display: flex; */
 }
 
 .userProfile {

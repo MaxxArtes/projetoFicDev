@@ -18,32 +18,20 @@ export function Agendamentos() {
     let [isEditMode, setIsEditMode] = React.useState(false);
     let nome = '';
     let selectedAgendamentos = [];
+    let nomePaciente = '';
+    let email = '';
+    let tel = '';
+    let cel = '';
+    let cns = '';
+    let cpf = '';
+    let sexo = '';
+    let dataNasc = '';
+    let endereco = '';
 
     const [pacientes, setPacientes] = React.useState([]);
     const [totalPagesPacientes, setTotalPagesPacientes] = React.useState(0);
     const [pagePacientes, setPagePacientes] = React.useState(1);
     const [mostrarModalPacientes, setMostrarModalPacientes] = React.useState(false);
-
-
-    // const handleAgendarClick = (pacienteId) => {
-    //     // Abra o modal de agendamento aqui, passando o pacienteId como prop
-    //     // O modal deve permitir a inserção dos detalhes do agendamento e a vinculação com o paciente selecionado
-
-    //     // Exemplo de como você pode abrir o modal:
-    //     setIsEditMode(false); // Certifique-se de que o modo de edição está desativado
-    //     setAgendamentoData({
-    //         nome_paciente: '', // Limpe os campos do agendamento
-    //         nome_medico: '',
-    //         especialidade: '',
-    //         data: '',
-    //         horario: '',
-    //     });
-    //     setMostrarModal(true); // Abra o modal de agendamento
-
-    //     // Além disso, você pode definir o paciente selecionado para ser usado ao salvar o agendamento
-    //     // Você pode armazenar o pacienteId em um estado
-    //     setSelectedPacienteId(pacienteId);
-    // };
 
     useEffect(() => {
         const fetchPacientes = async () => {
@@ -216,22 +204,22 @@ export function Agendamentos() {
 
     const handleSaveUser = async () => {
         try {
-            const updatedAgendamentoData = {
-                nome: isEditMode ? agendamentoData.nome : nome,
-                nomeMedico: isEditMode ? agendamentoData.nomeMedico : nomeMedico,
-                especialidade: isEditMode ? agendamentoData.especialidade : especialidade,
-                data: isEditMode ? agendamentoData.data : data,
-                hora: isEditMode ? agendamentoData.hora : hora,
+            const AgendamentoData = {
+                nome: agendamentoData.nome,
+                nomeMedico: agendamentoData.nomeMedico,
+                especialidade: agendamentoData.especialidade,
+                data: agendamentoData.data,
+                hora: agendamentoData.hora,
             };
 
             const accessToken = sessionStorage.getItem("token");
             const response = isEditMode
-                ? await api.put(`/editarAgendamento/${agendamentoData.id_agendamento}`, updatedAgendamentoData, {
+                ? await api.put(`/editarAgendamento/${agendamentoData.id_agendamento}`, AgendamentoData, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                     },
                 })
-                : await api.post('/registerAgendamento', updatedAgendamentoData);
+                : await api.post('/registerAgendamento', AgendamentoData);
 
             if (response.status === 200 || response.status === 204) {
 
@@ -313,10 +301,6 @@ export function Agendamentos() {
                     </div>
                 </header>
                 <div className={styles.bloco}>
-                    <div class="tabs">
-                        <input type="radio" name="tab" id="tab1" checked />
-                        <label for="tab1">Tab 1</label>
-                        <div class="tab-content">
 
                             <div className={styles.content}>
                                 <div className={styles.pesquisa}>
@@ -344,8 +328,8 @@ export function Agendamentos() {
                             <th>id_a/id_p</th> */}
                                             <th>Nome do Paciente</th>
                                             <th>Nome do Medico</th>
-                                            <th>Data</th>
                                             <th>Especialidade</th>
+                                            <th>Data</th>
                                             <th>Hora</th>
                                             <th>Ação</th>
                                         </tr>
@@ -369,7 +353,7 @@ export function Agendamentos() {
                                                 <td>{agendamentoItem.horario}</td>
                                                 <td>
                                                     <button>
-                                                        <img onClick={() => handleEditButtonClick(agendamentoItem.id_agendamento)} alt="Editar" src="edit.png" />
+                                                        <img onClick={() => handleEditButtonClick(agendamentoItem)} alt="Editar" src="edit.png" />
                                                     </button>
                                                     <button onClick={() => handleDeleteAgendamento(agendamentoItem.id_agendamento)}>
                                                         <img alt="Excluir" src="lixo.png" />
@@ -383,8 +367,6 @@ export function Agendamentos() {
                                 </table>
                             </div>
                         </div>
-                    </div>
-                </div>
                 <footer>
                     <div className={styles.pagination}>
                         <button onClick={diminuir} className={styles.pageNumber}>
@@ -398,10 +380,6 @@ export function Agendamentos() {
                 </footer>
 
                 <div className={styles.bloco}>
-                    <div class="tabs">
-                        <input type="radio" name="tab" id="tab2" checked />
-                        <label for="tab2">Tab 12 </label>
-                        <div class="tab-content">
                             <div className={styles.content}>
                                 <div className={styles.pesquisa}>
                                     <div className={styles.h1}>
@@ -471,8 +449,7 @@ export function Agendamentos() {
                                 </table>
                             </div>
                         </div>
-                    </div>
-                </div>
+
 
                 {/* Paginação para Pacientes */}
                 <footer>
@@ -489,68 +466,115 @@ export function Agendamentos() {
 
                 {mostrarModalPacientes && (
                     <div className={styles.modal}>
-                        <div className={styles.adicionar}>
-                            <div className={styles.contmodal}>
-                                <h4>{isEditMode ? 'Editar usuario' : `Agendar Consulta para ${this.pacienteItem.nome}`}</h4>
-                                <div className={styles.inputcontainer}>
-                                    <input
-                                        type="text"
-                                        placeholder="Digite seu nome"
-                                        value={isEditMode ? agendamentoData.nome : nome}
-                                        onChange={(e) => {
-                                            if (isEditMode) {
-                                                agendamentoData = { ...agendamentoData, nome: e.target.value };
-                                            } else {
-                                                nome = e.target.value;
-                                            }
-                                        }}
-                                    />
-                                    <input
-                                        type="text"
-                                        placeholder="Digite o nome do medico"
-                                        value={isEditMode ? agendamentoData.nomeMedico : nomeMedico}
-                                        onChange={(e) => {
-                                            if (isEditMode) {
-                                                agendamentoData = { ...agendamentoData, especialidade: e.target.value };
-                                            } else {
-                                                nomeMedico = e.target.value;
-                                            }
-                                        }}
-                                    />
-                                </div>
+                    <div className={styles.adicionar}>
+                        <div className={styles.contmodal}>
+                            <h4>{isEditMode ? 'Editar usuário' : `Agendar Consulta para ${this.pacienteItem.nome}`}</h4>
+                            <div className={styles.inputcontainer}>
                                 <input
-                                    type="date"
-                                    placeholder="Digite seu CPF"
-                                    value={isEditMode ? agendamentoData.data : data}
+                                    type="text"
+                                    placeholder="Nome"
+                                    value={isEditMode ? agendamentoData.nome : nomePaciente}
                                     onChange={(e) => {
                                         if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, data: e.target.value };
+                                            agendamentoData = { ...agendamentoData, nomePaciente: e.target.value };
                                         } else {
-                                            data = e.target.value;
+                                            nomePaciente = e.target.value;
+                                        }
+                                    }}
+                                />
+                                <input
+                                    type="email"
+                                    placeholder="Email"
+                                    value={isEditMode ? agendamentoData.email : email}
+                                    onChange={(e) => {
+                                        if (isEditMode) {
+                                            agendamentoData = { ...agendamentoData, email: e.target.value };
+                                        } else {
+                                            email = e.target.value;
+                                        }
+                                    }}
+                                />
+                                <input
+                                    type="tel"
+                                    placeholder="Telefone"
+                                    value={isEditMode ? agendamentoData.tel : tel}
+                                    onChange={(e) => {
+                                        if (isEditMode) {
+                                            agendamentoData = { ...agendamentoData, tel: e.target.value };
+                                        } else {
+                                            tel = e.target.value;
+                                        }
+                                    }}
+                                />
+                                <input
+                                    type="tel"
+                                    placeholder="Celular"
+                                    value={isEditMode ? agendamentoData.cel : cel}
+                                    onChange={(e) => {
+                                        if (isEditMode) {
+                                            agendamentoData = { ...agendamentoData, cel: e.target.value };
+                                        } else {
+                                            cel = e.target.value;
                                         }
                                     }}
                                 />
                                 <input
                                     type="text"
-                                    placeholder="Digite sua especialização"
-                                    value={isEditMode ? agendamentoData.especialidade : especialidade}
+                                    placeholder="CNS"
+                                    value={isEditMode ? agendamentoData.cns : cns}
                                     onChange={(e) => {
                                         if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, especialidade: e.target.value };
+                                            agendamentoData = { ...agendamentoData, cns: e.target.value };
                                         } else {
-                                            especialidade = e.target.value;
+                                            cns = e.target.value;
                                         }
                                     }}
                                 />
                                 <input
-                                    type="time"
-                                    placeholder="Digite a hora da consulta"
-                                    value={isEditMode ? agendamentoData.hora : hora}
+                                    type="text"
+                                    placeholder="CPF"
+                                    value={isEditMode ? agendamentoData.cpf : cpf}
                                     onChange={(e) => {
                                         if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, hora: e.target.value };
+                                            agendamentoData = { ...agendamentoData, cpf: e.target.value };
                                         } else {
-                                            hora = e.target.value;
+                                            cpf = e.target.value;
+                                        }
+                                    }}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Sexo"
+                                    value={isEditMode ? agendamentoData.sexo : sexo}
+                                    onChange={(e) => {
+                                        if (isEditMode) {
+                                            agendamentoData = { ...agendamentoData, sexo: e.target.value };
+                                        } else {
+                                            sexo = e.target.value;
+                                        }
+                                    }}
+                                />
+                                <input
+                                    type="date"
+                                    placeholder="Data de Nascimento"
+                                    value={isEditMode ? agendamentoData.dataNasc : dataNasc}
+                                    onChange={(e) => {
+                                        if (isEditMode) {
+                                            agendamentoData = { ...agendamentoData, dataNasc: e.target.value };
+                                        } else {
+                                            dataNasc = e.target.value;
+                                        }
+                                    }}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Endereço"
+                                    value={isEditMode ? agendamentoData.endereco : endereco}
+                                    onChange={(e) => {
+                                        if (isEditMode) {
+                                            agendamentoData = { ...agendamentoData, endereco: e.target.value };
+                                        } else {
+                                            endereco = e.target.value;
                                         }
                                     }}
                                 />
@@ -559,10 +583,12 @@ export function Agendamentos() {
                                 <button onClick={isEditMode ? () => handleSaveUser(agendamentoData) : handleSubmit}>
                                     {isEditMode ? 'Salvar' : 'Adicionar'}
                                 </button>
-                                <p onClick={() => setMostrarModal(false)}>cancelar</p>
+                                <p onClick={() => setMostrarModal(false)}>Cancelar</p>
                             </div>
                         </div>
                     </div>
+                </div>
+                
                 )}
                 {mostrarModal && (
                     <div className={styles.modal}>
@@ -572,63 +598,42 @@ export function Agendamentos() {
                                 <div className={styles.inputcontainer}>
                                     <input
                                         type="text"
-                                        placeholder="Digite seu nome"
-                                        value={isEditMode ? agendamentoData.nome : nome}
-                                        onChange={(e) => {
-                                            if (isEditMode) {
-                                                agendamentoData = { ...agendamentoData, nome: e.target.value };
-                                            } else {
-                                                nome = e.target.value;
-                                            }
+                                    placeholder="Digite o nome do paciente"                                        
+                                        value={agendamentoData.nome_paciente}
+                                        onChange={(e) => {setAgendamentoData({ ...agendamentoData, nome_paciente: e.target.value });
                                         }}
                                     />
                                     <input
                                         type="text"
                                         placeholder="Digite o nome do medico"
-                                        value={isEditMode ? agendamentoData.nomeMedico : nomeMedico}
+                                        value={agendamentoData.nome_medico}
                                         onChange={(e) => {
-                                            if (isEditMode) {
-                                                agendamentoData = { ...agendamentoData, especialidade: e.target.value };
-                                            } else {
-                                                nomeMedico = e.target.value;
-                                            }
+                                                setAgendamentoData({ ...agendamentoData, nome_medico: e.target.value });
                                         }}
                                     />
                                 </div>
                                 <input
                                     type="date"
                                     placeholder="Digite seu CPF"
-                                    value={isEditMode ? agendamentoData.data : data}
+                                    value={agendamentoData.data}
                                     onChange={(e) => {
-                                        if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, data: e.target.value };
-                                        } else {
-                                            data = e.target.value;
-                                        }
+                                            setAgendamentoData({ ...agendamentoData, data: e.target.value });
                                     }}
                                 />
                                 <input
                                     type="text"
                                     placeholder="Digite sua especialização"
-                                    value={isEditMode ? agendamentoData.especialidade : especialidade}
+                                    value={agendamentoData.especialidade}
                                     onChange={(e) => {
-                                        if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, especialidade: e.target.value };
-                                        } else {
-                                            especialidade = e.target.value;
-                                        }
+                                            setAgendamentoData({ ...agendamentoData, especialidade: e.target.value });
                                     }}
                                 />
                                 <input
                                     type="time"
                                     placeholder="Digite a hora da consulta"
-                                    value={isEditMode ? agendamentoData.hora : hora}
+                                    value={agendamentoData.hora}
                                     onChange={(e) => {
-                                        if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, hora: e.target.value };
-                                        } else {
-                                            hora = e.target.value;
-                                        }
+                                            setAgendamentoData({ ...agendamentoData, hora: e.target.value });
                                     }}
                                 />
                             </div>
