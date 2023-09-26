@@ -35,7 +35,6 @@ routes.post('/registerAgendamento', authMiddleware, AgendamentoController.create
 routes.put('/editarAgendamento/:id', authMiddleware, AgendamentoController.update);
 routes.delete('/deletarAgendamento/:id', authMiddleware, AgendamentoController.delete);
 
-routes.put('/editarAgendamento', authMiddleware, AgendamentoController.update);
 routes.delete('/deletarAgendamento/:id', authMiddleware, AgendamentoController.delete);
 routes.get('/agendamentos/:page', AgendamentoController.consultarAgendamentosEndpoint);
 
@@ -51,5 +50,5 @@ routes.delete('/deletarPacientes/:id', PacienteController.delete);
 routes.delete('/editarPacientes/:id', PacienteController.update);
 
 //dash
-routes.get('/totalUsuarios', UsuarioController.totalUsuarios); 
+routes.get('/totalUsuarios', UsuarioController.totalUsuarios);
 module.exports = { routes };

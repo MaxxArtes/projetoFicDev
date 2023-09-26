@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { api } from '../../services/api';
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
+import ModalEditar from '../../components/modalEditar';
 
 export function Agendamentos() {
     let [agendamentos, setAgendamentos] = React.useState([]);
@@ -14,7 +15,7 @@ export function Agendamentos() {
     let nomeMedico = '';
     let data = '';
     let especialidade = '';
-    let hora = '';
+    let horario = '';
     let [isEditMode, setIsEditMode] = React.useState(false);
     let nome = '';
     let selectedAgendamentos = [];
@@ -170,13 +171,13 @@ export function Agendamentos() {
 
     const handleSubmit = async () => {
         try {
-            if (nome && nomeMedico && especialidade && data && hora) {
+            if (nome && nomeMedico && especialidade && data && horario) {
                 let agendamentoData = {
                     nome,
                     nomeMedico,
                     especialidade,
                     data,
-                    hora,
+                    horario,
                 };
 
                 const response = await api.post('/registerAgendamento', agendamentoData);
@@ -188,7 +189,7 @@ export function Agendamentos() {
                 nomeMedico = '';
                 especialidade = '';
                 data = '';
-                hora = '';
+                horario = '';
                 setAgendamentoData(null)
                 setMostrarModal(false);
                 setIsEditMode(false);
@@ -209,7 +210,7 @@ export function Agendamentos() {
                 nomeMedico: agendamentoData.nomeMedico,
                 especialidade: agendamentoData.especialidade,
                 data: agendamentoData.data,
-                hora: agendamentoData.hora,
+                horario: agendamentoData.horario,
             };
 
             const accessToken = sessionStorage.getItem("token");
@@ -238,7 +239,7 @@ export function Agendamentos() {
             nomeMedico = '';
             especialidade = '';
             data = '';
-            hora = '';
+            horario = '';
             setAgendamentoData(null)
             setMostrarModal(false);
             setIsEditMode(false);
@@ -259,29 +260,28 @@ export function Agendamentos() {
 
     };
 
-    useEffect(() => {
-        const fetchAgendamentos = async () => {
-            try {
-                const response = await api.get(`/agendamentos/${page}`);
-                console.log(response);
-                const agendamentoData = response.data.data;
-                setAgendamentos(agendamentoData); // Atualize o estado usando setAgendamentos
-                console.log('agendamento data : ', agendamentoData);
+    const fetchAgendamentos = async () => {
+        try {
+            const response = await api.get(`/agendamentos/${page}`);
+            console.log(response);
+            const agendamentoData = response.data.data;
+            setAgendamentos(agendamentoData); // Atualize o estado usando setAgendamentos
+            console.log('agendamento data : ', agendamentoData);
 
-                const calculatedTotalPages = Math.ceil(response.data.count / 10);
-                setTotalPages(calculatedTotalPages); // Atualize o estado usando setTotalPages
-                console.log('total pages : ', calculatedTotalPages);
-                if (!response.ok) {
-                    throw new Error('Erro ao buscar agendamentos');
-                }
-
-            } catch (error) {
-                console.error(error);
+            const calculatedTotalPages = Math.ceil(response.data.count / 10);
+            setTotalPages(calculatedTotalPages); // Atualize o estado usando setTotalPages
+            console.log('total pages : ', calculatedTotalPages);
+            if (!response.ok) {
+                throw new Error('Erro ao buscar agendamentos');
             }
-        };
 
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
         fetchAgendamentos();
-
     }, [page]);
 
     return (
@@ -302,71 +302,69 @@ export function Agendamentos() {
                 </header>
                 <div className={styles.bloco}>
 
-                            <div className={styles.content}>
-                                <div className={styles.pesquisa}>
-                                    <div className={styles.h1}>
-                                        <h1>Agendamentos</h1>
-                                    </div>
-                                    <div className={styles.inputGroup}>
-                                        <input
-                                            className={styles.formControl}
-                                            placeholder="Pesquisar"
-                                            value={query}
-                                            onChange={(e) => setQuery(e.target.value)}
-                                        />
+                    <div className={styles.content}>
+                        <div className={styles.pesquisa}>
+                            <div className={styles.h1}>
+                                <h1>Agendamentos</h1>
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <input
+                                    className={styles.formControl}
+                                    placeholder="Pesquisar"
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                />
 
-                                        <button onClick={handlePesquisar} className={styles.button} >
-                                            Pesquisar
-                                        </button>
-                                    </div>
-                                </div>
+                                <button onClick={handlePesquisar} className={styles.button} >
+                                    Pesquisar
+                                </button>
+                            </div>
+                        </div>
 
-                                <table className={styles.table}>
-                                    <thead>
-                                        <tr>
-                                            {/* <th>Selecionar</th>
+                        <table className={styles.table}>
+                            <thead>
+                                <tr>
+                                    {/* <th>Selecionar</th>
                             <th>id_a/id_p</th> */}
-                                            <th>Nome do Paciente</th>
-                                            <th>Nome do Medico</th>
-                                            <th>Especialidade</th>
-                                            <th>Data</th>
-                                            <th>Hora</th>
-                                            <th>Ação</th>
-                                        </tr>
-                                    </thead>
+                                    <th>Nome do Paciente</th>
+                                    <th>Nome do Medico</th>
+                                    <th>Especialidade</th>
+                                    <th>Data</th>
+                                    <th>Hora</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
 
-                                    <tbody>
-                                        {agendamentos.map((agendamentoItem, index) => (
-                                            <tr key={index}>
-                                                {/* <td className={styles.acoes}>
+                            <tbody>
+                                {agendamentos.map((agendamentoItem, index) => (
+                                    <tr key={index}>
+                                        {/* <td className={styles.acoes}>
                                     <input className={styles.tablevalues}
                                         type="checkbox"
                                         onChange={() => handleAgendamentoSelection(agendamentoItem.id_agendamento)}
                                         checked={selectedAgendamentos.includes(agendamentoItem.id_agendamento)}
                                     />
                                 </td> */}
-                                                {/* <td>{agendamentoItem.id_agendamento} / {agendamentoItem.id_paciente}</td> */}
-                                                <td>{agendamentoItem.nome_paciente}</td>
-                                                <td>{agendamentoItem.nome_medico}</td>
-                                                <td>{agendamentoItem.especialidade}</td>
-                                                <td>{agendamentoItem.data}</td>
-                                                <td>{agendamentoItem.horario}</td>
-                                                <td>
-                                                    <button>
-                                                        <img onClick={() => handleEditButtonClick(agendamentoItem)} alt="Editar" src="edit.png" />
-                                                    </button>
-                                                    <button onClick={() => handleDeleteAgendamento(agendamentoItem.id_agendamento)}>
-                                                        <img alt="Excluir" src="lixo.png" />
-                                                    </button>
+                                        {/* <td>{agendamentoItem.id_agendamento} / {agendamentoItem.id_paciente}</td> */}
+                                        <td>{agendamentoItem.nome_paciente}</td>
+                                        <td>{agendamentoItem.nome_medico}</td>
+                                        <td>{agendamentoItem.especialidade}</td>
+                                        <td>{agendamentoItem.data}</td>
+                                        <td>{agendamentoItem.horario}</td>
+                                        <td>
+                                            <ModalEditar dados={agendamentoItem} fetchAgendamentos={fetchAgendamentos} />
+                                            <button onClick={() => handleDeleteAgendamento(agendamentoItem.id_agendamento)}>
+                                                <img alt="Excluir" src="lixo.png" />
+                                            </button>
 
 
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <footer>
                     <div className={styles.pagination}>
                         <button onClick={diminuir} className={styles.pageNumber}>
@@ -380,75 +378,75 @@ export function Agendamentos() {
                 </footer>
 
                 <div className={styles.bloco}>
-                            <div className={styles.content}>
-                                <div className={styles.pesquisa}>
-                                    <div className={styles.h1}>
-                                        <h1>Pacientes</h1>
-                                    </div>
-                                    <div className={styles.inputGroup}>
-                                        <input
-                                            className={styles.formControl}
-                                            placeholder="Pesquisar"
-                                            value={query}
-                                            onChange={(e) => setQuery(e.target.value)}
-                                        />
+                    <div className={styles.content}>
+                        <div className={styles.pesquisa}>
+                            <div className={styles.h1}>
+                                <h1>Pacientes</h1>
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <input
+                                    className={styles.formControl}
+                                    placeholder="Pesquisar"
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                />
 
-                                        <button onClick={handlePesquisar} className={styles.button}>
-                                            Pesquisar
-                                        </button>
-                                        <button className={styles.button}>
-                                            <button onClick={handleregistrarPacientes} className={styles.button} >Cadastrar Paciente</button>
-                                            <img className={styles.search} alt="Search" src="adicao.png" />
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <table className={styles.table}>
-                                    <thead>
-                                        <tr>
-                                            <th>Nome do Paciente</th>
-                                            <th>Email</th>
-                                            <th>Tel</th>
-                                            <th>Cel</th>
-                                            <th>CNS</th>
-                                            <th>CPF</th>
-                                            <th>Sexo</th>
-                                            <th>Data de Nascimento</th>
-                                            <th>Endereço</th>
-                                            <th>Agendar</th>
-                                            <th>Ação</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        {pacientes.map((pacienteItem, index) => (
-                                            <tr key={index}>
-                                                <td>{pacienteItem.nome}</td>
-                                                <td>{pacienteItem.email}</td>
-                                                <td>{pacienteItem.tel}</td>
-                                                <td>{pacienteItem.cel}</td>
-                                                <td>{pacienteItem.CNS}</td>
-                                                <td>{pacienteItem.CPF}</td>
-                                                <td>{pacienteItem.sexo}</td>
-                                                <td>{pacienteItem.data_nasc}</td>
-                                                <td>{pacienteItem.endereco}</td>
-                                                <td className={styles.agendar}>
-                                                    <button onClick={() => handleregistrarClick(pacienteItem)} className={styles.button}>agendar</button>
-                                                </td>
-                                                <td>
-                                                    <button>
-                                                        <img onClick={() => handleEditButtonClick(pacienteItem)} alt="Editar" src="edit.png" />
-                                                    </button>
-                                                    <button onClick={() => handleDeletePaciente(pacienteItem.id_paciente)}>
-                                                        <img alt="Excluir" src="lixo.png" />
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                <button onClick={handlePesquisar} className={styles.button}>
+                                    Pesquisar
+                                </button>
+                                <button className={styles.button}>
+                                    <button onClick={handleregistrarPacientes} className={styles.button} >Cadastrar Paciente</button>
+                                    <img className={styles.search} alt="Search" src="adicao.png" />
+                                </button>
                             </div>
                         </div>
+
+                        <table className={styles.table}>
+                            <thead>
+                                <tr>
+                                    <th>Nome do Paciente</th>
+                                    <th>Email</th>
+                                    <th>Tel</th>
+                                    <th>Cel</th>
+                                    <th>CNS</th>
+                                    <th>CPF</th>
+                                    <th>Sexo</th>
+                                    <th>Data de Nascimento</th>
+                                    <th>Endereço</th>
+                                    <th>Agendar</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {pacientes.map((pacienteItem, index) => (
+                                    <tr key={index}>
+                                        <td>{pacienteItem.nome}</td>
+                                        <td>{pacienteItem.email}</td>
+                                        <td>{pacienteItem.tel}</td>
+                                        <td>{pacienteItem.cel}</td>
+                                        <td>{pacienteItem.CNS}</td>
+                                        <td>{pacienteItem.CPF}</td>
+                                        <td>{pacienteItem.sexo}</td>
+                                        <td>{pacienteItem.data_nasc}</td>
+                                        <td>{pacienteItem.endereco}</td>
+                                        <td className={styles.agendar}>
+                                            <button onClick={() => handleregistrarClick(pacienteItem)} className={styles.button}>agendar</button>
+                                        </td>
+                                        <td>
+                                            <button>
+                                                <img onClick={() => handleEditButtonClick(pacienteItem)} alt="Editar" src="edit.png" />
+                                            </button>
+                                            <button onClick={() => handleDeletePaciente(pacienteItem.id_paciente)}>
+                                                <img alt="Excluir" src="lixo.png" />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
 
                 {/* Paginação para Pacientes */}
@@ -466,129 +464,129 @@ export function Agendamentos() {
 
                 {mostrarModalPacientes && (
                     <div className={styles.modal}>
-                    <div className={styles.adicionar}>
-                        <div className={styles.contmodal}>
-                            <h4>{isEditMode ? 'Editar usuário' : `Agendar Consulta para ${this.pacienteItem.nome}`}</h4>
-                            <div className={styles.inputcontainer}>
-                                <input
-                                    type="text"
-                                    placeholder="Nome"
-                                    value={isEditMode ? agendamentoData.nome : nomePaciente}
-                                    onChange={(e) => {
-                                        if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, nomePaciente: e.target.value };
-                                        } else {
-                                            nomePaciente = e.target.value;
-                                        }
-                                    }}
-                                />
-                                <input
-                                    type="email"
-                                    placeholder="Email"
-                                    value={isEditMode ? agendamentoData.email : email}
-                                    onChange={(e) => {
-                                        if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, email: e.target.value };
-                                        } else {
-                                            email = e.target.value;
-                                        }
-                                    }}
-                                />
-                                <input
-                                    type="tel"
-                                    placeholder="Telefone"
-                                    value={isEditMode ? agendamentoData.tel : tel}
-                                    onChange={(e) => {
-                                        if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, tel: e.target.value };
-                                        } else {
-                                            tel = e.target.value;
-                                        }
-                                    }}
-                                />
-                                <input
-                                    type="tel"
-                                    placeholder="Celular"
-                                    value={isEditMode ? agendamentoData.cel : cel}
-                                    onChange={(e) => {
-                                        if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, cel: e.target.value };
-                                        } else {
-                                            cel = e.target.value;
-                                        }
-                                    }}
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="CNS"
-                                    value={isEditMode ? agendamentoData.cns : cns}
-                                    onChange={(e) => {
-                                        if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, cns: e.target.value };
-                                        } else {
-                                            cns = e.target.value;
-                                        }
-                                    }}
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="CPF"
-                                    value={isEditMode ? agendamentoData.cpf : cpf}
-                                    onChange={(e) => {
-                                        if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, cpf: e.target.value };
-                                        } else {
-                                            cpf = e.target.value;
-                                        }
-                                    }}
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Sexo"
-                                    value={isEditMode ? agendamentoData.sexo : sexo}
-                                    onChange={(e) => {
-                                        if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, sexo: e.target.value };
-                                        } else {
-                                            sexo = e.target.value;
-                                        }
-                                    }}
-                                />
-                                <input
-                                    type="date"
-                                    placeholder="Data de Nascimento"
-                                    value={isEditMode ? agendamentoData.dataNasc : dataNasc}
-                                    onChange={(e) => {
-                                        if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, dataNasc: e.target.value };
-                                        } else {
-                                            dataNasc = e.target.value;
-                                        }
-                                    }}
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Endereço"
-                                    value={isEditMode ? agendamentoData.endereco : endereco}
-                                    onChange={(e) => {
-                                        if (isEditMode) {
-                                            agendamentoData = { ...agendamentoData, endereco: e.target.value };
-                                        } else {
-                                            endereco = e.target.value;
-                                        }
-                                    }}
-                                />
-                            </div>
-                            <div className={styles.botao}>
-                                <button onClick={isEditMode ? () => handleSaveUser(agendamentoData) : handleSubmit}>
-                                    {isEditMode ? 'Salvar' : 'Adicionar'}
-                                </button>
-                                <p onClick={() => setMostrarModal(false)}>Cancelar</p>
+                        <div className={styles.adicionar}>
+                            <div className={styles.contmodal}>
+                                <h4>{isEditMode ? 'Editar usuário' : `Agendar Consulta para ${this.pacienteItem.nome}`}</h4>
+                                <div className={styles.inputcontainer}>
+                                    <input
+                                        type="text"
+                                        placeholder="Nome"
+                                        value={isEditMode ? agendamentoData.nome : nomePaciente}
+                                        onChange={(e) => {
+                                            if (isEditMode) {
+                                                agendamentoData = { ...agendamentoData, nomePaciente: e.target.value };
+                                            } else {
+                                                nomePaciente = e.target.value;
+                                            }
+                                        }}
+                                    />
+                                    <input
+                                        type="email"
+                                        placeholder="Email"
+                                        value={isEditMode ? agendamentoData.email : email}
+                                        onChange={(e) => {
+                                            if (isEditMode) {
+                                                agendamentoData = { ...agendamentoData, email: e.target.value };
+                                            } else {
+                                                email = e.target.value;
+                                            }
+                                        }}
+                                    />
+                                    <input
+                                        type="tel"
+                                        placeholder="Telefone"
+                                        value={isEditMode ? agendamentoData.tel : tel}
+                                        onChange={(e) => {
+                                            if (isEditMode) {
+                                                agendamentoData = { ...agendamentoData, tel: e.target.value };
+                                            } else {
+                                                tel = e.target.value;
+                                            }
+                                        }}
+                                    />
+                                    <input
+                                        type="tel"
+                                        placeholder="Celular"
+                                        value={isEditMode ? agendamentoData.cel : cel}
+                                        onChange={(e) => {
+                                            if (isEditMode) {
+                                                agendamentoData = { ...agendamentoData, cel: e.target.value };
+                                            } else {
+                                                cel = e.target.value;
+                                            }
+                                        }}
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="CNS"
+                                        value={isEditMode ? agendamentoData.cns : cns}
+                                        onChange={(e) => {
+                                            if (isEditMode) {
+                                                agendamentoData = { ...agendamentoData, cns: e.target.value };
+                                            } else {
+                                                cns = e.target.value;
+                                            }
+                                        }}
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="CPF"
+                                        value={isEditMode ? agendamentoData.cpf : cpf}
+                                        onChange={(e) => {
+                                            if (isEditMode) {
+                                                agendamentoData = { ...agendamentoData, cpf: e.target.value };
+                                            } else {
+                                                cpf = e.target.value;
+                                            }
+                                        }}
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Sexo"
+                                        value={isEditMode ? agendamentoData.sexo : sexo}
+                                        onChange={(e) => {
+                                            if (isEditMode) {
+                                                agendamentoData = { ...agendamentoData, sexo: e.target.value };
+                                            } else {
+                                                sexo = e.target.value;
+                                            }
+                                        }}
+                                    />
+                                    <input
+                                        type="date"
+                                        placeholder="Data de Nascimento"
+                                        value={isEditMode ? agendamentoData.dataNasc : dataNasc}
+                                        onChange={(e) => {
+                                            if (isEditMode) {
+                                                agendamentoData = { ...agendamentoData, dataNasc: e.target.value };
+                                            } else {
+                                                dataNasc = e.target.value;
+                                            }
+                                        }}
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Endereço"
+                                        value={isEditMode ? agendamentoData.endereco : endereco}
+                                        onChange={(e) => {
+                                            if (isEditMode) {
+                                                agendamentoData = { ...agendamentoData, endereco: e.target.value };
+                                            } else {
+                                                endereco = e.target.value;
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                <div className={styles.botao}>
+                                    <button onClick={isEditMode ? () => handleSaveUser(agendamentoData) : handleSubmit}>
+                                        {isEditMode ? 'Salvar' : 'Adicionar'}
+                                    </button>
+                                    <p onClick={() => setMostrarModal(false)}>Cancelar</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                
+
                 )}
                 {mostrarModal && (
                     <div className={styles.modal}>
@@ -598,43 +596,33 @@ export function Agendamentos() {
                                 <div className={styles.inputcontainer}>
                                     <input
                                         type="text"
-                                    placeholder="Digite o nome do paciente"                                        
-                                        value={agendamentoData.nome_paciente}
-                                        onChange={(e) => {setAgendamentoData({ ...agendamentoData, nome_paciente: e.target.value });
-                                        }}
+                                        placeholder="Digite o nome do paciente"
+                                        defaultValue={agendamentoData.nome_paciente}
                                     />
                                     <input
                                         type="text"
                                         placeholder="Digite o nome do medico"
-                                        value={agendamentoData.nome_medico}
-                                        onChange={(e) => {
-                                                setAgendamentoData({ ...agendamentoData, nome_medico: e.target.value });
-                                        }}
+                                        defaultValue={agendamentoData.nome_medico}
+
                                     />
                                 </div>
                                 <input
                                     type="date"
                                     placeholder="Digite seu CPF"
-                                    value={agendamentoData.data}
-                                    onChange={(e) => {
-                                            setAgendamentoData({ ...agendamentoData, data: e.target.value });
-                                    }}
+                                    defaultValue={agendamentoData.data}
+
                                 />
                                 <input
                                     type="text"
                                     placeholder="Digite sua especialização"
-                                    value={agendamentoData.especialidade}
-                                    onChange={(e) => {
-                                            setAgendamentoData({ ...agendamentoData, especialidade: e.target.value });
-                                    }}
+                                    defaultValue={agendamentoData.especialidade}
+
                                 />
                                 <input
                                     type="time"
-                                    placeholder="Digite a hora da consulta"
-                                    value={agendamentoData.hora}
-                                    onChange={(e) => {
-                                            setAgendamentoData({ ...agendamentoData, hora: e.target.value });
-                                    }}
+                                    placeholder="Digite a horario da consulta"
+                                    defaultValue={agendamentoData.horario}
+
                                 />
                             </div>
                             <div className={styles.botao}>
