@@ -22,7 +22,7 @@ export default function ModalEditar(props) {
         console.log('1')
 
         //fazendo a requisição
-        const response = await fetch('http://localhost:8080/editarAgendamento/' + props.dados.id_agendamento, {
+        const response = await fetch('https://lonely-puce-crab.cyclic.app/editarAgendamento/' + props.dados.id_agendamento, {
             method: 'PUT',
             headers: {
                 "Authorization": "Bearer " + accessToken,
