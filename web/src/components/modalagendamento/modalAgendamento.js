@@ -11,11 +11,7 @@ export function ModalAgendamento({ mostrarModal, onClose }) {
 
     // Função para lidar com o envio do agendamento
     const handleAgendar = () => {
-        // Coloque aqui a lógica para enviar o agendamento para o servidor
-        // Isso pode envolver uma chamada de API
-        // Certifique-se de validar e tratar erros, se aplicável
 
-        // Após o agendamento ser criado com sucesso, feche o modal
         onClose();
     };
 

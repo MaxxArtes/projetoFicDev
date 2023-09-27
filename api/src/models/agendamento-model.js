@@ -29,6 +29,10 @@ class AgendamentoModel extends Model {
         type: DataTypes.TEXT,
         allowNull: false
       },
+      id_paciente: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      }
     }, {
       tableName: 'agendamentos',
       modelName: 'agendamento',

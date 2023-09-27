@@ -25,6 +25,7 @@ export function Usuarios() {
     const [userData, setUserData] = useState(null);
     const [editPassword, setEditPassword] = useState('');
 
+
     const handleVoltarParaPaginaInicial = () => {
         navigate('/PaginaInicial');
     };

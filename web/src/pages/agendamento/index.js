@@ -3,31 +3,19 @@ import { api } from '../../services/api';
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
 import ModalEditar from '../../components/modalEditar';
+import useAgendamento from '../../hook/useAgendamento';
+// import usePagination from '../../hook/usePagination';
 
 export function Agendamentos() {
-    let [agendamentos, setAgendamentos] = React.useState([]);
-    let [totalPages, setTotalPages] = React.useState(0);
-    const [page, setPage] = React.useState(1);
     const navigate = useNavigate();
-    let [mostrarModal, setMostrarModal] = React.useState(false);
-    let [query, setQuery] = React.useState("");
-    let [agendamentoData, setAgendamentoData] = React.useState(null);
-    let nomeMedico = '';
-    let data = '';
-    let especialidade = '';
-    let horario = '';
-    let [isEditMode, setIsEditMode] = React.useState(false);
-    let nome = '';
-    let selectedAgendamentos = [];
-    let nomePaciente = '';
-    let email = '';
-    let tel = '';
-    let cel = '';
-    let cns = '';
-    let cpf = '';
-    let sexo = '';
-    let dataNasc = '';
-    let endereco = '';
+    const {
+        agendamentos,setAgendamentos,totalPages,setTotalPages,
+        page,setPage,mostrarModal,setMostrarModal,query,setQuery,setAgendamentoData,isEditMode,setIsEditMode,
+           
+    } = useAgendamento();
+    let {
+        endereco,nomeMedico,especialidade,data,agendamentoData,dataNasc,sexo,nomePaciente,email,tel,cel,cns,cpf,nome,horario,selectedAgendamentos
+    } = useAgendamento();
 
     const [pacientes, setPacientes] = React.useState([]);
     const [totalPagesPacientes, setTotalPagesPacientes] = React.useState(0);
@@ -95,7 +83,7 @@ export function Agendamentos() {
             setAgendamentos(agendamentoData.data);
 
             const calculatedTotalPages = Math.ceil(agendamentoData.count / 10);
-            totalPages = calculatedTotalPages;
+            setTotalPages(calculatedTotalPages);
         }
 
         else if (!query) {
@@ -104,7 +92,7 @@ export function Agendamentos() {
             setAgendamentos(agendamentoData.data);
 
             const calculatedTotalPages = Math.ceil(agendamentoData.count / 10);
-            totalPages = calculatedTotalPages;
+            setTotalPages(calculatedTotalPages);
         }
 
 
@@ -159,7 +147,7 @@ export function Agendamentos() {
                 setAgendamentos(agendamentoData.data);
 
                 const calculatedTotalPages = Math.ceil(agendamentoData.count / 10);
-                totalPages = calculatedTotalPages;
+                setTotalPages(calculatedTotalPages);
             } else {
                 console.error('Erro ao excluir agendamento');
             }
@@ -229,7 +217,7 @@ export function Agendamentos() {
                 setAgendamentos(agendamentoData.data);
 
                 const calculatedTotalPages = Math.ceil(agendamentoData.count / 10);
-                totalPages = calculatedTotalPages;
+                setTotalPages(calculatedTotalPages);
             } else {
                 console.error('Erro ao editar o usuário:', response.data);
             }

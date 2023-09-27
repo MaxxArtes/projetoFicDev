@@ -27,14 +27,13 @@ routes.delete('/deletarUsuario/:id', authMiddleware, UsuarioController.delete);
 routes.get('/listarUsuarios/:page', UsuarioController.getAll);
 routes.get('/verificarUsuarioPorEmail/:email', UsuarioController.verificarUsuarioPorEmail);
 routes.get('/buscarUsuarioPorNome/:nome', UsuarioController.buscarUsuarioPorNome);
+routes.get('/buscarMedicos', UsuarioController.totalmedicos);
 
 
 // atendimento
 routes.post('/registerAgendamento', authMiddleware, AgendamentoController.create);
-
 routes.put('/editarAgendamento/:id', authMiddleware, AgendamentoController.update);
 routes.delete('/deletarAgendamento/:id', authMiddleware, AgendamentoController.delete);
-
 routes.delete('/deletarAgendamento/:id', authMiddleware, AgendamentoController.delete);
 routes.get('/agendamentos/:page', AgendamentoController.consultarAgendamentosEndpoint);
 

@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const { UsuarioModel } = require('../models/usuario-model');
 const salt = bcrypt.genSaltSync(10);
 const { check, validationResult } = require('express-validator')
-const { Op } = require('sequelize');
+const { Op, where } = require('sequelize');
 const paginate = require('../utils/paginacao');
 
 
@@ -119,6 +119,18 @@ class UsuarioController {
       const result = await UsuarioModel.sequelize.query("SELECT cargo, COUNT(*) FROM usuarios GROUP BY cargo");
 
       return res.status(200).json({totalAtendentes: result[0][0], totalMedicos: result[0][1]}); 
+      
+      } catch (error) {
+      // Trate erros aqui
+      console.error(error);
+      res.status(500).send('Erro interno do servidor ', error);
+    }
+  }
+  async totalmedicos(req, res) {
+    try {
+      const result = await UsuarioModel.sequelize.query("SELECT * FROM usuarios WHERE UNACCENT(cargo) ILIKE UNACCENT('%medico%');");
+
+      return res.status(200).json(result); 
       
       } catch (error) {
       // Trate erros aqui

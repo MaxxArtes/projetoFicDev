@@ -3,7 +3,7 @@ const { AgendamentoModel } = require('../models/agendamento-model');
 
 const agendamentos = [
   {
-    "id_paciente": 1,
+    id_paciente: 1,
     nome_medico: "Dr. Anderson",
     especialidade: "Cardiologia",
     data: "2023-09-20",
@@ -11,7 +11,7 @@ const agendamentos = [
     unidade_saude: "Hospital Central"
   },
   {
-    "id_paciente": 2,
+    id_paciente: 2,
     nome_medico: "Dra. Maria",
     especialidade: "Pediatria",
     data: "2023-09-22",
@@ -19,7 +19,7 @@ const agendamentos = [
     unidade_saude: "Clinica Infantil"
   },
   {
-    "id_paciente": 3,
+    id_paciente: 3,
     nome_medico: "Dr. Silva",
     especialidade: "Ortopedia",
     data: "2023-09-25",
@@ -27,7 +27,7 @@ const agendamentos = [
     unidade_saude: "Hospital Ortopédico"
   },
   {
-    "id_paciente": 4,
+    id_paciente: 4,
     nome_medico: "Dra. Garcia",
     especialidade: "Dermatologia",
     data: "2023-09-26",
@@ -35,7 +35,7 @@ const agendamentos = [
     unidade_saude: "Clínica Dermatológica"
   },
   {
-    "id_paciente": 5,
+    id_paciente: 5,
     nome_medico: "Dr. Souza",
     especialidade: "Oftalmologia",
     data: "2023-09-27",
@@ -43,7 +43,7 @@ const agendamentos = [
     unidade_saude: "Clínica de Oftalmologia"
   },
   {
-    "id_paciente": 6,
+    id_paciente: 6,
     nome_medico: "Dra. Lima",
     especialidade: "Ginecologia",
     data: "2023-09-28",
@@ -51,7 +51,7 @@ const agendamentos = [
     unidade_saude: "Hospital da Mulher"
   },
   {
-    "id_paciente": 7,
+    id_paciente: 7,
     nome_medico: "Dr. Pereira",
     especialidade: "Neurologia",
     data: "2023-09-29",
@@ -59,7 +59,7 @@ const agendamentos = [
     unidade_saude: "Clínica Neurológica"
   },
   {
-    "id_paciente": 8,
+    id_paciente: 8,
     nome_medico: "Dra. Santos",
     especialidade: "Oncologia",
     data: "2023-09-30",
@@ -67,7 +67,7 @@ const agendamentos = [
     unidade_saude: "Hospital do Câncer"
   },
   {
-    "id_paciente": 9,
+    id_paciente: 9,
     nome_medico: "Dr. Almeida",
     especialidade: "Urologia",
     data: "2023-10-03",
@@ -75,7 +75,7 @@ const agendamentos = [
     unidade_saude: "Clínica Urológica"
   },
   {
-    "id_paciente": 10,
+    id_paciente: 10,
     nome_medico: "Dra. Costa",
     especialidade: "Psiquiatria",
     data: "2023-10-05",

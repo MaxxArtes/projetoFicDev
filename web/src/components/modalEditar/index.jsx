@@ -1,10 +1,34 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import styles from './modalEditar.module.css';
+import { api } from'../../services/api';
+
 
 export default function ModalEditar(props) {
     const [open, setOpen] = useState(false)
     const { register, handleSubmit } = useForm()
+    const [medicoSelecionado, setMedicoSelecionado] = React.useState('');
+    const [medicos, setMedicos] = React.useState([]);
+
+    
+
+     async function buscarMedicos () {
+        try {
+            const response = await api.get('/buscarMedicos'); // Faz a solicitação GET para a rota
+            const medicoData = response.data[0];
+            setMedicos(medicoData);
+            if (!medicoData) {
+                throw new Error('Não foi possível buscar os médicos.');        
+            }
+            console.log("MEDICOS", medicoData);
+        } catch (error) {
+            console.error('Erro ao buscar médicos:', error);
+        }
+
+    }
+
+    
+
 
 
     async function editarAgendamento(data) {
@@ -12,7 +36,7 @@ export default function ModalEditar(props) {
         // configurando as informacoes que vao ser enviadas
         const AgendamentoData = {
             nome: data.nome_paciente,
-            nomeMedico: data.nome_medico,
+            nome_medico: medicoSelecionado,
             especialidade: data.especialidade,
             data: data.data,
             horario: data.horario,
@@ -22,17 +46,15 @@ export default function ModalEditar(props) {
         console.log('1')
 
         //fazendo a requisição
-        const response = await fetch('https://lonely-puce-crab.cyclic.app/editarAgendamento/' + props.dados.id_agendamento, {
-            method: 'PUT',
+        const response = await api.put(`/editarAgendamento/${props.dados.id_agendamento}`, AgendamentoData , {
             headers: {
-                "Authorization": "Bearer " + accessToken,
-                "Content-Type": "application/json"
+                Authorization: `Bearer ${accessToken}`,
             },
-            body: JSON.stringify(AgendamentoData)
+            
         })
 
         //Aguardando o retorno
-        if (response.ok) {
+        if (response) {
             alert(`Agendamento do id ${props.dados.id_agendamento} editado com sucesso`)
             props.fetchAgendamentos()
             setOpen(false)
@@ -48,7 +70,8 @@ export default function ModalEditar(props) {
 
             <button onClick={() => {
                 setOpen(true)
-            }}>Editar</button>
+                buscarMedicos()
+            }}><img alt="Editar" src="edit.png" /></button>
 
             {
 
@@ -67,10 +90,17 @@ export default function ModalEditar(props) {
                                     disabled={true}
                                 />
                                 <select
-                                    defaultValue={props.dados.nome_medico}
-                                    {...register('nome_medico')}
-
-                                />
+                                    id="medicoSelect"
+                                    value={medicoSelecionado}
+                                    onChange={(e) => setMedicoSelecionado(e.target.value)}
+                                >
+                                    <option value="">Selecione um médico</option>
+                                    {medicos.map((medico, index) => (
+                                        <option key={index} value={medico.nome}>
+                                            {medico.nome}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                             <input
                                 type="date"
