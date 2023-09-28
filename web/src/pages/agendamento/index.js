@@ -17,11 +17,30 @@ export function Agendamentos() {
     let {
         endereco, nomeMedico, especialidade, data, agendamentoData, dataNasc, sexo, nomePaciente, email, tel, cel, cns, cpf, nome, horario, selectedAgendamentos
     } = useAgendamento();
+    
 
     const [pacientes, setPacientes] = React.useState([]);
     const [totalPagesPacientes, setTotalPagesPacientes] = React.useState(0);
     const [pagePacientes, setPagePacientes] = React.useState(1);
     const [mostrarModalPacientes, setMostrarModalPacientes] = React.useState(false);
+    const [queryPacientes, setQueryPacientes] = React.useState();
+    let selectedPacientes = [];
+
+    
+    function formatarData(data) {
+        const dataObj = new Date(data);
+        
+        // Verifica se a data é válida
+        if (isNaN(dataObj.getTime())) {
+          return "Data inválida";
+        }
+      
+        const dia = String(dataObj.getDate()).padStart(2, '0');
+        const mes = String(dataObj.getMonth() + 1).padStart(2, '0'); // Note que os meses são indexados a partir de 0
+        const ano = dataObj.getFullYear();
+      
+        return `${dia}/${mes}/${ano}`;
+      }
 
     useEffect(() => {
         const fetchPacientes = async () => {
@@ -94,7 +113,34 @@ export function Agendamentos() {
             console.error('Erro ao pesquisar o usuário:', query);
         }
     };
+    async function handlePesquisarPcientes() {
+        if (queryPacientes) {
+            console.log("queryPacientes: ", queryPacientes);
+            selectedPacientes = selectedPacientes.filter(id => id !== pacientesData.id_paciente);
+            const usersResponse = await api.get(`/listarPacientes/${pagePacientes}?nome=${queryPacientes}`);
+            console.log(usersResponse)
+            const pacientesData = usersResponse.data;
+            setAgendamentos(pacientesData.data);
 
+            const calculatedTotalPages = Math.ceil(pacientesData.count / 10);
+            setTotalPagesPacientes(calculatedTotalPages);
+        }
+
+        else if (!queryPacientes) {
+            const usersResponse = await api.get(`/listarPacientes/${page}`);
+            const pacientesData = usersResponse.data;
+            setPacientes(pacientesData.data);
+
+            const calculatedTotalPages = Math.ceil(pacientesData.count / 10);
+            setTotalPagesPacientes(calculatedTotalPages);
+        }
+
+
+        else {
+            console.error('Erro ao pesquisar o usuário:', queryPacientes);
+        }
+    };
+    
     async function aumentar() {
         if (page < totalPages) {
             setPage(page + 1);
@@ -323,7 +369,7 @@ export function Agendamentos() {
                                         <td>{agendamentoItem.nome_paciente}</td>
                                         <td>{agendamentoItem.nome_medico}</td>
                                         <td>{agendamentoItem.especialidade}</td>
-                                        <td>{agendamentoItem.data}</td>
+                                        <td>{(formatarData(agendamentoItem.data))}</td>
                                         <td>{agendamentoItem.horario}</td>
                                         <td>
                                             <ModalEditar dados={agendamentoItem} fetchAgendamentos={fetchAgendamentos} />
@@ -361,11 +407,11 @@ export function Agendamentos() {
                                 <input
                                     className={styles.formControl}
                                     placeholder="Pesquisar"
-                                    value={query}
-                                    onChange={(e) => setQuery(e.target.value)}
+                                    value={queryPacientes}
+                                    onChange={(e) => setQueryPacientes(e.target.value)}
                                 />
 
-                                <button onClick={handlePesquisar} className={styles.button}>
+                                <button onClick={handlePesquisarPcientes} className={styles.button}>
                                     Pesquisar
                                 </button>
                                 <button className={styles.button}>
@@ -402,7 +448,7 @@ export function Agendamentos() {
                                         <td>{pacienteItem.CNS}</td>
                                         <td>{pacienteItem.CPF}</td>
                                         <td>{pacienteItem.sexo}</td>
-                                        <td>{pacienteItem.data_nasc}</td>
+                                        <td>{(formatarData(pacienteItem.data_nasc))}</td>
                                         <td>{pacienteItem.endereco}</td>
                                         <td className={styles.agendar}>
                                             <ModalSave dados={pacienteItem} fetchAgendamentos={fetchAgendamentos} />
