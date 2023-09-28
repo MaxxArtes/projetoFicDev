@@ -6,11 +6,14 @@ const { ConsultaModel } = require('../models/consulta-model');
 class ConsultaController {
   async create(req, res) {
     try {
-      const { historico_clinico, descricao, paciente } = req.body;
+      const { historico_clinico, descricao, id_paciente, receita} = req.body;
+      console.log("dsfsdfsdfsdfsd", historico_clinico, descricao, id_paciente, receita)
       const consulta = await ConsultaModel.create({
+        id_paciente,
+        receita,
         historico_clinico,
         descricao,
-        paciente
+        paciente:true
       });
       return res.status(201).json(consulta);
     } catch (error) {

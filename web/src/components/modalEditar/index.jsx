@@ -27,10 +27,6 @@ export default function ModalEditar(props) {
 
     }
 
-
-
-
-
     async function adicionarAgendamento(data) {
 
         // configurando as informacoes que vao ser enviadas

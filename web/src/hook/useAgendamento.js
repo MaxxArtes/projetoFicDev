@@ -4,7 +4,6 @@ function useAgendamento() {
   const [agendamentos, setAgendamentos] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(1);
-  const [mostrarModal, setMostrarModal] = useState(false);
   const [query, setQuery] = useState('');
   const [agendamentoData, setAgendamentoData] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -38,8 +37,6 @@ function useAgendamento() {
     setTotalPages,
     page,
     setPage,
-    mostrarModal,
-    setMostrarModal,
     query,
     setQuery,
     agendamentoData,

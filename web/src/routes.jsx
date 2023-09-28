@@ -4,6 +4,7 @@ import { PaginaInicial } from './pages/servicos/index.jsx';
 import { AuthContextProvider } from './context/authcontext';
 import { Usuarios } from './pages/adm/index.jsx';
 import { Agendamentos } from './pages/agendamento/index.js';
+import { Consultas } from './pages/consulta/index.jsx';
 import { ModalAgendamento } from './components/modalagendamento/modalAgendamento.js';
 import { RegisterAgendamento } from './components/registeragendamento/registerAgendamente.js';
 import { ModalCadastrarPaciente } from './components/modalpaciente/modalPaciente.js';
@@ -42,6 +43,12 @@ export function Navigations() {
                         element={
                             <PrivateRoute>
                                 <Agendamentos />
+                            </PrivateRoute>
+                        } />
+                    <Route path="/Consultas"
+                        element={
+                            <PrivateRoute>
+                                <Consultas />
                             </PrivateRoute>
                         } />
                     <Route path="/ModalAgendamento" element={<ModalAgendamento />} />

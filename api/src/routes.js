@@ -41,6 +41,7 @@ routes.get('/agendamentos/:page', AgendamentoController.consultarAgendamentosEnd
 routes.post('/registrarProntuario', authMiddleware, ConsultaController.create);
 routes.put('/editarProntuario', authMiddleware, ConsultaController.update);
 routes.delete('/deletarProntuario/:id', authMiddleware, ConsultaController.delete);
+routes.get('/listarConsultas/:page', authMiddleware, ConsultaController.getAll);
 
 // paciente
 routes.post('/registrarPaciente', authMiddleware, PacienteController.create);

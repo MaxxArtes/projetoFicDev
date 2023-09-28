@@ -145,7 +145,9 @@ export function PaginaInicial() {
                 <Link to="/Agendamentos">
                     <button className={styles.rectangle}>atendimento</button>
                 </Link>
+                <Link to="/Consultas">
                 <button className={styles.rectangle1}>consulta</button>
+                </Link>
                 <Link to="/Usuarios/">
                     <button className={styles.rectangle}>adm</button>
                 </Link>
