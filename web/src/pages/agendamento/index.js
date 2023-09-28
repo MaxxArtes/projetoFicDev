@@ -3,18 +3,19 @@ import { api } from '../../services/api';
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
 import ModalEditar from '../../components/modalEditar';
+import ModalSave from '../../components/modalSave';
 import useAgendamento from '../../hook/useAgendamento';
 // import usePagination from '../../hook/usePagination';
 
 export function Agendamentos() {
     const navigate = useNavigate();
     const {
-        agendamentos,setAgendamentos,totalPages,setTotalPages,
-        page,setPage,mostrarModal,setMostrarModal,query,setQuery,setAgendamentoData,isEditMode,setIsEditMode,
-           
+        agendamentos, setAgendamentos, totalPages, setTotalPages,
+        page, setPage, mostrarModal, setMostrarModal, query, setQuery, setAgendamentoData, isEditMode, setIsEditMode,
+
     } = useAgendamento();
     let {
-        endereco,nomeMedico,especialidade,data,agendamentoData,dataNasc,sexo,nomePaciente,email,tel,cel,cns,cpf,nome,horario,selectedAgendamentos
+        endereco, nomeMedico, especialidade, data, agendamentoData, dataNasc, sexo, nomePaciente, email, tel, cel, cns, cpf, nome, horario, selectedAgendamentos
     } = useAgendamento();
 
     const [pacientes, setPacientes] = React.useState([]);
@@ -63,13 +64,6 @@ export function Agendamentos() {
         navigate('/');
     };
 
-
-    const handleregistrarClick = (pacienteItem) => {
-        console.log(pacienteItem)
-        setIsEditMode(false);
-        setAgendamentoData(pacienteItem);
-        setMostrarModal(true);
-    };
     const handleregistrarPacientes = () => {
         setMostrarModalPacientes(true);
     };
@@ -326,14 +320,6 @@ export function Agendamentos() {
                             <tbody>
                                 {agendamentos.map((agendamentoItem, index) => (
                                     <tr key={index}>
-                                        {/* <td className={styles.acoes}>
-                                    <input className={styles.tablevalues}
-                                        type="checkbox"
-                                        onChange={() => handleAgendamentoSelection(agendamentoItem.id_agendamento)}
-                                        checked={selectedAgendamentos.includes(agendamentoItem.id_agendamento)}
-                                    />
-                                </td> */}
-                                        {/* <td>{agendamentoItem.id_agendamento} / {agendamentoItem.id_paciente}</td> */}
                                         <td>{agendamentoItem.nome_paciente}</td>
                                         <td>{agendamentoItem.nome_medico}</td>
                                         <td>{agendamentoItem.especialidade}</td>
@@ -419,7 +405,7 @@ export function Agendamentos() {
                                         <td>{pacienteItem.data_nasc}</td>
                                         <td>{pacienteItem.endereco}</td>
                                         <td className={styles.agendar}>
-                                            <button onClick={() => handleregistrarClick(pacienteItem)} className={styles.button}>agendar</button>
+                                            <ModalSave dados={pacienteItem} fetchAgendamentos={fetchAgendamentos} />
                                         </td>
                                         <td>
                                             <button>

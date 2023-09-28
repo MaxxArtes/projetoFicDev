@@ -4,11 +4,15 @@ import styles from './modalEditar.module.css';
 import { api } from '../../services/api';
 
 
-export default function ModalEditar(props) {
+export default function ModalSave(props) {
+    console.log(props);
     const [open, setOpen] = useState(false)
     const { register, handleSubmit } = useForm()
     const [medicoSelecionado, setMedicoSelecionado] = React.useState('');
     const [medicos, setMedicos] = React.useState([]);
+    const [data, setData] = React.useState('');
+    const [especialidade, setEspecialidade] = React.useState('');
+    const [hora, setHora] = React.useState('');
 
 
 
@@ -31,22 +35,22 @@ export default function ModalEditar(props) {
 
 
 
-    async function adicionarAgendamento(data) {
+    async function editarAgendamento(params) {
 
         // configurando as informacoes que vao ser enviadas
         const AgendamentoData = {
-            nome: data.nome_paciente,
+            nome: params.nome,
             nome_medico: medicoSelecionado,
-            especialidade: data.especialidade,
-            data: data.data,
-            horario: data.horario,
+            especialidade: especialidade,
+            data: data,
+            horario: hora,
         };
 
         const accessToken = sessionStorage.getItem("token");
         console.log('1')
 
         //fazendo a requisição
-        const response = await api.post(`/registerAgendamento/`, AgendamentoData, {
+        const response = await api.put(`/editarAgendamento/${props.dados.id_paciente}`, AgendamentoData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -71,22 +75,23 @@ export default function ModalEditar(props) {
             <button onClick={() => {
                 setOpen(true)
                 buscarMedicos()
-            }}><img alt="Editar" src="edit.png" /></button>
+            }}>agendar</button>
 
             {
 
                 open &&
 
                 <div className={styles.modal}>
-                    <form onSubmit={handleSubmit(adicionarAgendamento)} className={styles.adicionar}>
+                    <form onSubmit={handleSubmit(editarAgendamento)} className={styles.adicionar}>
                         <div className={styles.contmodal}>
-                            <h4>Adicionar Agendamento</h4>
+                            <h4>Editar Agendamento</h4>
                             <div className={styles.inputcontainer}>
                                 <input
                                     type="text"
                                     placeholder="Digite o nome do paciente"
-                                    defaultValue={props.dados.nome_paciente}
+                                    defaultValue={props.dados.nome}
                                     {...register('nome_paciente')}
+                                    disabled={true}
                                 />
                                 <select
                                     id="medicoSelect"
@@ -103,21 +108,17 @@ export default function ModalEditar(props) {
                             </div>
                             <input
                                 type="date"
-                                defaultValue={props.dados.data}
-                                {...register('data')}
+                                onChange={(e) => setData(e.target.value)}
                             />
                             <input
                                 type="text"
                                 placeholder="Digite sua especialização"
-                                defaultValue={props.dados.especialidade}
-                                {...register('especialidade')}
-
+                                onChange={(e) => setEspecialidade(e.target.value)}
                             />
                             <input
                                 type="time"
                                 placeholder="Digite a horario da consulta"
-                                defaultValue={props.dados.horario}
-                                {...register('horario')}
+                                onChange={(e) => setHora(e.target.value)}
                             />
                         </div>
                         <div className={styles.botao}>
