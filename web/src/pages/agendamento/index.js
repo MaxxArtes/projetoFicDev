@@ -7,7 +7,7 @@ import ModalSave from '../../components/modalSave';
 import useAgendamento from '../../hook/useAgendamento';
 import ModalSavePacientes from '../../components/modalSavepacientes/index.jsx';
 import ModalEditPacientes from '../../components/modalEditpacientes/index.jsx';
-
+import ModalPerfil from '../../components/modalPerfil';
 // import usePagination from '../../hook/usePagination';
 
 export function Agendamentos() {
@@ -328,8 +328,8 @@ export function Agendamentos() {
                         </div>
                     </div>
                     <div className={styles.navdiv}>
+                        <ModalPerfil dados={agendamentoData} />
                         <img onClick={handleVoltarParaPaginaInicial} alt="voltar" src="voltar.png" />
-                        <img alt="perfil" src="perfil.png" />
                         <img onClick={handleSair} alt="sair" src="sair.png" />
                     </div>
                 </header>

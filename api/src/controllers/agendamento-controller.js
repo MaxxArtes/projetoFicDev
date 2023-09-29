@@ -9,13 +9,14 @@ require('dotenv').config();
 class AgendamentoController {
   async create(req, res) {
     try {
-      const { nome_medico, especialidade, data, horario, unidade_saude } = req.body;
+      const { nome_medico, especialidade, data, horario, unidade_saude, id_paciente } = req.body;
       const agendamento = await AgendamentoModel.create({
         nome_medico,
         especialidade,
         data,
         horario,
-        unidade_saude
+        unidade_saude,
+        id_paciente
       });
       return res.status(201).json(agendamento);
     } catch (error) {

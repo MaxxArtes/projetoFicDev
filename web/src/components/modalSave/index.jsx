@@ -13,6 +13,7 @@ export default function ModalSave(props) {
     const [data, setData] = React.useState('');
     const [especialidade, setEspecialidade] = React.useState('');
     const [hora, setHora] = React.useState('');
+    const [unidadeSaude, setUnidadeSaude] = React.useState('');
 
 
 
@@ -39,18 +40,19 @@ export default function ModalSave(props) {
 
         // configurando as informacoes que vao ser enviadas
         const AgendamentoData = {
-            nome: params.nome,
             nome_medico: medicoSelecionado,
             especialidade: especialidade,
             data: data,
             horario: hora,
+            unidade_saude: unidadeSaude,
+            id_paciente: props.dados.id_paciente
         };
 
         const accessToken = sessionStorage.getItem("token");
         console.log('1')
 
         //fazendo a requisição
-        const response = await api.put(`/editarAgendamento/${props.dados.id_paciente}`, AgendamentoData, {
+        const response = await api.post(`/registerAgendamento`, AgendamentoData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -116,6 +118,11 @@ export default function ModalSave(props) {
                                 onChange={(e) => setEspecialidade(e.target.value)}
                             />
                             <input
+                                type="text"
+                                placeholder="Digite a unidade de saude"
+                                onChange={(e) => setUnidadeSaude(e.target.value)}
+                            />
+                            <input
                                 type="time"
                                 placeholder="Digite a horario da consulta"
                                 onChange={(e) => setHora(e.target.value)}
@@ -135,3 +142,5 @@ export default function ModalSave(props) {
         </>
     )
 }
+
+

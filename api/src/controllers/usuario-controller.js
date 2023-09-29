@@ -39,10 +39,29 @@ class UsuarioController {
     }
   }
 
+  async perfil(req, res) {
+    try {
+      const { token } = req.params;
+      const result = jwt.verify( token.replace(/"/g, ""), process.env.SECRET);
+      console.log("result id",result)
+       const usuario = await UsuarioModel.sequelize.query(`Select * from usuarios where id_usuario = ${result.id}` );
+      // console.log("seaesaeasesa ", usuario)
+      return res.status(200).json(usuario);
+
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { nome, password, cpf, cargo, especialidade, email } = req.body;
+      const { nome, password, rePassword, cpf, cargo, especialidade, email } = req.body;
+
+      if(password !== rePassword){
+        return res.status(400).json({ error: 'As senhas não conferem' });
+      }
 
       let passwordHash;
       if (password) {
@@ -200,7 +219,7 @@ class UsuarioController {
       if (!bcrypt.compareSync(password, usuario.password)) {
         return res.status(401).json({ error: 'Senha invalida' });
       }
-      const token = jwt.sign({ id: usuario.id }, process.env.SECRET, {
+      const token = jwt.sign({ id: usuario.id_usuario }, process.env.SECRET, {
         expiresIn: 86400
       });
       return res.status(200).json({ token });

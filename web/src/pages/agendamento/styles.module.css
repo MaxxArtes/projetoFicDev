@@ -1,21 +1,4 @@
-.ATENDIMENTO {
-  align-items: stretch;
-  justify-content: center;
-  background-color: #b8dde0;
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  height: 80%;
-}
 
-.geral {
-  align-items: stretch;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-
-}
 
 .modal {
   position: fixed;

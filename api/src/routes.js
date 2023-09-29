@@ -28,6 +28,7 @@ routes.get('/listarUsuarios/:page', UsuarioController.getAll);
 routes.get('/verificarUsuarioPorEmail/:email', UsuarioController.verificarUsuarioPorEmail);
 routes.get('/buscarUsuarioPorNome/:nome', UsuarioController.buscarUsuarioPorNome);
 routes.get('/buscarMedicos', UsuarioController.totalmedicos);
+routes.get('/perfil/:token', UsuarioController.perfil);
 
 
 // atendimento

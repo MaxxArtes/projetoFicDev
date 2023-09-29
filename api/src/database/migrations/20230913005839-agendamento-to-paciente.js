@@ -11,7 +11,6 @@ module.exports = {
         key: 'id_paciente'
       },
       onUpdate: 'CASCADE',
-      onDelete: 'CASCADE'
     });
 
   },
