@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
+import ChartComponent from '../../components/newchart';
 // import React, { PureComponent } from 'react';
 // import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -39,7 +40,7 @@ export function Usuarios() {
         setMostrarModal(true);
     };
 
-    async function aumentar ()  {
+    async function aumentar() {
         if (page < totalPages) {
             setPage(page + 1);
         }
@@ -276,12 +277,12 @@ export function Usuarios() {
             <footer>
                 <div className={styles.pagination}>
                     <button onClick={diminuir} className={styles.pageNumber}>
-                            
+
                         <img className={styles.circledRight} alt="<" src="./Circled1.png" />
                     </button>
                     <button className={styles.pageNumber1}>{page}</button>
                     <button onClick={aumentar} className={styles.pageNumber}>
-                        
+
                         <img className={styles.circledRight} alt=">" src='./Circled.png' />
                     </button>
                 </div>
@@ -391,9 +392,14 @@ export function Usuarios() {
                     </div>
                 </div>
             )}
-            <h1>dashboards</h1>
+            {/* <h1>dashboards</h1>
             <h1>total de Atendentes {totalAtendentes}</h1>
-            <h1>total de Medicos {totalMedicos}</h1>
+            <h1>total de Medicos {totalMedicos}</h1> */}
+            <div className="App">
+                <h1>Meu Gráfico de Pizza</h1>
+                <ChartComponent />
+            </div>
+
         </div>
     );
 }

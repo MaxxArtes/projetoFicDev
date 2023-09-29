@@ -328,7 +328,7 @@ export function Agendamentos() {
                         </div>
                     </div>
                     <div className={styles.navdiv}>
-                        <ModalPerfil dados={agendamentoData} />
+                        <ModalPerfil/>
                         <img onClick={handleVoltarParaPaginaInicial} alt="voltar" src="voltar.png" />
                         <img onClick={handleSair} alt="sair" src="sair.png" />
                     </div>

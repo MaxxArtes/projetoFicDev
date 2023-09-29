@@ -9,7 +9,7 @@ export default function ModalPerfil() {
     const { handleSubmit } = useForm()
     const [nome, setNome] = React.useState('');
     const [email, setEmail] = React.useState('');
-    const [senha, setSenha] = React.useState('');
+    const [senha1, setSenha1] = React.useState('');
     const [reSenha, setReSenha] = React.useState('');
     const [users, setUsers] = React.useState([]);
 
@@ -18,7 +18,9 @@ export default function ModalPerfil() {
             try {
                 const accessToken = sessionStorage.getItem("token");
                 const response = await api.get(`perfil/${accessToken}`);
-                setUsers(response.data);
+
+                console.log("reponse: ",response.data[0][0]);
+                setUsers(response.data[0][0]);
             } catch (error) {
                 console.error('Erro ao buscar usuário', error);
             }
@@ -29,17 +31,15 @@ export default function ModalPerfil() {
 
 
     async function editarPerfil(params) {
-
         // configurando as informacoes que vao ser enviadas
         const AgendamentoData = {
             nome: nome ? nome : users.nome,
-            password: senha ? senha : users.password,
+            password: senha1 ? senha1 : users.password,
             rePassword: reSenha ? reSenha : users.password,
             email: email ? email : users.email
         };
 
         const accessToken = sessionStorage.getItem("token");
-        console.log('55555', nome, senha, reSenha, email, users.id_usuario)
 
         //fazendo a requisição
         const response = await api.put(`/editarUsuario/${users.id_usuario}`, AgendamentoData, {
@@ -52,6 +52,7 @@ export default function ModalPerfil() {
         //Aguardando o retorno
         if (response) {
             setOpen(false)
+            window.location.reload()
             return
         }
 
@@ -61,11 +62,10 @@ export default function ModalPerfil() {
 
     return (
         <>
-            
             <div onClick={() => {
+                
                 fetchUsers();
                 setOpen(true)
-                console.log('55555', nome, senha, reSenha, email, users.id_usuario)
             }}><img alt="perfil" src="perfil.png" /></div>
 
             {
@@ -89,7 +89,7 @@ export default function ModalPerfil() {
                                     onChange={e => setEmail(e.target.value)} />
                                 <input className={styles.input}
                                     type="password"
-                                    onChange={e => setSenha(e.target.value)}
+                                    onChange={e => setSenha1(e.target.value)}
                                 />
                                 <input className={styles.input}
                                  type="password"
