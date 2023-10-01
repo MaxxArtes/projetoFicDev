@@ -20,6 +20,7 @@ export default function ModalSavePacientes(props) {
     const [sexo, setSexo] = React.useState('');
     const [dataNasc, setDataNasc] = React.useState('');
     const [endereco, setEndereco] = React.useState('');
+    const [id, setId] = React.useState('');
 
 
 
@@ -33,6 +34,7 @@ export default function ModalSavePacientes(props) {
                 console.log("PagePacientes: ", props.page.pagePacientes);
                 const response = await api.get(`/listarPacientes/${props.page.pagePacientes}`);
                 const pacientesData = response.data.data;
+                props.setPacientes.setPacientes(pacientesData); // Atualize o estado usando setPacientes
                 props.setPacientes.setPacientes(pacientesData); // Atualize o estado usando setPacientes
 
                 const calculatedTotalPages = Math.ceil(response.data.count / 10);
@@ -56,10 +58,10 @@ export default function ModalSavePacientes(props) {
         };
 
         const accessToken = sessionStorage.getItem("token");
-        console.log('1')
+        console.log('123', id)
 
         //fazendo a requisição
-        const response = await api.put(`/editarPacientes/${props.dados.id}`, pacientesData, {
+        const response = await api.put(`/editarPacientes/${id}`, pacientesData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -82,6 +84,7 @@ export default function ModalSavePacientes(props) {
         <>
 
             <div onClick={() => {
+                setId(props.dados.id_paciente)
                 setOpen(true)
             }}><img alt="Editar" src="edit.png" /></div>
 

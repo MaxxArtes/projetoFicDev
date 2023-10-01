@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import styles from './modalEditar.module.css';
-import { api } from '../../services/api';
+import { api } from '../../../services/api';
 
 
 export default function ModalEditar(props) {
@@ -42,7 +42,7 @@ export default function ModalEditar(props) {
         console.log('1')
 
         //fazendo a requisição
-        const response = await api.post(`/registerAgendamento/`, AgendamentoData, {
+        const response = await api.put(`/editarAgendamento/${props.dados.id_agendamento}`, AgendamentoData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -51,7 +51,7 @@ export default function ModalEditar(props) {
 
         //Aguardando o retorno
         if (response) {
-            alert(`Agendamento do id ${props.dados.id_agendamento} editado com sucesso`)
+            alert(`Agendamento do id ${props.dados.nome_paciente} editado com sucesso`)
             props.fetchAgendamentos()
             setOpen(false)
             return

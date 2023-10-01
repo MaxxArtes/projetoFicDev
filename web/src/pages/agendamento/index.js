@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { api } from '../../services/api';
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
-import ModalEditar from '../../components/modalEditar';
+import ModalEditar from '../../components/modalagendamento/modalEditar/index.jsx';
 import ModalSave from '../../components/modalSave';
 import useAgendamento from '../../hook/useAgendamento';
 import ModalSavePacientes from '../../components/modalSavepacientes/index.jsx';
 import ModalEditPacientes from '../../components/modalEditpacientes/index.jsx';
 import ModalPerfil from '../../components/modalPerfil';
+import ConfirmationModal from '../../components/modalConfirmacao/index.jsx';
 // import usePagination from '../../hook/usePagination';
 
 export function Agendamentos() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
     const {
         agendamentos, setAgendamentos, totalPages, setTotalPages,
@@ -55,7 +57,7 @@ export function Agendamentos() {
                 const pacientesData = response.data.data;
                 setPacientes(pacientesData); // Atualize o estado usando setPacientes
 
-                const calculatedTotalPages = Math.ceil(response.data.count / 10);
+                const calculatedTotalPages = Math.ceil(response.data.count / 8);
                 setTotalPagesPacientes(calculatedTotalPages); // Atualize o estado usando setTotalPagesPacientes
             } catch (error) {
                 console.error('Erro ao buscar pacientes', error);
@@ -301,7 +303,7 @@ export function Agendamentos() {
             setAgendamentos(agendamentoData); // Atualize o estado usando setAgendamentos
             console.log('agendamento data : ', agendamentoData);
 
-            const calculatedTotalPages = Math.ceil(response.data.count / 10);
+            const calculatedTotalPages = Math.ceil(response.data.count / 8);
             setTotalPages(calculatedTotalPages); // Atualize o estado usando setTotalPages
             console.log('total pages : ', calculatedTotalPages);
             if (!response.ok) {
@@ -328,7 +330,7 @@ export function Agendamentos() {
                         </div>
                     </div>
                     <div className={styles.navdiv}>
-                        <ModalPerfil/>
+                        <ModalPerfil />
                         <img onClick={handleVoltarParaPaginaInicial} alt="voltar" src="voltar.png" />
                         <img onClick={handleSair} alt="sair" src="sair.png" />
                     </div>
@@ -376,11 +378,13 @@ export function Agendamentos() {
                                         <td>{agendamentoItem.horario}</td>
                                         <td>
                                             <ModalEditar dados={agendamentoItem} fetchAgendamentos={fetchAgendamentos} />
-                                            <button onClick={() => handleDeleteAgendamento(agendamentoItem.id_agendamento)}>
-                                                <img alt="Excluir" src="lixo.png" />
-                                            </button>
-
-
+                                            <button onClick={() => setIsModalOpen(true)}><img alt="deletar" src="lixo.png" /></button>
+                                            <ConfirmationModal
+                                                isOpen={isModalOpen}
+                                                message="Tem certeza de que deseja excluir este item?"
+                                                onClose={() => setIsModalOpen(false)}
+                                                onConfirm={() => handleDeleteAgendamento(agendamentoItem.id_agendamento)}
+                                            />
                                         </td>
                                     </tr>
                                 ))}
@@ -418,7 +422,7 @@ export function Agendamentos() {
                                     Pesquisar
                                 </button>
                                 <button className={styles.button}>
-                                    <ModalSavePacientes dados={pacientes} setPacientes ={setPacientes} setTotalPagesPacientes={setTotalPagesPacientes} page={pagePacientes} />
+                                    <ModalSavePacientes dados={pacientes} setPacientes={setPacientes} setTotalPagesPacientes={setTotalPagesPacientes} page={pagePacientes} />
                                     <img className={styles.search} alt="Search" src="adicao.png" />
                                 </button>
                             </div>
@@ -444,6 +448,7 @@ export function Agendamentos() {
                             <tbody>
                                 {pacientes.map((pacienteItem, index) => (
                                     <tr key={index}>
+                                        <td>{pacienteItem.id_paciente}</td>
                                         <td>{pacienteItem.nome}</td>
                                         <td>{pacienteItem.email}</td>
                                         <td>{pacienteItem.tel}</td>
@@ -458,11 +463,15 @@ export function Agendamentos() {
                                         </td>
                                         <td>
                                             <button>
-                                            <ModalEditPacientes dados={pacienteItem} setPacientes ={setPacientes} setTotalPagesPacientes={setTotalPagesPacientes} page={pagePacientes} />
+                                                <ModalEditPacientes dados={pacienteItem} setPacientes={setPacientes} setTotalPagesPacientes={setTotalPagesPacientes} page={pagePacientes} />
                                             </button>
-                                            <button onClick={() => handleDeletePaciente(pacienteItem.id_paciente)}>
-                                                <img alt="Excluir" src="lixo.png" />
-                                            </button>
+                                            <button onClick={() => setIsModalOpen(true)}><img alt="deletar" src="lixo.png" /></button>
+                                            <ConfirmationModal
+                                                isOpen={isModalOpen}
+                                                message="Tem certeza de que deseja excluir este item?"
+                                                onClose={() => setIsModalOpen(false)}
+                                                onConfirm={() => handleDeletePaciente(pacienteItem.id_paciente)}
+                                            />
                                         </td>
                                     </tr>
                                 ))}

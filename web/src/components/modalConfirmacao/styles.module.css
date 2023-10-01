@@ -1,0 +1,398 @@
+.ATENDIMENTO {
+    align-items: stretch;
+    justify-content: center;
+    background-color: #b8dde0;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 80%;
+}
+
+.geral {
+    align-items: stretch;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 73%;
+    /* Fundo semi-transparente para o modal */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.adicionar {
+    background-color: white;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    max-width: 80%;
+    width: 400px;
+    text-align: center;
+}
+
+.botao {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tablevalues {
+    text-align: center;
+    align-items: center;
+}
+
+.tabs {
+    display: flex;
+}
+
+tabs .tab-content {
+    display: none;
+}
+
+.tabs input[type="radio"]:checked+label+.tab-content {
+    display: block;
+}
+
+.tabs input[type="radio"] {
+    display: none;
+}
+
+.tabs label {
+    padding: 10px;
+    background-color: #eee;
+    cursor: pointer;
+}
+
+.tabs .tab-content {
+    display: none;
+    padding: 10px;
+}
+
+.tabs input[type="radio"]:checked+label {
+    background-color: #ccc;
+}
+
+.tabs input[type="radio"]:checked+label+.tab-content {
+    display: block;
+}
+
+.ATENDIMENTO header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+
+.table td {
+    text-align: center;
+    box-shadow: 1px 1px 1px #ffffff;
+}
+
+.table th {
+    font-weight: bold;
+}
+
+.table th {
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 1px 1px 1px #ffffff;
+}
+
+.esq {
+    display: flex;
+    align-items: center;
+}
+
+.esq img {
+    width: 70px;
+    height: 70px;
+}
+
+.table img {
+    width: 20px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.header h1 {
+    color: #04737c;
+    margin: 0;
+    font-size: 24px;
+    text-align: start;
+    display: flex;
+}
+
+.textRight {
+    text-align: right;
+}
+
+.exit-to-app {
+    height: 24px;
+    width: 24px;
+    cursor: pointer;
+    fill: white;
+}
+
+/* Estilos do conteúdo */
+.content {
+    width: 95%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.inputGroup {
+    display: flex;
+    align-items: center;
+    /* margin-bottom: 20px; */
+}
+
+.formControl {
+    flex-grow: 1;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0 10px;
+    font-size: 16px;
+    width: 100%;
+}
+
+
+.button {
+    background-color: #04737c;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.button img {
+    margin-left: 5px;
+    width: 20px;
+    height: 20px;
+    ;
+}
+
+.content h1 {
+    margin-bottom: 5px;
+    color: #000;
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.pesquisa {
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+}
+
+.search {
+    height: 100%;
+    width: 100%;
+    fill: white;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -10px;
+    margin-left: -10px;
+}
+
+.col {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: 10px;
+}
+
+.card {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+.cardBody {
+    padding: 20px;
+}
+
+h2 {
+    font-size: 20px;
+    margin-top: 0;
+}
+
+.primaryButton {
+    background-color: #04737c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* padding-bottom: 64px;
+      height: 700px;
+      margin-top: 59px;
+      flex-direction: column; */
+
+.bloco {
+    width: 100%;
+    background-color: #fff;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 60px;
+    margin-top: 60px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    border-radius: 50px;
+    background-color: #000;
+}
+
+.table th,
+.table td {
+
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+/* Estilos da paginação */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pageNumber {
+    font-size: 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    border-radius: 50px;
+    box-shadow: 0px 0px 40px #04737c;
+    height: 72px;
+    width: 72px;
+    left: 0;
+    top: 0;
+    background-color: #d9d9d9;
+    /* 
+    position: fixed;
+    */
+}
+
+.lightButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+.circledRight {
+    height: 24px;
+    width: 24px;
+    fill: #04737c;
+}
+
+/* Estilos do rodapé */
+footer {
+    width: 100%;
+    background-color: #04737c;
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.2);
+    color: white;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.agendar {
+    justify-content: center;
+    /* display: flex; */
+}
+
+.userProfile {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.accountCircle {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+
+}
+
+/* Estilos de responsividade (ajuste conforme necessário) */
+@media (max-width: 768px) {
+    .col {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+.navdiv {
+    align-items: center;
+    display: flex;
+    justify-content: space-around
+}
+
+.navdiv img {
+    width: auto;
+    cursor: pointer;
+    border-radius: 15px;
+    background: #04737c;
+    margin-right: 5px;
+}
+
+.navdiv button {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 900px) {
+    .content {
+        padding: 10px 5px;
+        /* Reduz o espaçamento do conteúdo para telas menores */
+    }
+
+    .col {
+        flex: 0 0 100%;
+        /* Garante que as colunas ocupem 100% da largura em telas menores */
+        max-width: 100%;
+        padding: 5px;
+        /* Reduz o espaçamento entre as colunas */
+    }
+
+    .table {
+        margin-top: 10px;
+        /* Reduz a margem superior das tabelas em telas menores */
+    }
+}

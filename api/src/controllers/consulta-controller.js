@@ -13,7 +13,6 @@ class ConsultaController {
         receita,
         historico_clinico,
         descricao,
-        paciente:true
       });
       return res.status(201).json(consulta);
     } catch (error) {

@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { api } from '../../services/api';
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
 import ModalRegistrarConsulta from '../../components/modalregistrarconsulta/index.jsx';
-
+import ConfirmationModal from '../../components/modalConfirmacao/index.jsx';
 export function Consultas() {
     const navigate = useNavigate();
     const [query, setQuery] = React.useState('');
-    const [consultas, setConsultas] = React.useState([]);
     const [totalPages, setTotalPages] = React.useState(0);
     const [page, setPage] = React.useState(1);
+    const [isModalOpen, setIsModalOpen] = useState( false);
 
     const [agendamentos, setAgendamentos] = React.useState([]);
     let selectedAgendamentos = [];
@@ -82,10 +82,11 @@ export function Consultas() {
         try {
             const accessToken = sessionStorage.getItem("token");
             // Fazer a solicitação de exclusão do agendamento com base no ID
-            const response = await api.delete(`/deletarAgendamento/${id}`,{
+            const response = await api.delete(`/deletarAgendamento/${id}`, {
                 headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },});
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
             if (response.status === 204) {
                 // Atualizar a lista de agendamentos após a exclusão
                 const usersResponse = await api.get(`/agendamentos/${page}`);
@@ -94,6 +95,7 @@ export function Consultas() {
 
                 const calculatedTotalPages = Math.ceil(agendamentoData.count / 10);
                 setTotalPages(calculatedTotalPages);
+                setIsModalOpen(false);
             } else {
                 console.error('Erro ao excluir agendamento');
             }
@@ -186,9 +188,15 @@ export function Consultas() {
                                             <ModalRegistrarConsulta dados={agendamentoItem} fetchAgendamentos={fetchAgendamentos} />
                                         </td>
                                         <td>
-                                            <button onClick={() => handleDeleteAgendamento(agendamentoItem.id_agendamento)}
-                                            >   <img alt="Excluir" src="lixo.png" />
-                                            </button>
+                                            <div>
+                                                <button onClick={() => setIsModalOpen(true)}>Excluir</button>
+                                                <ConfirmationModal
+                                                    isOpen={isModalOpen}
+                                                    message="Tem certeza de que deseja excluir este item?"
+                                                    onClose={() => setIsModalOpen(false)}
+                                                    onConfirm={()=>handleDeleteAgendamento(agendamentoItem.id_agendamento)}
+                                                />
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}

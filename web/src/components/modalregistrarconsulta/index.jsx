@@ -27,13 +27,12 @@ export default function ModalRegistrarConsulta(props) {
             receita: receita,
         };
 
-        console.log(AgendamentoData.id_paciente)
-
+        console.log("AGENDAMENTODATA ID PACIENTE:",AgendamentoData.id_paciente)
 
         const accessToken = sessionStorage.getItem("token");
-        console.log('1')
 
         //fazendo a requisição
+        debugger
         const response = await api.post(`/registrarProntuario/`, AgendamentoData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -43,7 +42,7 @@ export default function ModalRegistrarConsulta(props) {
 
         //Aguardando o retorno
         if (response) {
-            alert(`Agendamento do id ${props.dados.id_agendamento} editado com sucesso`)
+            alert(`consulta de ${props.dados.nome_paciente} feita com sucesso`)
             props.fetchAgendamentos()
             setOpen(false)
             return

@@ -16,7 +16,10 @@ class ConsultaModel extends Model {
         type: DataTypes.TEXT,
         allowNull: false
       },
-      paciente: {
+      receita: {
+        type: DataTypes.BOOLEAN,
+      },
+      id_paciente: {
         type: DataTypes.BOOLEAN,
         allowNull: false
       }
