@@ -35,7 +35,6 @@ routes.get('/perfil/:token', UsuarioController.perfil);
 routes.post('/registerAgendamento', authMiddleware, AgendamentoController.create);
 routes.put('/editarAgendamento/:id', authMiddleware, AgendamentoController.update);
 routes.delete('/deletarAgendamento/:id', authMiddleware, AgendamentoController.delete);
-routes.delete('/deletarAgendamento/:id', authMiddleware, AgendamentoController.delete);
 routes.get('/agendamentos/:page', AgendamentoController.consultarAgendamentosEndpoint);
 
 // consulta
@@ -48,7 +47,7 @@ routes.get('/listarConsultas/:page', authMiddleware, ConsultaController.getAll);
 routes.post('/registrarPaciente', authMiddleware, PacienteController.create);
 routes.get('/listarPacientes/:page', PacienteController.getAll);
 routes.delete('/deletarPacientes/:id', PacienteController.delete);
-routes.delete('/editarPacientes/:id', PacienteController.update);
+routes.put('/editarPacientes/:id', PacienteController.update);
 
 //dash
 routes.get('/totalUsuarios', UsuarioController.totalUsuarios);

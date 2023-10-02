@@ -19,7 +19,8 @@ async function paginate(model, page, filterOptions) {
     SELECT 
       agendamento.*,
       paciente.id_paciente,
-      paciente.nome as nome_paciente
+      paciente.nome as nome_paciente,
+      paciente.data_nasc as data_nasc
     FROM
       agendamentos AS agendamento
     LEFT JOIN

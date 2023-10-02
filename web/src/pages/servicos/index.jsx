@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './styles.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
+import ModalPerfil from '../../components/modalPerfil';
 
 export function PaginaInicial() {
     const navigate = useNavigate();
@@ -124,18 +125,24 @@ export function PaginaInicial() {
                             <div className={styles.header}>
                                 <tbody>
                                     {users.map((user, index) => (
-                                        <tr key={index}>
+                                        <tr key={index} style={{ display: 'flex', alignItems: 'center'  }}>
                                             {/* <td className={styles.acoes}>{user.id_usuario}</td> */}
                                             <td className={styles.acoes}>{user.nome}</td>
                                             <td className={styles.acoes}>{user.email}</td>
                                             <td className={styles.button}>
-                                                <button onClick={() => handleEditButtonClick(user)} className={styles.primaryButton}>editar</button>
+                                            <ModalPerfil />
                                             </td>
+                                            <div>
+                                            perfil
+                                            </div>
                                         </tr>
                                     ))}
                                 </tbody>
                             </div>
                             <img onClick={handleSair} alt="sair" src="sair.png" />
+                            <div>
+                            sair
+                            </div>
                         </table>
                     </div>
                 </div>

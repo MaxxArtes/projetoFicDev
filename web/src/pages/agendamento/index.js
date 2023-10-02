@@ -22,7 +22,8 @@ export function Agendamentos() {
     let {
         endereco, nomeMedico, especialidade, data, agendamentoData, dataNasc, sexo, nomePaciente, email, tel, cel, cns, cpf, nome, horario, selectedAgendamentos
     } = useAgendamento();
-
+    const [idPaciente, setIdPaciente] = useState([null]);
+    const [idAgendamento, setIdAgendamento] = React.useState(null);
 
     const [pacientes, setPacientes] = React.useState([]);
     const [totalPagesPacientes, setTotalPagesPacientes] = React.useState(0);
@@ -162,31 +163,50 @@ export function Agendamentos() {
         }
     };
 
-    const handleDeletePaciente = async (id) => {
-        try {
-            // Fazer a solicitação de exclusão do paciente com base no ID
-            const response = await api.delete(`/deletarPacientes/${id}`);
-            if (response.status === 204) {
-                const response = await api.get(`/listarPacientes/${pagePacientes}`);
-                const pacientesData = response.data.data;
-                setPacientes(pacientesData); // Atualize o estado usando setPacientes
+    const idpaciente = (pacienteItem) => {
+        setIdPaciente(pacienteItem.id_paciente);
+        console.log("idpaciente: ", idPaciente);
+        setIsModalOpen(true);
 
-                const calculatedTotalPages = Math.ceil(response.data.count / 10);
-                setTotalPagesPacientes(calculatedTotalPages); // Atualize o estado usando setTotalPagesPacientes
-            } else {
-                console.error('Erro ao excluir paciente');
-            }
+    }
+
+
+    const handleDeletePaciente = async () => {
+        try {
+          const accessToken = sessionStorage.getItem("token");
+          // Fazer a solicitação de exclusão do paciente com base no ID
+          const response = await api.delete(`/deletarPacientes/${idPaciente}`);
+          
+          if (response.status === 204) {
+            const response = await api.get(`/listarPacientes/${pagePacientes}`);
+            const pacientesData = response.data.data;
+            setPacientes(pacientesData); // Atualize o estado usando setPacientes
+      
+            const calculatedTotalPages = Math.ceil(response.data.count / 10);
+            setTotalPagesPacientes(calculatedTotalPages); // Atualize o estado usando setTotalPagesPacientes
+          } else if (response.status === 400) {
+            console.error('Paciente tem agendamentos');
+            alert('O paciente não pode ser excluído pois tem agendamentos');
+          } else {
+            console.error('Erro ao excluir paciente');
+          }
         } catch (error) {
-            console.error('Erro ao excluir paciente', error);
+          console.error('Erro ao excluir paciente', error);
         }
-    };
+      };
+      
 
 
-
-    const handleDeleteAgendamento = async (id) => {
+      const handleDeleteAgendamento = async (idAgendamento) => {
         try {
+            console.log("agendamentoItem: ", idAgendamento);
+            const accessToken = sessionStorage.getItem("token");
             // Fazer a solicitação de exclusão do agendamento com base no ID
-            const response = await api.delete(`/deletarAgendamento/${id}`);
+            const response = await api.delete(`/deletarAgendamento/${idAgendamento}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
             if (response.status === 204) {
                 // Atualizar a lista de agendamentos após a exclusão
                 const usersResponse = await api.get(`/agendamentos/${page}`);
@@ -195,6 +215,7 @@ export function Agendamentos() {
 
                 const calculatedTotalPages = Math.ceil(agendamentoData.count / 10);
                 setTotalPages(calculatedTotalPages);
+                setIsModalOpen(false);
             } else {
                 console.error('Erro ao excluir agendamento');
             }
@@ -202,6 +223,12 @@ export function Agendamentos() {
             console.error('Erro ao excluir agendamento', error);
         }
     };
+
+    const handleRegistrarAgendamento = (agendamentoItem) => {
+        setIsModalOpen(true);
+        setIdAgendamento(agendamentoItem.id_agendamento);
+        console.log("idAgendamento:",idAgendamento);
+    }
 
 
     const handleSubmit = async () => {
@@ -359,6 +386,8 @@ export function Agendamentos() {
                         <table className={styles.table}>
                             <thead>
                                 <tr>
+                                    <th>id agendamento</th>
+                                    <th>id paciente</th>
                                     <th>Nome do paciente</th>
                                     <th>Nome do Medico</th>
                                     <th>Especialidade</th>
@@ -371,6 +400,8 @@ export function Agendamentos() {
                             <tbody>
                                 {agendamentos.map((agendamentoItem, index) => (
                                     <tr key={index}>
+                                        <td>{agendamentoItem.id_agendamento}</td>
+                                        <td>{agendamentoItem.id_paciente}</td>
                                         <td>{agendamentoItem.nome_paciente}</td>
                                         <td>{agendamentoItem.nome_medico}</td>
                                         <td>{agendamentoItem.especialidade}</td>
@@ -378,12 +409,12 @@ export function Agendamentos() {
                                         <td>{agendamentoItem.horario}</td>
                                         <td>
                                             <ModalEditar dados={agendamentoItem} fetchAgendamentos={fetchAgendamentos} />
-                                            <button onClick={() => setIsModalOpen(true)}><img alt="deletar" src="lixo.png" /></button>
+                                            <button onClick={() => handleRegistrarAgendamento(agendamentoItem)}><img alt="deletar" src="lixo.png" /></button>
                                             <ConfirmationModal
                                                 isOpen={isModalOpen}
                                                 message="Tem certeza de que deseja excluir este item?"
                                                 onClose={() => setIsModalOpen(false)}
-                                                onConfirm={() => handleDeleteAgendamento(agendamentoItem.id_agendamento)}
+                                                onConfirm={() => handleDeleteAgendamento(idAgendamento)}
                                             />
                                         </td>
                                     </tr>
@@ -431,6 +462,7 @@ export function Agendamentos() {
                         <table className={styles.table}>
                             <thead>
                                 <tr>
+                                    <th>id do Paciente</th>
                                     <th>Nome do Paciente</th>
                                     <th>Email</th>
                                     <th>Tel</th>
@@ -441,7 +473,8 @@ export function Agendamentos() {
                                     <th>Data de Nascimento</th>
                                     <th>Endereço</th>
                                     <th>Agendar</th>
-                                    <th>Ação</th>
+                                    <th>editar</th>
+                                    <th>excluir</th>
                                 </tr>
                             </thead>
 
@@ -465,14 +498,16 @@ export function Agendamentos() {
                                             <button>
                                                 <ModalEditPacientes dados={pacienteItem} setPacientes={setPacientes} setTotalPagesPacientes={setTotalPagesPacientes} page={pagePacientes} />
                                             </button>
-                                            <button onClick={() => setIsModalOpen(true)}><img alt="deletar" src="lixo.png" /></button>
+                                            </td>
+                                            <td>
+                                            <button onClick={()=> idpaciente(pacienteItem)}><img alt="deletar" src="lixo.png" /></button>
                                             <ConfirmationModal
                                                 isOpen={isModalOpen}
                                                 message="Tem certeza de que deseja excluir este item?"
                                                 onClose={() => setIsModalOpen(false)}
-                                                onConfirm={() => handleDeletePaciente(pacienteItem.id_paciente)}
+                                                onConfirm={() => handleDeletePaciente(pacienteItem)}
                                             />
-                                        </td>
+                                            </td>
                                     </tr>
                                 ))}
                             </tbody>

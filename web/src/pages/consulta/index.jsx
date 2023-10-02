@@ -4,12 +4,14 @@ import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
 import ModalRegistrarConsulta from '../../components/modalregistrarconsulta/index.jsx';
 import ConfirmationModal from '../../components/modalConfirmacao/index.jsx';
+import ModalPerfil from '../../components/modalPerfil';
 export function Consultas() {
     const navigate = useNavigate();
     const [query, setQuery] = React.useState('');
     const [totalPages, setTotalPages] = React.useState(0);
     const [page, setPage] = React.useState(1);
-    const [isModalOpen, setIsModalOpen] = useState( false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [idAgendamento, setIdAgendamento] = React.useState(null);
 
     const [agendamentos, setAgendamentos] = React.useState([]);
     let selectedAgendamentos = [];
@@ -78,11 +80,12 @@ export function Consultas() {
         }
     };
 
-    const handleDeleteAgendamento = async (id) => {
+    const handleDeleteAgendamento = async (idAgendamento) => {
         try {
+            console.log("agendamentoItem: ", idAgendamento);
             const accessToken = sessionStorage.getItem("token");
             // Fazer a solicitação de exclusão do agendamento com base no ID
-            const response = await api.delete(`/deletarAgendamento/${id}`, {
+            const response = await api.delete(`/deletarAgendamento/${idAgendamento}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
@@ -124,6 +127,11 @@ export function Consultas() {
         }
     };
 
+    const handleRegistrarAgendamento = (agendamentoItem) => {
+        setIsModalOpen(true);
+        setIdAgendamento(agendamentoItem.id_agendamento);
+    }
+
     useEffect(() => {
         fetchAgendamentos();
     }, [page]);
@@ -139,10 +147,19 @@ export function Consultas() {
                             <h1>consultas</h1>
                         </div>
                     </div>
-                    <div className={styles.navdiv}>
+                    <div className={styles.navdiv} >
                         <img onClick={handleVoltarParaPaginaInicial} alt="voltar" src="voltar.png" />
-                        <img alt="perfil" src="perfil.png" />
+                        <div>
+                            voltar
+                            </div>
+                        <ModalPerfil />
+                        <div>
+                            perfil
+                        </div>
                         <img onClick={handleSair} alt="sair" src="sair.png" />
+                        <div>
+                            sair
+                        </div>
                     </div>
                 </header>
                 <div className={styles.bloco}>
@@ -166,6 +183,7 @@ export function Consultas() {
                         <table className={styles.table}>
                             <thead>
                                 <tr>
+                                    <th>id agendamento</th>
                                     <th>Nome do paciente</th>
                                     <th>Nome do Medico</th>
                                     <th>Especialidade</th>
@@ -179,6 +197,7 @@ export function Consultas() {
                             <tbody>
                                 {agendamentos.map((agendamentoItem, index) => (
                                     <tr key={index}>
+                                        <td>{agendamentoItem.id_agendamento}</td>
                                         <td>{agendamentoItem.nome_paciente}</td>
                                         <td>{agendamentoItem.nome_medico}</td>
                                         <td>{agendamentoItem.especialidade}</td>
@@ -189,12 +208,12 @@ export function Consultas() {
                                         </td>
                                         <td>
                                             <div>
-                                                <button onClick={() => setIsModalOpen(true)}>Excluir</button>
+                                                <button onClick={() => handleRegistrarAgendamento(agendamentoItem)}>Excluir</button>
                                                 <ConfirmationModal
                                                     isOpen={isModalOpen}
                                                     message="Tem certeza de que deseja excluir este item?"
                                                     onClose={() => setIsModalOpen(false)}
-                                                    onConfirm={()=>handleDeleteAgendamento(agendamentoItem.id_agendamento)}
+                                                    onConfirm={() => handleDeleteAgendamento(idAgendamento)}
                                                 />
                                             </div>
                                         </td>
