@@ -1,7 +1,7 @@
 const { Sequelize, QueryTypes } = require('sequelize');
 
 async function paginate(model, page, filterOptions) {
-  limit = 8;
+  limit = 9;
   const offset = (page - 1) * limit;
   console.log("FILTER PAGINATION: ", filterOptions);
 

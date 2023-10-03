@@ -1,3 +1,26 @@
+.profilecontainer {
+  position: relative;
+  display: inline-block;
+}
+
+.profileimg {
+  height: 60px; /* Ajuste o tamanho da imagem conforme necessário */
+}
+
+.profilecaption {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none; /* Inicialmente, a legenda está oculta */
+  background-color: rgba(0, 0, 0, 0.7); /* Cor de fundo da legenda */
+  color: #fff; /* Cor do texto da legenda */
+  padding: 5px;
+  font-size: 14px;
+}
+
+.profilecontainer:hover .profilecaption {
+  display: block; /* Mostra a legenda quando o mouse está sobre a imagem */
+}
 
 
 .modal {
@@ -182,7 +205,6 @@ tabs .tab-content {
 .pesquisa {
   justify-content: space-between;
   display: flex;
-  align-items: center;
 }
 
 .search {
@@ -221,19 +243,6 @@ h2 {
   margin-top: 0;
 }
 
-.primaryButton {
-  background-color: #04737c;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-/* padding-bottom: 64px;
-    height: 700px;
-    margin-top: 59px;
-    flex-direction: column; */
 
 .bloco {
   width: 100%;
@@ -243,16 +252,11 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  padding-bottom: 60px;
-  margin-top: 60px;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
-  border-radius: 50px;
   background-color: #000;
 }
 
@@ -260,7 +264,7 @@ h2 {
 .table td {
 
   text-align: center;
-  padding: 10px;
+  padding: 8px;
   border: 1px solid #ccc;
   background-color: #fff;
 }
@@ -343,6 +347,7 @@ footer {
 .navdiv {
   align-items: center;
   display: flex;
+  align-items: flex-start;
   justify-content: space-around
 }
 

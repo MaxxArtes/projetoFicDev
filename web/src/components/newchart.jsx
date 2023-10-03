@@ -3,10 +3,10 @@ import { Chart } from 'react-google-charts';
 
 const ChartComponent = () => {
   return (
-    <div>
+    <div style={{width: "100vw", height: "80vh", display: "flex", alignItems: "center", justifyContent: "center"}}>
       <Chart
-        width={'400px'}
-        height={'300px'}
+        width={'100%'}
+        height={'100%'}
         chartType="PieChart"
         loader={<div>Loading Chart</div>}
         data={[

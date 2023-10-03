@@ -1,4 +1,29 @@
-/* Estilos para o modal */
+.profilecontainer {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.profileimg {
+  height: 60px; /* Ajuste o tamanho da imagem conforme necessário */
+}
+
+.profilecaption {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none; /* Inicialmente, a legenda está oculta */
+  background-color: rgba(0, 0, 0, 0.7); /* Cor de fundo da legenda */
+  color: #fff; /* Cor do texto da legenda */
+  padding: 5px;
+  font-size: 14px;
+}
+
+.profilecontainer:hover .profilecaption {
+  display: block; /* Mostra a legenda quando o mouse está sobre a imagem */
+}
+
+
 .modal {
   position: fixed;
   top: 0;
@@ -19,185 +44,230 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   max-width: 80%;
   width: 400px;
+  text-align: center;
 }
-.botao{
+
+.botao {
   display: flex;
   justify-content: space-between;
 }
 
-.adicionar h4 {
-  font-size: 20px;
-  margin: 0 0 20px;
+.tablevalues {
+  text-align: center;
+  align-items: center;
 }
 
-.inputcontainer1 {
-  width: 100%;
+.tabs {
+  display: flex;
+}
+
+tabs .tab-content {
+  display: none;
+}
+
+.tabs input[type="radio"]:checked+label+.tab-content {
+  display: block;
+}
+
+.tabs input[type="radio"] {
+  display: none;
+}
+
+.tabs label {
+  padding: 10px;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.tabs .tab-content {
+  display: none;
+  padding: 10px;
+}
+
+.tabs input[type="radio"]:checked+label {
+  background-color: #ccc;
+}
+
+.tabs input[type="radio"]:checked+label+.tab-content {
+  display: block;
+}
+
+.ATENDIMENTO header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+
+.table td {
+  text-align: center;
+  box-shadow: 1px 1px 1px #ffffff;
+}
+
+.table th {
+  font-weight: bold;
+}
+
+.table th {
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 1px 1px 1px #ffffff;
+}
+
+.esq {
+  display: flex;
+  align-items: center;
+}
+
+.esq img {
+  width: 70px;
+  height: 70px;
+}
+
+.table img {
+  width: 20px;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+.header h1 {
+  color: #04737c;
+  margin: 0;
+  font-size: 24px;
+  text-align: start;
+  display: flex;
+}
+
+.textRight {
+  text-align: right;
+}
+
+.exit-to-app {
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+  fill: white;
+}
+
+/* Estilos do conteúdo */
+.content {
+  width: 95%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  /* margin-bottom: 20px; */
+}
+
+.formControl {
+  flex-grow: 1;
   height: 40px;
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 0 10px;
   font-size: 16px;
-  margin-right: 10px;
-  margin-bottom: 20px;
   width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
 }
 
-.inputcontainer {
-  margin-bottom: 20px;
-}
 
-.inputcontainer select,
-.inputcontainer input[type="text"],
-.inputcontainer input[type="nome"],
-.inputcontainer input[type="email"],
-.inputcontainer input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-button {
+.button {
   background-color: #04737c;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #035e68;
-}
-
-p {
-  color: #04737c;
-  text-align: center;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-/* Estilos globais */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
-}
-
-/* Estilos do container principal */
-.ADMINUSUARIOS {
-  align-items: flex-end;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #ffffff;
-  width: 100vw;
-  height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-/* Estilos do cabeçalho */
-.nav {
-  width: 100%;
-  background-color: #04737c;
-  padding: 10px 0;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.nav h1 {
-  color: white;
-  margin: 0;
-  font-size: 24px;
-}
-
-.nav button {
-  cursor: pointer;
-  color: white;
-  background-color: transparent;
-  border: none;
-  margin-left: 10px;
-}
-
-/* Estilos da tabela */
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.table th,
-.table td {
-  text-align: center;
-  padding: 10px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-}
-
-/* Estilos dos botões da tabela */
-.table button {
-  cursor: pointer;
-  background-color: #04737c;
-  color: white;
   border: none;
   border-radius: 4px;
   padding: 5px 10px;
-  margin-right: 5px;
+  cursor: pointer;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  text-align: center;
 }
 
-/* Estilos do modal */
-.modal {
-  background-color: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+.button img {
+  margin-left: 5px;
+  width: 20px;
+  height: 20px;
+  ;
+}
+
+.content h1 {
+  margin-bottom: 5px;
+  color: #000;
+  font-family: Inter;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.pesquisa {
+  justify-content: space-between;
+  display: flex;
+}
+
+.search {
+  height: 100%;
+  width: 100%;
+  fill: white;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -10px;
+  margin-left: -10px;
+}
+
+.col {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding: 10px;
+}
+
+.card {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+}
+
+.cardBody {
+  padding: 20px;
+}
+
+h2 {
+  font-size: 20px;
+  margin-top: 0;
+}
+
+
+.bloco {
+  width: 100%;
+  background-color: #fff;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.modal-content {
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  width: 80%;
-  max-width: 400px;
-}
-
-/* Estilos dos campos de entrada no modal */
-.modal-content input[type="text"],
-.modal-content input[type="email"],
-.modal-content input[type="password"],
-.modal-content select {
+.table {
   width: 100%;
-  height: 40px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 0 10px;
-  font-size: 16px;
-  margin-bottom: 10px;
+  border-collapse: collapse;
+  background-color: #000;
 }
 
-/* Estilos dos botões no modal */
-.modal-content button {
-  background-color: #04737c;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 10px 20px;
-  cursor: pointer;
-  margin-top: 10px;
+.table th,
+.table td {
+
+  text-align: center;
+  padding: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
 }
 
 /* Estilos da paginação */
@@ -205,12 +275,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
-}
-.circledRight {
-  height: 24px;
-  width: 24px;
-  fill: #04737c;
 }
 
 .pageNumber {
@@ -218,26 +282,28 @@ body {
   margin: 0 10px;
   cursor: pointer;
   border-radius: 50px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  height: 40px;
-  width: 40px;
-  background-color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  box-shadow: 0px 0px 40px #04737c;
+  height: 72px;
+  width: 72px;
+  left: 0;
+  top: 0;
+  background-color: #d9d9d9;
+  /* 
+  position: fixed;
+  */
 }
-.pageNumber1 {
-  font-size: 20px;
-  margin: 0 10px;
-  /* cursor: pointer; */
-  border-radius: 50px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  height: 40px;
-  width: 40px;
-  /* background-color: #fff; */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+.lightButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.circledRight {
+  height: 24px;
+  width: 24px;
+  fill: #04737c;
 }
 
 /* Estilos do rodapé */
@@ -248,12 +314,19 @@ footer {
   text-align: center;
   box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.2);
   color: white;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 
-/* Estilos da imagem do perfil do usuário */
+.agendar {
+  justify-content: center;
+  /* display: flex; */
+}
+
 .userProfile {
   display: flex;
   align-items: center;
+  color: white;
 }
 
 .accountCircle {
@@ -261,6 +334,7 @@ footer {
   width: 40px;
   border-radius: 50%;
   margin-right: 10px;
+
 }
 
 /* Estilos de responsividade (ajuste conforme necessário) */
@@ -271,17 +345,19 @@ footer {
   }
 }
 
-/* Estilos da barra de navegação */
 .navdiv {
   align-items: center;
   display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: flex-end;
+  align-items: flex-start;
+  justify-content: space-around
 }
 
 .navdiv img {
+  width: auto;
   cursor: pointer;
+  border-radius: 15px;
+  background: #04737c;
+  margin-right: 5px;
 }
 
 .navdiv button {
@@ -291,43 +367,22 @@ footer {
   height: 100%;
 }
 
-/* Estilos do campo de pesquisa */
-.pesquisa {
-  display: flex;
-  justify-content: flex-end;
-  /* Alinha à direita */
-  align-items: center;
-  margin-bottom: 20px;
-}
+@media (max-width: 900px) {
+  .content {
+    padding: 10px 5px;
+    /* Reduz o espaçamento do conteúdo para telas menores */
+  }
 
-/* Estilos do campo de pesquisa e do botão */
-.inputGroup {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
+  .col {
+    flex: 0 0 100%;
+    /* Garante que as colunas ocupem 100% da largura em telas menores */
+    max-width: 100%;
+    padding: 5px;
+    /* Reduz o espaçamento entre as colunas */
+  }
 
-.pesquisarnome {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.inputGroup input {
-  width: 100%;
-  height: 40px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 0 10px;
-  font-size: 16px;
-  margin-right: 10px;
-  /* Espaço entre o campo de pesquisa e o botão */
-}
-
-.inputGroup button {
-  background-color: #04737c;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
-  cursor: pointer;
+  .table {
+    margin-top: 10px;
+    /* Reduz a margem superior das tabelas em telas menores */
+  }
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import styles from './modalEditar.module.css';
 import { api } from '../../services/api';
@@ -14,17 +14,17 @@ export default function ModalPerfil() {
     const [users, setUsers] = React.useState([]);
 
 
-        const fetchUsers = async () => {
-            try {
-                const accessToken = sessionStorage.getItem("token");
-                const response = await api.get(`perfil/${accessToken}`);
+    const fetchUsers = async () => {
+        try {
+            const accessToken = sessionStorage.getItem("token");
+            const response = await api.get(`perfil/${accessToken}`);
 
-                console.log("reponse: ",response.data[0][0]);
-                setUsers(response.data[0][0]);
-            } catch (error) {
-                console.error('Erro ao buscar usuário', error);
-            }
+            console.log("reponse: ", response.data[0][0]);
+            setUsers(response.data[0][0]);
+        } catch (error) {
+            console.error('Erro ao buscar usuário', error);
         }
+    }
 
 
 
@@ -63,10 +63,14 @@ export default function ModalPerfil() {
     return (
         <>
             <div onClick={() => {
-                
+
                 fetchUsers();
                 setOpen(true)
-            }}><img alt="perfil" src="perfil.png" /></div>
+            }}><div className={styles.profilecontainer}>
+                    <img className={styles.profileimg} src="perfil.png" alt="Perfil" />
+                    <div className={styles.profilecaption}>Perfil</div>
+                </div>
+            </div>
 
             {
 
@@ -92,7 +96,7 @@ export default function ModalPerfil() {
                                     onChange={e => setSenha1(e.target.value)}
                                 />
                                 <input className={styles.input}
-                                 type="password"
+                                    type="password"
                                     onChange={e => setReSenha(e.target.value)} />
                             </div>
                         </div>
@@ -100,7 +104,7 @@ export default function ModalPerfil() {
                             <button type='submit' >
                                 Salvar
                             </button>
-                            <p onClick={() => setOpen(false)}>cancelar</p>
+                            <p style={{ cursor: "pointer" }} onClick={() => setOpen(false)}>cancelar</p>
                         </div>
                     </form>
                 </div>

@@ -151,7 +151,7 @@ export function Consultas() {
                         <img onClick={handleVoltarParaPaginaInicial} alt="voltar" src="voltar.png" />
                         <div>
                             voltar
-                            </div>
+                        </div>
                         <ModalPerfil />
                         <div>
                             perfil

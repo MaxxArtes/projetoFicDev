@@ -1,40 +1,32 @@
-.profilecontainer {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-  }
-  
-  .profileimg {
-    height: 60px; /* Ajuste o tamanho da imagem conforme necessário */
-  }
-  
-  .profilecaption {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: none; /* Inicialmente, a legenda está oculta */
-    background-color: rgba(0, 0, 0, 0.7); /* Cor de fundo da legenda */
-    color: #fff; /* Cor do texto da legenda */
-    padding: 5px;
-    font-size: 14px;
-  }
-  
-  .profilecontainer:hover .profilecaption {
-    display: block; /* Mostra a legenda quando o mouse está sobre a imagem */
-  }
+.ATENDIMENTO {
+    align-items: stretch;
+    justify-content: center;
+    background-color: #b8dde0;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 80%;
+}
+
+.geral {
+    align-items: stretch;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+}
 
 .modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    /* Fundo semi-transparente para o modal; */
+    height: 73%;
+    /* Fundo semi-transparente para o modal */
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 .adicionar {
@@ -49,9 +41,7 @@
 
 .botao {
     display: flex;
-    flex-direction: column;
-    margin-right: 10px;
-    margin-top: 10px;
+    justify-content: space-between;
 }
 
 .tablevalues {
@@ -385,12 +375,6 @@ footer {
     flex-direction: row;
     width: 100%;
     height: 100%;
-}
-
-.input{
-    height: 41px;
-    border-radius: 4px;
-    margin-bottom: 7px;
 }
 
 @media (max-width: 900px) {

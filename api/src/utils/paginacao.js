@@ -1,5 +1,5 @@
 async function paginate(model, page, limit, options = {}) {
-    limit = 6;
+    limit = 9;
     // Calcula o offset
     const offset = (page - 1) * limit;
     

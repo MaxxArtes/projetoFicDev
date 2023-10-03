@@ -125,23 +125,19 @@ export function PaginaInicial() {
                             <div className={styles.header}>
                                 <tbody>
                                     {users.map((user, index) => (
-                                        <tr key={index} style={{ display: 'flex', alignItems: 'center'  }}>
+                                        <tr key={index} style={{ display: 'flex', alignItems: 'center' }}>
                                             {/* <td className={styles.acoes}>{user.id_usuario}</td> */}
                                             <td className={styles.acoes}>{user.nome}</td>
                                             <td className={styles.acoes}>{user.email}</td>
                                             <td className={styles.button}>
-                                            <ModalPerfil />
+                                                <ModalPerfil />
                                             </td>
-                                            <div>
-                                            perfil
-                                            </div>
+                                            <td>
+                                                <img onClick={handleSair} alt="sair" src="sair.png" />
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
-                            </div>
-                            <img onClick={handleSair} alt="sair" src="sair.png" />
-                            <div>
-                            sair
                             </div>
                         </table>
                     </div>
@@ -153,7 +149,7 @@ export function PaginaInicial() {
                     <button className={styles.rectangle}>atendimento</button>
                 </Link>
                 <Link to="/Consultas">
-                <button className={styles.rectangle1}>consulta</button>
+                    <button className={styles.rectangle1}>consulta</button>
                 </Link>
                 <Link to="/Usuarios/">
                     <button className={styles.rectangle}>adm</button>
