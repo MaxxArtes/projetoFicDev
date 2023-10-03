@@ -25,6 +25,10 @@ module.exports = {
         type: Sequelize.TIME,
         allowNull: false
       },
+      status: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
       unidade_saude: {
         type: Sequelize.TEXT,
         allowNull: false

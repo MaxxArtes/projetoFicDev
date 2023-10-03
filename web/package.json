@@ -17,6 +17,7 @@
     "react-apexcharts": "^1.4.1",
     "react-bootstrap": "^2.8.0",
     "react-d3-tree": "^3.6.1",
+    "react-date-range": "^1.4.0",
     "react-dom": "^18.2.0",
     "react-google-charts": "^4.0.1",
     "react-hook-form": "^7.46.2",

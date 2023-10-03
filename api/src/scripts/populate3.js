@@ -8,7 +8,8 @@ const agendamentos = [
     especialidade: "Cardiologia",
     data: "2023-09-20",
     horario: "08:30",
-    unidade_saude: "Hospital Central"
+    unidade_saude: "Hospital Central",
+    status: "andamento"
   },
   {
     id_paciente: 2,
@@ -16,7 +17,8 @@ const agendamentos = [
     especialidade: "Pediatria",
     data: "2023-09-22",
     horario: "10:00",
-    unidade_saude: "Clinica Infantil"
+    unidade_saude: "Clinica Infantil",
+    status: "andamento"
   },
   {
     id_paciente: 3,
@@ -24,7 +26,8 @@ const agendamentos = [
     especialidade: "Ortopedia",
     data: "2023-09-25",
     horario: "15:45",
-    unidade_saude: "Hospital Ortopédico"
+    unidade_saude: "Hospital Ortopédico",
+    status: "andamento"
   },
   {
     id_paciente: 4,
@@ -32,7 +35,8 @@ const agendamentos = [
     especialidade: "Dermatologia",
     data: "2023-09-26",
     horario: "14:15",
-    unidade_saude: "Clínica Dermatológica"
+    unidade_saude: "Clínica Dermatológica",
+    status: "andamento"
   },
   {
     id_paciente: 5,
@@ -40,7 +44,8 @@ const agendamentos = [
     especialidade: "Oftalmologia",
     data: "2023-09-27",
     horario: "11:30",
-    unidade_saude: "Clínica de Oftalmologia"
+    unidade_saude: "Clínica de Oftalmologia",
+    status: "andamento"
   },
   {
     id_paciente: 6,
@@ -48,7 +53,8 @@ const agendamentos = [
     especialidade: "Ginecologia",
     data: "2023-09-28",
     horario: "09:00",
-    unidade_saude: "Hospital da Mulher"
+    unidade_saude: "Hospital da Mulher",
+    status: "andamento"
   },
   {
     id_paciente: 7,
@@ -56,7 +62,8 @@ const agendamentos = [
     especialidade: "Neurologia",
     data: "2023-09-29",
     horario: "13:45",
-    unidade_saude: "Clínica Neurológica"
+    unidade_saude: "Clínica Neurológica",
+    status: "andamento"
   },
   {
     id_paciente: 8,
@@ -64,7 +71,8 @@ const agendamentos = [
     especialidade: "Oncologia",
     data: "2023-09-30",
     horario: "16:20",
-    unidade_saude: "Hospital do Câncer"
+    unidade_saude: "Hospital do Câncer",
+    status: "andamento"
   },
   {
     id_paciente: 9,
@@ -72,7 +80,8 @@ const agendamentos = [
     especialidade: "Urologia",
     data: "2023-10-03",
     horario: "08:15",
-    unidade_saude: "Clínica Urológica"
+    unidade_saude: "Clínica Urológica",
+    status: "andamento"
   },
   {
     id_paciente: 10,
@@ -80,7 +89,8 @@ const agendamentos = [
     especialidade: "Psiquiatria",
     data: "2023-10-05",
     horario: "10:30",
-    unidade_saude: "Clínica Psiquiátrica"
+    unidade_saude: "Clínica Psiquiátrica",
+    status: "andamento"
   }
 
 ];
@@ -94,6 +104,7 @@ const agendamentos = [
         data: agendamento.data,
         horario: agendamento.horario,
         unidade_saude: agendamento.unidade_saude,
+        status: agendamento.status,
         id_paciente: agendamento.id_paciente
       });
 

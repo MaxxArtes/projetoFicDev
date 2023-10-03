@@ -12,11 +12,37 @@ export function Consultas() {
     const [page, setPage] = React.useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [idAgendamento, setIdAgendamento] = React.useState(null);
-
+    const [ordenacao, setOrdenacao] = useState({ coluna: '', ordem: 'asc' });
     const [agendamentos, setAgendamentos] = React.useState([]);
     let selectedAgendamentos = [];
+    
 
-
+    const handleOrdenacao = (colunaClicada) => {
+        if (colunaClicada === ordenacao.coluna) {
+          // Se a mesma coluna foi clicada novamente, inverte a ordem
+          setOrdenacao({ ...ordenacao, ordem: ordenacao.ordem === 'asc' ? 'desc' : 'asc' });
+        } else {
+          // Se uma nova coluna foi clicada, define a ordem como ascendente
+          setOrdenacao({ coluna: colunaClicada, ordem: 'asc' });
+        }
+      };
+      const ordenarConsultas = () => {
+        if (ordenacao.coluna === '') {
+          // Não há ordenação, retorne os dados sem alterações
+          return agendamentos;
+        }
+      
+        const agendamentosOrdenados = [...agendamentos].sort((a, b) => {
+          if (ordenacao.ordem === 'asc') {
+            return a[ordenacao.coluna] < b[ordenacao.coluna] ? -1 : 1;
+          } else {
+            return a[ordenacao.coluna] > b[ordenacao.coluna] ? -1 : 1;
+          }
+        });
+      
+        return agendamentosOrdenados;
+      };
+    
 
 
     const handleVoltarParaPaginaInicial = () => {
@@ -115,7 +141,7 @@ export function Consultas() {
             setAgendamentos(agendamentoData); // Atualize o estado usando setAgendamentos
             console.log('agendamento data : ', agendamentoData);
 
-            const calculatedTotalPages = Math.ceil(response.data.count / 10);
+            const calculatedTotalPages = Math.ceil(response.data.count / 9);
             setTotalPages(calculatedTotalPages); // Atualize o estado usando setTotalPages
             console.log('total pages : ', calculatedTotalPages);
             if (!response.ok) {
@@ -184,6 +210,7 @@ export function Consultas() {
                             <thead>
                                 <tr>
                                     <th>id agendamento</th>
+                                    <th>status</th>
                                     <th>Nome do paciente</th>
                                     <th>Nome do Medico</th>
                                     <th>Especialidade</th>
@@ -198,6 +225,7 @@ export function Consultas() {
                                 {agendamentos.map((agendamentoItem, index) => (
                                     <tr key={index}>
                                         <td>{agendamentoItem.id_agendamento}</td>
+                                        <td>{agendamentoItem.status}</td>
                                         <td>{agendamentoItem.nome_paciente}</td>
                                         <td>{agendamentoItem.nome_medico}</td>
                                         <td>{agendamentoItem.especialidade}</td>

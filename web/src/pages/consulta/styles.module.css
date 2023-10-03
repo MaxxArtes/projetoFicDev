@@ -152,7 +152,8 @@
   
   .inputGroup {
     display: flex;
-    align-items: flex-end
+    align-items: flex-end;
+    align-items: baseline;
     /* margin-bottom: 20px; */
   }
   

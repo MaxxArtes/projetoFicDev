@@ -28,6 +28,10 @@ class AgendamentoModel extends Model {
       unidade_saude: {
         type: DataTypes.TEXT,
       },
+      status: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
       id_paciente: {
         type: DataTypes.INTEGER,
         allowNull: false,

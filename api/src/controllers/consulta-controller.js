@@ -1,7 +1,5 @@
 const { ConsultaModel } = require('../models/consulta-model');
-//const filtrarPorData = require('./util/filtroData');
-
-// const { UserView } = require('../views/user-view');
+const paginate = require('../utils/pagination.js');
 
 class ConsultaController {
   async create(req, res) {

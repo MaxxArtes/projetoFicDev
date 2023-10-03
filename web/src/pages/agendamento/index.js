@@ -195,13 +195,11 @@ export function Agendamentos() {
 
                 const calculatedTotalPages = Math.ceil(response.data.count / 8);
                 setTotalPagesPacientes(calculatedTotalPages); // Atualize o estado usando setTotalPagesPacientes
-            } else if (response.status === 400) {
-                console.error('Paciente tem agendamentos');
-                alert('O paciente não pode ser excluído pois tem agendamentos');
-            } else {
-                console.error('Erro ao excluir paciente');
-            }
+            } 
         } catch (error) {
+            if(error.response.status === 400){
+                alert("não pode excluir esse paciente, pois possui agendamentos");
+            }
             console.error('Erro ao excluir paciente', error);
         }
     };
@@ -237,6 +235,7 @@ export function Agendamentos() {
                     Authorization: `Bearer ${accessToken}`,
                 },
             });
+       
             if (response.status === 204) {
                 // Atualizar a lista de agendamentos após a exclusão
                 const usersResponse = await api.get(`/agendamentos/${page}`);
@@ -250,6 +249,7 @@ export function Agendamentos() {
                 console.error('Erro ao excluir agendamento');
             }
         } catch (error) {
+         
             console.error('Erro ao excluir agendamento', error);
         }
     };
@@ -316,7 +316,7 @@ export function Agendamentos() {
                                 <thead>
                                     <tr>
                                         <th>id agendamento</th>
-                                        <th>id paciente</th>
+                                        <th>status</th>
                                         <th>Nome do paciente</th>
                                         <th>Nome do Medico</th>
                                         <th>Especialidade</th>
@@ -331,7 +331,7 @@ export function Agendamentos() {
                                     {agendamentos.map((agendamentoItem, index) => (
                                         <tr key={index}>
                                             <td>{agendamentoItem.id_agendamento}</td>
-                                            <td>{agendamentoItem.id_paciente}</td>
+                                            <td>{agendamentoItem.status}</td>
                                             <td>{agendamentoItem.nome_paciente}</td>
                                             <td>{agendamentoItem.nome_medico}</td>
                                             <td>{agendamentoItem.especialidade}</td>
