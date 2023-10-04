@@ -1,17 +1,20 @@
+const { AgendamentoModel } = require('../models/agendamento-model');
 const { ConsultaModel } = require('../models/consulta-model');
 const paginate = require('../utils/pagination.js');
 
 class ConsultaController {
   async create(req, res) {
     try {
-      const { historico_clinico, descricao, id_paciente, receita} = req.body;
-      console.log("dsfsdfsdfsdfsd", historico_clinico, descricao, id_paciente, receita)
+      const { historico_clinico, descricao, id_paciente, receita, id_agendamento} = req.body;
+      console.log(id_paciente);
       const consulta = await ConsultaModel.create({
-        id_paciente,
+        id_paciente:id_paciente,
         receita,
         historico_clinico,
         descricao,
       });
+
+      await AgendamentoModel.update({ status: 'finalizado' }, { where: { id_agendamento } });
       return res.status(201).json(consulta);
     } catch (error) {
       console.error(error);

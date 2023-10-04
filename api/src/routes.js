@@ -36,6 +36,7 @@ routes.post('/registerAgendamento', authMiddleware, AgendamentoController.create
 routes.put('/editarAgendamento/:id', authMiddleware, AgendamentoController.update);
 routes.delete('/deletarAgendamento/:id', authMiddleware, AgendamentoController.delete);
 routes.get('/agendamentos/:page', AgendamentoController.consultarAgendamentosEndpoint);
+routes.get('/dashStatus', AgendamentoController.dashStatus);
 
 // consulta
 routes.post('/registrarProntuario', authMiddleware, ConsultaController.create);

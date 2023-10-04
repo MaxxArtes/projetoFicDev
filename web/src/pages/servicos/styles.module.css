@@ -1,4 +1,29 @@
 /* styles.module.css */
+.profilecontainer {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .profileimg {
+    height: 60px; /* Ajuste o tamanho da imagem conforme necessário */
+  }
+  
+  .profilecaption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none; /* Inicialmente, a legenda está oculta */
+    background-color: rgba(0, 0, 0, 0.7); /* Cor de fundo da legenda */
+    color: #fff; /* Cor do texto da legenda */
+    padding: 5px;
+    font-size: 14px;
+  }
+  
+  .profilecontainer:hover .profilecaption {
+    display: block; /* Mostra a legenda quando o mouse está sobre a imagem */
+  }
+
 .paginainicial {
     display: flex;
     flex-direction: column;

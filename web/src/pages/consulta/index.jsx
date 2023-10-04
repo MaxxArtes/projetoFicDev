@@ -12,37 +12,13 @@ export function Consultas() {
     const [page, setPage] = React.useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [idAgendamento, setIdAgendamento] = React.useState(null);
-    const [ordenacao, setOrdenacao] = useState({ coluna: '', ordem: 'asc' });
     const [agendamentos, setAgendamentos] = React.useState([]);
     let selectedAgendamentos = [];
-    
 
-    const handleOrdenacao = (colunaClicada) => {
-        if (colunaClicada === ordenacao.coluna) {
-          // Se a mesma coluna foi clicada novamente, inverte a ordem
-          setOrdenacao({ ...ordenacao, ordem: ordenacao.ordem === 'asc' ? 'desc' : 'asc' });
-        } else {
-          // Se uma nova coluna foi clicada, define a ordem como ascendente
-          setOrdenacao({ coluna: colunaClicada, ordem: 'asc' });
-        }
-      };
-      const ordenarConsultas = () => {
-        if (ordenacao.coluna === '') {
-          // Não há ordenação, retorne os dados sem alterações
-          return agendamentos;
-        }
-      
-        const agendamentosOrdenados = [...agendamentos].sort((a, b) => {
-          if (ordenacao.ordem === 'asc') {
-            return a[ordenacao.coluna] < b[ordenacao.coluna] ? -1 : 1;
-          } else {
-            return a[ordenacao.coluna] > b[ordenacao.coluna] ? -1 : 1;
-          }
-        });
-      
-        return agendamentosOrdenados;
-      };
-    
+
+
+
+
 
 
     const handleVoltarParaPaginaInicial = () => {
@@ -151,7 +127,7 @@ export function Consultas() {
         } catch (error) {
             console.error(error);
         }
-    };
+    } ;
 
     const handleRegistrarAgendamento = (agendamentoItem) => {
         setIsModalOpen(true);
@@ -174,18 +150,16 @@ export function Consultas() {
                         </div>
                     </div>
                     <div className={styles.navdiv} >
-                        <img onClick={handleVoltarParaPaginaInicial} alt="voltar" src="voltar.png" />
-                        <div>
-                            voltar
+                        <div className={styles.profilecontainer}>
+                            <img onClick={handleVoltarParaPaginaInicial} alt="voltar" src="voltar.png" />
+                            <div className={styles.profilecaption}>voltar</div>
                         </div>
                         <ModalPerfil />
-                        <div>
-                            perfil
+                        <div className={styles.profilecontainer}>
+                            <img onClick={handleSair} alt="sair" src="sair.png" />
+                            <div className={styles.profilecaption}>sair</div>
                         </div>
-                        <img onClick={handleSair} alt="sair" src="sair.png" />
-                        <div>
-                            sair
-                        </div>
+
                     </div>
                 </header>
                 <div className={styles.bloco}>
@@ -225,7 +199,7 @@ export function Consultas() {
                                 {agendamentos.map((agendamentoItem, index) => (
                                     <tr key={index}>
                                         <td>{agendamentoItem.id_agendamento}</td>
-                                        <td>{agendamentoItem.status}</td>
+                                        <td style={agendamentoItem.status === 'andamento' ? {backgroundColor: "yellow"}: {backgroundColor: "green", color: "white"}}>{agendamentoItem.status}</td>
                                         <td>{agendamentoItem.nome_paciente}</td>
                                         <td>{agendamentoItem.nome_medico}</td>
                                         <td>{agendamentoItem.especialidade}</td>

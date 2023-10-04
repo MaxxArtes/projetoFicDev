@@ -65,7 +65,7 @@ export function ModalAgendamento({ mostrarModal, onClose }) {
                         onChange={(e) => setHorarioAgendamento(e.target.value)}
                     />
                 </div>
-                <button className={styles.primaryButton} onClick={handleAgendar}>Agendar</button>
+                <button style={{ cursor: "pointer" }} className={styles.primaryButton} onClick={handleAgendar}>Agendar</button>
             </div>
         </div>
     );

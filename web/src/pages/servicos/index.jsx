@@ -23,11 +23,6 @@ export function PaginaInicial() {
         navigate('/');
     };
 
-    const handleEditButtonClick = (user) => {
-        setUserData(user);
-        setMostrarModal(true);
-    };
-
     const handleSaveUser = async () => {
         try {
             if (!password || !rePassword) {
@@ -132,8 +127,9 @@ export function PaginaInicial() {
                                             <td className={styles.button}>
                                                 <ModalPerfil />
                                             </td>
-                                            <td>
+                                            <td className={styles.profilecontainer}>
                                                 <img onClick={handleSair} alt="sair" src="sair.png" />
+                                                <div className={styles.profilecaption}>sair</div>
                                             </td>
                                         </tr>
                                     ))}
@@ -151,7 +147,7 @@ export function PaginaInicial() {
                 <Link to="/Consultas">
                     <button className={styles.rectangle1}>consulta</button>
                 </Link>
-                <Link to="/Usuarios/">
+                <Link to="/Usuarios">
                     <button className={styles.rectangle}>adm</button>
                 </Link>
             </div>

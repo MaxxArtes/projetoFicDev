@@ -1,6 +1,6 @@
 const { AgendamentoModel } = require('../models/agendamento-model');
 const paginate = require('../utils/pagination.js');
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 require('dotenv').config();
 
 
@@ -31,26 +31,26 @@ class AgendamentoController {
       const { nome } = req.query; // Parâmetros da consulta
       let filterOptions = "";
       // Opções de filtro para o Sequelize
-      if(nome) {
-      filterOptions = `${nome}`;
-      
-      // Chama a função paginate com as opções de filtro
+      if (nome) {
+        filterOptions = `${nome}`;        
+
+        // Chama a função paginate com as opções de filtro
+        const agendamentos = await paginate(AgendamentoModel, page, filterOptions);
+
+        // Responda com os resultados da consulta
+        return res.status(200).json(agendamentos);
+      }
       const agendamentos = await paginate(AgendamentoModel, page, filterOptions);
-  
+
       // Responda com os resultados da consulta
       return res.status(200).json(agendamentos);
-    }
-    const agendamentos = await paginate(AgendamentoModel, page, filterOptions);
-  
-      // Responda com os resultados da consulta
-      return res.status(200).json(agendamentos);
-      
+
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Erro interno do servidor', error });
     }
   }
-  
+
 
 
 
@@ -119,13 +119,27 @@ class AgendamentoController {
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
+  async dashStatus(req, res) {
+    try {
+      const data = await AgendamentoModel.findAll({
+        attributes:
+          ["status", [Sequelize.fn('COUNT', "status"), "total"]],
+          group: ['status']
+      })
+
+      return res.status(200).json(data); //retorna as consultas encontradas e paginadas
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  }
 
   // async totalAgendamentos(req, res) {
   //   try {
   //     const result = await AgendamentoModel.sequelize.query("SELECT id_agendamento, COUNT(*) FROM agendamentos GROUP BY especialidade");
 
   //     return res.status(200).json({totalAtendentes: result[0][0], totalMedicos: result[0][1]}); 
-      
+
   //     } catch (error) {
   //     // Trate erros aqui
   //     console.error(error);

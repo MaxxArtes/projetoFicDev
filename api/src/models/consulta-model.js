@@ -20,7 +20,7 @@ class ConsultaModel extends Model {
         type: DataTypes.BOOLEAN,
       },
       id_paciente: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.INTEGER,
         allowNull: false
       }
     }, {

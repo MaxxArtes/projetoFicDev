@@ -338,12 +338,6 @@ footer {
 }
 
 /* Estilos de responsividade (ajuste conforme necessário) */
-@media (max-width: 768px) {
-  .col {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-}
 
 .navdiv {
   align-items: center;
@@ -365,24 +359,4 @@ footer {
   flex-direction: row;
   width: 100%;
   height: 100%;
-}
-
-@media (max-width: 900px) {
-  .content {
-    padding: 10px 5px;
-    /* Reduz o espaçamento do conteúdo para telas menores */
-  }
-
-  .col {
-    flex: 0 0 100%;
-    /* Garante que as colunas ocupem 100% da largura em telas menores */
-    max-width: 100%;
-    padding: 5px;
-    /* Reduz o espaçamento entre as colunas */
-  }
-
-  .table {
-    margin-top: 10px;
-    /* Reduz a margem superior das tabelas em telas menores */
-  }
 }

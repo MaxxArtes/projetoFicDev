@@ -120,7 +120,7 @@ export default function ModalEditar(props) {
                             <button type='submit' >
                                 Adicionar
                             </button>
-                            <p onClick={() => setOpen(false)}>cancelar</p>
+                            <p style={{ cursor: "pointer" }} onClick={() => setOpen(false)}>cancelar</p>
                         </div>
                     </form>
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './styles.module.css';
 
 const ConfirmationModal2 = ({ isOpenn, message, onClose, onConfir }) => {
@@ -15,7 +15,7 @@ const ConfirmationModal2 = ({ isOpenn, message, onClose, onConfir }) => {
                 </div>
                 <div className={styles.botao}>
                     <button onClick={onConfir}>Sim</button>
-                    <p onClick={onClose}>Cancelar</p>
+                    <p style={{ cursor: "pointer" }} onClick={onClose}>Cancelar</p>
                 </div>
             </div>
         </div >

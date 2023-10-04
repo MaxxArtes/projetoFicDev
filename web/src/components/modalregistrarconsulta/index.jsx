@@ -6,7 +6,7 @@ import { api } from '../../services/api';
 
 export default function ModalRegistrarConsulta(props) {
     const [open, setOpen] = useState(false)
-    const { register, handleSubmit } = useForm()
+    const { handleSubmit } = useForm()
     const [descricao, setDescricao] = React.useState('');
     let [receita, setReceita] = React.useState(false);
     const [historico, setHistorico] = React.useState('');
@@ -21,6 +21,7 @@ export default function ModalRegistrarConsulta(props) {
         // configurando as informacoes que vao ser enviadas
         // Configurando as informações que vão ser enviadas
         const AgendamentoData = {
+            id_agendamento: props.dados.id_agendamento,
             id_paciente: id,
             descricao: descricao,
             historico_clinico: historico,
@@ -32,7 +33,7 @@ export default function ModalRegistrarConsulta(props) {
         const accessToken = sessionStorage.getItem("token");
 
         //fazendo a requisição
-        debugger
+         
         const response = await api.post(`/registrarProntuario/`, AgendamentoData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -95,18 +96,18 @@ export default function ModalRegistrarConsulta(props) {
 
                             />
                         </div>
-                        <div className={styles.botao}>
+                        <div className={styles.botao} >
                             <div>
-                            <button>
-                                <input type="radio" id="opcao1" name="opcao" value="receita"
-                                    onChange={(e) => setReceita(true)}/>
-                                <label for="true">receita</label>
+                            <button onClick={(e) => {e.preventDefault(); setReceita(!receita)}}>
+                                <label>receita</label>
+                                <div style={{width: "90px", height: "10px", borderRadius:"10px", backgroundColor: receita ? "green" : "red"}}></div>
                             </button>
+                           
                                     <button type='submit' >
                                         Finalizar e Salvar
                                     </button>
                             </div>
-                            <p onClick={() => setOpen(false)}>cancelar</p>
+                            <p style={{ cursor: "pointer" }} onClick={() => {setOpen(false); setReceita(false)}} >cancelar</p>
                         </div>
                     </form>
                 </div>

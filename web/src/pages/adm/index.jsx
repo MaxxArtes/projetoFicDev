@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import ChartComponent from '../../components/newchart';
 import ModalPerfil from '../../components/modalPerfil';
 import ConfirmationModal from '../../components/modalConfirmacao/index.jsx';
+
 // import React, { PureComponent } from 'react';
 // import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -80,13 +81,14 @@ export function Usuarios() {
     };
 
     const handleRecuperarSenhaClick = () => {
+        setIsEditMode(false);
         setMostrarModal(true);
     };
 
     async function aumentarPacientes() {
         if (page < totalPages) {
             setPage(page + 1);
-            console.log("PAGINA USUARIOS: ",page)
+            console.log("PAGINA USUARIOS: ", page)
         }
     };
 
@@ -138,12 +140,12 @@ export function Usuarios() {
 
     const handleSaveUser = async () => {
         try {
-            if (rePassword) {
-                if (password !== rePassword) {
-                    console.error('As senhas não correspondem.');
-                    return;
-                }
+
+            if (password !== rePassword) {
+                console.error('As senhas não correspondem.');
+                return;
             }
+
 
             const updatedUserData = {
                 nome: isEditMode ? userData.nome : nome,
@@ -164,6 +166,7 @@ export function Usuarios() {
                 : await api.post('/registerUsuario', updatedUserData);
 
             if (response.status === 200 || response.status === 204) {
+                alert(isEditMode ? "Usuário editado com sucesso!" : "Usuário criado com sucesso!");
                 setSelectedUsers(selectedUsers.filter(id => id !== userData.id_usuario));
                 const usersResponse = await api.get(`/listarUsuarios/${page}`);
                 const userData = usersResponse.data;
@@ -285,7 +288,7 @@ export function Usuarios() {
                     <div className={styles.navdiv}>
                         <ModalPerfil />
                         <div onClick={handleVoltarParaPaginaInicial} className={styles.profilecontainer}>
-                            <img  alt="voltar" src="voltar.png" />
+                            <img alt="voltar" src="voltar.png" />
                             <div className={styles.profilecaption}>voltar</div>
                         </div>
                         <div onClick={handleSair} className={styles.profilecontainer}>
@@ -319,10 +322,7 @@ export function Usuarios() {
                                     <button onClick={handlePesquisarPacientes} className={styles.button}>
                                         Pesquisar
                                     </button>
-                                    <button className={styles.button}>
-                                        <button onClick={() => handleRecuperarSenhaClick(true)} className={styles.button}>adicionar</button>
-                                        <img className={styles.search} alt="Search" src="adicao.png" />
-                                    </button>
+                                    <button onClick={handleRecuperarSenhaClick} className={styles.button}>adicionar <img className={styles.search} alt="Search" src="adicao.png" /></button>
                                 </div>
                             </div>
 
@@ -395,6 +395,7 @@ export function Usuarios() {
                                         type="text"
                                         placeholder="Digite seu nome"
                                         value={isEditMode ? userData.nome : nome}
+                                        required={isEditMode ? 'false' : 'true'}
                                         onChange={(e) => {
                                             if (isEditMode) {
                                                 setUserData({ ...userData, nome: e.target.value });
@@ -405,6 +406,7 @@ export function Usuarios() {
                                     />
                                     <select
                                         value={isEditMode ? userData.cargo : cargo}
+                                        required={isEditMode ? 'false' : 'true'}
                                         onChange={(e) => {
                                             if (isEditMode) {
                                                 setUserData({ ...userData, cargo: e.target.value });
@@ -421,6 +423,7 @@ export function Usuarios() {
                                         type="text"
                                         placeholder="Digite sua especialização"
                                         value={isEditMode ? userData.especialidade : especialidade}
+                                        required={isEditMode ? 'false' : 'true'}
                                         onChange={(e) => {
                                             if (isEditMode) {
                                                 setUserData({ ...userData, especialidade: e.target.value });
@@ -433,6 +436,7 @@ export function Usuarios() {
                                         type="text"
                                         placeholder="Digite seu CPF"
                                         value={isEditMode ? userData.cpf : cpf}
+                                        required={isEditMode ? 'false' : 'true'}
                                         onChange={(e) => {
                                             if (isEditMode) {
                                                 setUserData({ ...userData, cpf: e.target.value });
@@ -447,6 +451,7 @@ export function Usuarios() {
                                         type="email"
                                         placeholder="Digite seu email"
                                         value={isEditMode ? userData.email : email}
+                                        required={isEditMode ? 'false' : 'true'}
                                         onChange={(e) => {
                                             if (isEditMode) {
                                                 setUserData({ ...userData, email: e.target.value });
@@ -455,10 +460,11 @@ export function Usuarios() {
                                             }
                                         }}
                                     />
-                                    <input
-                                        type="password"
+                                    <input style={{ display: isEditMode ? 'none' : 'block', width: '100%', height: '41px', marginBottom: '10px', borderRadius: '5px' }}
                                         placeholder="Digite sua senha"
-                                        value={isEditMode ? userData.password : password}
+                                        type="password"
+                                        value={password}
+                                        required={isEditMode ? 'false' : 'true'}
                                         onChange={(e) => {
                                             if (isEditMode) {
                                                 setUserData({ ...userData, password: e.target.value });
@@ -467,10 +473,11 @@ export function Usuarios() {
                                             }
                                         }}
                                     />
-                                    <input
+                                    <input style={{ display: isEditMode ? 'none' : 'block', width: '100%', height: '41px', marginBottom: '10px', borderRadius: '5px' }}
                                         type="password"
                                         placeholder="Digite novamente sua senha"
-                                        value={isEditMode ? userData.rePassword : rePassword}
+                                        value={rePassword}
+                                        required={isEditMode ? 'false' : 'true'}
                                         onChange={(e) => {
                                             if (isEditMode) {
                                                 setUserData({ ...userData, rePassword: e.target.value });
@@ -497,8 +504,8 @@ export function Usuarios() {
                     <button style={{ cursor: "pointer" }} onClick={tab1}>
                         dashboard
                     </button>
-                    <div className="App">
-                        <h1>Meu Gráfico de Pizza</h1>
+                    <div >
+                        <h1>Usuários por cargo</h1>
                         <ChartComponent />
                     </div>
                 </div>

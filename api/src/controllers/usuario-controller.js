@@ -42,9 +42,9 @@ class UsuarioController {
   async perfil(req, res) {
     try {
       const { token } = req.params;
-      const result = jwt.verify( token.replace(/"/g, ""), process.env.SECRET);
-      console.log("result id",result)
-       const usuario = await UsuarioModel.sequelize.query(`Select * from usuarios where id_usuario = ${result.id}` );
+      const result = jwt.verify(token.replace(/"/g, ""), process.env.SECRET);
+      console.log("result id", result)
+      const usuario = await UsuarioModel.sequelize.query(`Select * from usuarios where id_usuario = ${result.id}`);
       // console.log("seaesaeasesa ", usuario)
       return res.status(200).json(usuario);
 
@@ -58,9 +58,10 @@ class UsuarioController {
     try {
       const { id } = req.params;
       const { nome, password, rePassword, cpf, cargo, especialidade, email } = req.body;
-
-      if(password !== rePassword){
-        return res.status(400).json({ error: 'As senhas não conferem' });
+      if (password) {
+        if (password !== rePassword) {
+          return res.status(400).json({ error: 'As senhas não conferem' });
+        }
       }
 
       let passwordHash;
@@ -102,7 +103,7 @@ class UsuarioController {
       const { page } = req.params;
       const { nome, limit } = req.query; // Parâmetros da consulta
       let usuarios; // Variável para armazenar os usuários
-  
+
       // Opções de filtro para o Sequelize
       const filterOptions = {};
 
@@ -112,7 +113,7 @@ class UsuarioController {
             [Op.iLike]: `%${nome}%`
           }
         };
-      
+
         // Adicione a opção de collation para ignorar acentuações
         filterOptions.where.nome = {
           [Op.iLike]: `%${nome}%`
@@ -124,8 +125,8 @@ class UsuarioController {
 
       // Chama a função paginate com as opções de filtro
       usuarios = await paginate(UsuarioModel, page, limit, filterOptions);
-      
-  
+
+
       return res.status(200).json(usuarios); // Retorna os usuários encontrados e paginados
     } catch (error) {
       console.error(error);
@@ -137,9 +138,9 @@ class UsuarioController {
     try {
       const result = await UsuarioModel.sequelize.query("SELECT cargo, COUNT(*) FROM usuarios GROUP BY cargo");
 
-      return res.status(200).json({totalAtendentes: result[0][0], totalMedicos: result[0][1]}); 
-      
-      } catch (error) {
+      return res.status(200).json({ totalAtendentes: result[0][0], totalMedicos: result[0][1] });
+
+    } catch (error) {
       // Trate erros aqui
       console.error(error);
       res.status(500).send('Erro interno do servidor ', error);
@@ -149,9 +150,9 @@ class UsuarioController {
     try {
       const result = await UsuarioModel.sequelize.query("SELECT * FROM usuarios WHERE UNACCENT(cargo) ILIKE UNACCENT('%medico%');");
 
-      return res.status(200).json(result); 
-      
-      } catch (error) {
+      return res.status(200).json(result);
+
+    } catch (error) {
       // Trate erros aqui
       console.error(error);
       res.status(500).send('Erro interno do servidor ', error);
@@ -181,22 +182,22 @@ class UsuarioController {
     const { nome } = req.params;
 
     try {
-        // Use o método 'findOne' do Sequelize para buscar um usuário por nome
-        const user = await UsuarioModel.findOne({ where: { nome } });
+      // Use o método 'findOne' do Sequelize para buscar um usuário por nome
+      const user = await UsuarioModel.findOne({ where: { nome } });
 
-        if (!user) {
-            return res.status(404).json({ message: 'Usuário não encontrado' });
-        }
+      if (!user) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+      }
 
-        res.status(200).json(user);
+      res.status(200).json(user);
     } catch (error) {
-        console.error('Erro ao buscar usuário por nome', error);
-        res.status(500).json({ message: 'Erro interno do servidor' });
+      console.error('Erro ao buscar usuário por nome', error);
+      res.status(500).json({ message: 'Erro interno do servidor' });
     }
-};
-  
-  
-  
+  };
+
+
+
 
 
   async login(req, res) {

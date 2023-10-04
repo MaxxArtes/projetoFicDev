@@ -4,7 +4,6 @@ async function paginate(model, page, filterOptions) {
   limit = 9;
   const offset = (page - 1) * limit;
   console.log("FILTER PAGINATION: ", filterOptions);
-
   // Inicialize a cláusula WHERE
   let whereClause = '1=1';
 
@@ -29,10 +28,12 @@ async function paginate(model, page, filterOptions) {
       agendamento.id_paciente = paciente.id_paciente
     WHERE
       ${whereClause}
+    ORDER BY data, horario desc
     LIMIT
       ${limit}
     OFFSET
       ${offset}
+    
   `;
 
 

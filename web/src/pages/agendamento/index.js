@@ -255,7 +255,7 @@ export function Agendamentos() {
     };
 
     const handleRegistrarAgendamento = (agendamentoItem) => {
-        debugger
+         
         setIsModalOpenn(true);
         setIdAgendamento(agendamentoItem.id_agendamento);
         console.log("ID AGENDAMENTO: ", idAgendamento)

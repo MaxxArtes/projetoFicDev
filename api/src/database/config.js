@@ -1,10 +1,10 @@
 
 module.exports = {
     dialect: 'postgres',
-    username: 'hakpimrh',
-    password: 'NZyYHUnWPnJPabT7wwAYI5cQ-Bn_Y6Ey',
-    host: 'silly.db.elephantsql.com',
+    username: 'postgres',
+    password: '123',
+    host: 'localhost',
     port: 5432,
-    database: 'hakpimrh',
+    database: 'postgres',
     logging: false,
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import styles from './modalEditar.module.css';
 import { api } from '../../services/api';
@@ -149,7 +149,7 @@ export default function ModalSavePacientes(props) {
                             <button type='submit' >
                                 Adicionar
                             </button>
-                            <p onClick={() => setOpen(false)}>cancelar</p>
+                            <p style={{ cursor: "pointer" }} onClick={() => setOpen(false)}>cancelar</p>
                         </div>
                     </form>
                 </div>
