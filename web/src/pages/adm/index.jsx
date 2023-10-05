@@ -13,7 +13,7 @@ export function Usuarios() {
     const navigate = useNavigate();
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [users, setUsers] = useState([]);
-    const [totalMedicos, setTotalMedicos] = useState();
+    // const [totalMedicos, setTotalMedicos] = useState();
     const [totalAtendentes, setTotalAtendentes] = useState();
     const [mostrarModal, setMostrarModal] = useState(false);
     const [nome, setNome] = useState('');
@@ -32,6 +32,7 @@ export function Usuarios() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [queryPacientes, setQueryPacientes] = React.useState('');
     let selectedPacientes = [];
+
 
 
     const idpaciente = (user) => {
@@ -206,7 +207,7 @@ export function Usuarios() {
                 setUsers(userData.data);
                 const result = await api.get('/totalUsuarios');
                 setTotalAtendentes(result.data.totalAtendentes.count);
-                setTotalMedicos(result.data.totalMedicos.count);
+                // setTotalMedicos(result.data.totalMedicos.count);
 
 
                 console.log('USERDATA.COUNT', userData.count)
@@ -309,7 +310,7 @@ export function Usuarios() {
                         <div className={styles.content}>
                             <div className={styles.pesquisa}>
                                 <div className={styles.h1}>
-                                    <h1>Pacientes</h1>
+                                    <h1>Usuarios</h1>
                                 </div>
                                 <div className={styles.inputGroup}>
                                     <input
@@ -501,11 +502,11 @@ export function Usuarios() {
                     <button style={{ cursor: "pointer" }} onClick={tab2}>
                         usuarios
                     </button>
-                    <button style={{ cursor: "pointer" }} onClick={tab1}>
+                    <button style={{ cursor: "pointer", marginBottom: '10px' }} onClick={tab1}>
                         dashboard
                     </button>
                     <div >
-                        <h1>Usuários por cargo</h1>
+
                         <ChartComponent />
                     </div>
                 </div>

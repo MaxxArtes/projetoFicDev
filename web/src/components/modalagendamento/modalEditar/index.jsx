@@ -12,6 +12,7 @@ export default function ModalEditar(props) {
 
 
 
+
     async function buscarMedicos() {
         try {
             const response = await api.get('/buscarMedicos'); // Faz a solicitação GET para a rota
@@ -28,38 +29,44 @@ export default function ModalEditar(props) {
     }
 
     async function adicionarAgendamento(data) {
+        try {
+            // configurando as informacoes que vao ser enviadas
+            const AgendamentoData = {
+                nome: data.nome_paciente,
+                nome_medico: medicoSelecionado,
+                especialidade: data.especialidade,
+                data: data.data,
+                horario: data.horario,
+            };
 
-        // configurando as informacoes que vao ser enviadas
-        const AgendamentoData = {
-            nome: data.nome_paciente,
-            nome_medico: medicoSelecionado,
-            especialidade: data.especialidade,
-            data: data.data,
-            horario: data.horario,
-        };
+            const accessToken = sessionStorage.getItem("token");
+            console.log('1')
 
-        const accessToken = sessionStorage.getItem("token");
-        console.log('1')
+            //fazendo a requisição
+            const response = await api.put(`/editarAgendamento/${props.dados.id_agendamento}`, AgendamentoData, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
 
-        //fazendo a requisição
-        const response = await api.put(`/editarAgendamento/${props.dados.id_agendamento}`, AgendamentoData, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
+            })
 
-        })
+            //Aguardando o retorno
+            if (response) {
+                alert(`Agendamento do id ${props.dados.nome_paciente} editado com sucesso`)
+                props.fetchAgendamentos()
+                setOpen(false)
+                return
+            }
 
-        //Aguardando o retorno
-        if (response) {
-            alert(`Agendamento do id ${props.dados.nome_paciente} editado com sucesso`)
-            props.fetchAgendamentos()
-            setOpen(false)
-            return
+            alert("Erro ao Editar Agendamento")
         }
 
-        alert("Erro ao Editar Agendamento")
+        catch (error) {
+            alert("Informações ausentes")
+        }
 
     }
+
 
     return (
         <>

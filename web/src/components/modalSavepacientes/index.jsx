@@ -92,7 +92,7 @@ export default function ModalSavePacientes(props) {
                 <div className={styles.modal}>
                     <form onSubmit={handleSubmit(registrarPaciente)} className={styles.adicionar}>
                         <div className={styles.contmodal}>
-                            <h4>Registrar Paciente</h4>
+                            <h4 style={{ color: 'black' }}>Registrar Paciente</h4>
                             <div className={styles.inputcontainer}>
                                 <input
                                     type="text"
@@ -149,7 +149,7 @@ export default function ModalSavePacientes(props) {
                             <button type='submit' >
                                 Adicionar
                             </button>
-                            <p style={{ cursor: "pointer" }} onClick={() => setOpen(false)}>cancelar</p>
+                            <p style={{ cursor: "pointer", color: 'black' }} onClick={() => setOpen(false)}>cancelar</p>
                         </div>
                     </form>
                 </div>

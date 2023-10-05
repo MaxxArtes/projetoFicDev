@@ -4,7 +4,7 @@ import styles from './modalEditar.module.css';
 import { api } from '../../services/api';
 
 
-export default function ModalSave(props) {
+export default function ModalRegistrarAgendamento(props) {
     console.log(props);
     const [open, setOpen] = useState(false)
     const { register, handleSubmit } = useForm()
@@ -45,7 +45,8 @@ export default function ModalSave(props) {
             data: data,
             horario: hora,
             unidade_saude: unidadeSaude,
-            id_paciente: props.dados.id_paciente
+            id_paciente: props.dados.id_paciente,
+            status: 'andamento'
         };
 
         const accessToken = sessionStorage.getItem("token");
@@ -86,7 +87,7 @@ export default function ModalSave(props) {
                 <div className={styles.modal}>
                     <form onSubmit={handleSubmit(editarAgendamento)} className={styles.adicionar}>
                         <div className={styles.contmodal}>
-                            <h4>Editar Agendamento</h4>
+                            <h4>registrar Agendamento</h4>
                             <div className={styles.inputcontainer}>
                                 <input
                                     type="text"
@@ -132,7 +133,7 @@ export default function ModalSave(props) {
                             <button type='submit' >
                                 Adicionar
                             </button>
-                            <p style={{ cursor: "pointer" }} onClick={() => setOpen(false)}>cancelar</p>
+                            <p style={{ cursor: "pointer", color: 'black' }} onClick={() => setOpen(false)}>cancelar</p>
                         </div>
                     </form>
                 </div>

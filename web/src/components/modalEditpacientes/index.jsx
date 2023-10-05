@@ -27,56 +27,64 @@ export default function ModalSavePacientes(props) {
 
 
     async function registrarPaciente(props) {
+        try {
 
+            const fetchPacientes = async () => {
+                try {
+                    console.log("PagePacientes: ", props.page.pagePacientes);
+                    const response = await api.get(`/listarPacientes/${props.page.pagePacientes}`);
+                    const pacientesData = response.data.data;
+                    props.setPacientes.setPacientes(pacientesData); // Atualize o estado usando setPacientes
+                    props.setPacientes.setPacientes(pacientesData); // Atualize o estado usando setPacientes
 
-        const fetchPacientes = async () => {
-            try {
-                console.log("PagePacientes: ", props.page.pagePacientes);
-                const response = await api.get(`/listarPacientes/${props.page.pagePacientes}`);
-                const pacientesData = response.data.data;
-                props.setPacientes.setPacientes(pacientesData); // Atualize o estado usando setPacientes
-                props.setPacientes.setPacientes(pacientesData); // Atualize o estado usando setPacientes
+                    const calculatedTotalPages = Math.ceil(response.data.count / 10);
+                    props.setTotalPagesPacientes.setTotalPagesPacientes(calculatedTotalPages); // Atualize o estado usando setTotalPagesPacientes
+                } catch (error) {
+                    console.error('Erro ao buscar pacientes', error);
+                }
+            };
 
-                const calculatedTotalPages = Math.ceil(response.data.count / 10);
-                props.setTotalPagesPacientes.setTotalPagesPacientes(calculatedTotalPages); // Atualize o estado usando setTotalPagesPacientes
-            } catch (error) {
-                console.error('Erro ao buscar pacientes', error);
+            // configurando as informacoes que vao ser enviadas
+            const pacientesData = {
+                nome: nome ? props.dados.nome : nome,
+                email: email ? props.dados.email : email,
+                tel: tel ? props.dados.tel : tel,
+                cel: cel ? props.dados.cel : cel,
+                CNS: CNS ? props.dados.CNS : CNS,
+                CPF: CPF ? props.dados.CPF : CPF,
+                sexo: sexo ? props.dados.sexo : sexo,
+                data_nasc: dataNasc ? props.dados.data_nasc : dataNasc,
+                endereco: endereco ? props.dados.endereco : endereco
+            };
+
+            const accessToken = sessionStorage.getItem("token");
+            console.log('123', id)
+
+            //fazendo a requisição
+            const response = await api.put(`/editarPacientes/${id}`, pacientesData, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+
+            })
+
+            //Aguardando o retorno
+            if (response) {
+                alert(`paciente registrado com sucesso`)
+                fetchPacientes()
+                setOpen(false)
+                return
             }
-        };
 
-        // configurando as informacoes que vao ser enviadas
-        const pacientesData = {
-            nome: nome,
-            email: email,
-            tel: tel,
-            cel: cel,
-            CNS: CNS,
-            CPF: CPF,
-            sexo: sexo,
-            data_nasc: dataNasc,
-            endereco: endereco
-        };
+            alert("Erro ao registrar pacientes")
 
-        const accessToken = sessionStorage.getItem("token");
-        console.log('123', id)
+        } catch (error) {
 
-        //fazendo a requisição
-        const response = await api.put(`/editarPacientes/${id}`, pacientesData, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
+            alert("Informações ausentes")
 
-        })
-
-        //Aguardando o retorno
-        if (response) {
-            alert(`paciente registrado com sucesso`)
-            fetchPacientes()
-            setOpen(false)
-            return
         }
 
-        alert("Erro ao registrar pacientes")
+
 
     }
 
@@ -95,7 +103,7 @@ export default function ModalSavePacientes(props) {
                 <div className={styles.modal}>
                     <form onSubmit={handleSubmit(registrarPaciente)} className={styles.adicionar}>
                         <div className={styles.contmodal}>
-                            <h4>Registrar Paciente</h4>
+                            <h4 style={{ color: 'black' }}>editar Paciente</h4>
                             <div className={styles.inputcontainer}>
                                 <input
                                     type="text"
@@ -105,27 +113,32 @@ export default function ModalSavePacientes(props) {
                                 />
                                 <input
                                     type="text"
+                                    defaultValue={props.dados.email}
                                     placeholder="Digite o e-mail"
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
                             <input
                                 type="text"
+                                defaultValue={props.dados.tel}
                                 placeholder="Digite o telefone"
                                 onChange={(e) => setTel(e.target.value)}
                             />
                             <input
                                 type="text"
+                                defaultValue={props.dados.cel}
                                 placeholder="Digite o celular"
                                 onChange={(e) => setCel(e.target.value)}
                             />
                             <input
                                 type="text"
+                                defaultValue={props.dados.CNS}
                                 placeholder="Digite o CNS"
                                 onChange={(e) => setCNS(e.target.value)}
                             />
                             <input
                                 type="text"
+                                defaultValue={props.dados.CPF}
                                 placeholder="Digite o CPF"
                                 onChange={(e) => setCPF(e.target.value)}
                             />
@@ -140,11 +153,13 @@ export default function ModalSavePacientes(props) {
                                 <option value="Feminino">Feminino</option>
                             </select>
                             <input
+                                defaultValue={props.dados.data_nasc}
                                 type="date"
                                 onChange={(e) => setDataNasc(e.target.value)}
                             />
                             <input
                                 type="text"
+                                defaultValue={props.dados.endereco}
                                 placeholder="Digite o endereço"
                                 onChange={(e) => setEndereco(e.target.value)}
                             />
@@ -153,7 +168,7 @@ export default function ModalSavePacientes(props) {
                             <button type='submit' >
                                 Adicionar
                             </button>
-                            <p style={{ cursor: "pointer" }} onClick={() => setOpen(false)}>cancelar</p>
+                            <p style={{ cursor: "pointer", color: 'black' }} onClick={() => setOpen(false)}>cancelar</p>
                         </div>
                     </form>
                 </div>

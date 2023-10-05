@@ -17,16 +17,23 @@ export function LoginForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            
-            sessionStorage.setItem('userEmail',email);
+
+
+            sessionStorage.setItem('userEmail', email);
             const result = await api.post('/loginUsuario', { email, password });
-            
+
             sessionStorage.setItem('token', result.data.token);
             navigate('/PaginaInicial');
-            
+
 
 
         } catch (error) {
+            if (error.response.status === 401) {
+                alert('Usuário ou senha inválidos');
+            }
+            if (error.response.status === 404) {
+                alert('Usuário não encontrado');
+            }
             console.error('Erro ao fazer login', error);
         }
     };

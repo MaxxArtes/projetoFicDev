@@ -148,7 +148,7 @@ class UsuarioController {
   }
   async totalmedicos(req, res) {
     try {
-      const result = await UsuarioModel.sequelize.query("SELECT * FROM usuarios WHERE UNACCENT(cargo) ILIKE UNACCENT('%medico%');");
+      const result = await UsuarioModel.sequelize.query("SELECT * FROM usuarios where cargo = 'médico'");
 
       return res.status(200).json(result);
 

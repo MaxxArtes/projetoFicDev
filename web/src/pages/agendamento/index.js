@@ -3,7 +3,7 @@ import { api } from '../../services/api';
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
 import ModalEditar from '../../components/modalagendamento/modalEditar/index.jsx';
-import ModalSave from '../../components/modalSave';
+import ModalRegistrarAgendamento from '../../components/modalSave';
 import useAgendamento from '../../hook/useAgendamento';
 import ModalSavePacientes from '../../components/modalSavepacientes/index.jsx';
 import ModalEditPacientes from '../../components/modalEditpacientes/index.jsx';
@@ -106,7 +106,7 @@ export function Agendamentos() {
         }
     };
 
-    
+
     async function handlePesquisarPacientes() {
         if (queryPacientes) {
             console.log("queryPacientes: ", queryPacientes);
@@ -195,9 +195,9 @@ export function Agendamentos() {
 
                 const calculatedTotalPages = Math.ceil(response.data.count / 8);
                 setTotalPagesPacientes(calculatedTotalPages); // Atualize o estado usando setTotalPagesPacientes
-            } 
+            }
         } catch (error) {
-            if(error.response.status === 400){
+            if (error.response.status === 400) {
                 alert("não pode excluir esse paciente, pois possui agendamentos");
             }
             console.error('Erro ao excluir paciente', error);
@@ -235,7 +235,7 @@ export function Agendamentos() {
                     Authorization: `Bearer ${accessToken}`,
                 },
             });
-       
+
             if (response.status === 204) {
                 // Atualizar a lista de agendamentos após a exclusão
                 const usersResponse = await api.get(`/agendamentos/${page}`);
@@ -249,13 +249,13 @@ export function Agendamentos() {
                 console.error('Erro ao excluir agendamento');
             }
         } catch (error) {
-         
+
             console.error('Erro ao excluir agendamento', error);
         }
     };
 
     const handleRegistrarAgendamento = (agendamentoItem) => {
-         
+
         setIsModalOpenn(true);
         setIdAgendamento(agendamentoItem.id_agendamento);
         console.log("ID AGENDAMENTO: ", idAgendamento)
@@ -345,7 +345,10 @@ export function Agendamentos() {
                                                         isOpenn={isModalOpenn}
                                                         message="Tem certeza de que deseja excluir este item?"
                                                         onClose={() => setIsModalOpenn(false)}
-                                                        onConfir={() => handleDeleteAgendamento(idAgendamento)}
+                                                        onConfir={() => {
+                                                            handleDeleteAgendamento(idAgendamento)
+                                                            setIsModalOpenn(false)
+                                                        }}
                                                     />
                                                 </div>
                                             </td>
@@ -431,7 +434,7 @@ export function Agendamentos() {
                                             <td>{(formatarData(pacienteItem.data_nasc))}</td>
                                             <td>{pacienteItem.endereco}</td>
                                             <td className={styles.agendar}>
-                                                <ModalSave dados={pacienteItem} fetchAgendamentos={fetchAgendamentos} />
+                                                <ModalRegistrarAgendamento dados={pacienteItem} fetchAgendamentos={fetchAgendamentos} />
                                             </td>
                                             <td>
                                                 <button>
@@ -444,7 +447,10 @@ export function Agendamentos() {
                                                     isOpen={isModalOpen}
                                                     message="Tem certeza de que deseja excluir este item?"
                                                     onClose={() => setIsModalOpen(false)}
-                                                    onConfirm={() => handleDeletePaciente(pacienteItem)}
+                                                    onConfirm={() => {
+                                                        handleDeletePaciente(pacienteItem)
+                                                        setIsModalOpen(false)
+                                                    }}
                                                 />
                                             </td>
                                         </tr>

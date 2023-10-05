@@ -40,7 +40,11 @@ const ChartComponent = () => {
   const andamento = parseInt(status[0]?.total);
   const finalizado = parseInt(status[1]?.total);
   return (
-    <div style={{ height: 400, width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column'}} >
+    <div style={{ height: 400, width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column' }} >
+      <div style={{ display: "flex", marginBottom: "28px", justifyContent: "end", width: "90%" }}>
+        <h1 style={{ marginRight: "28px", padding: "30px", backgroundColor: "white", borderRadius: "5px " }}>Total de Atendentes: {totalat}</h1>
+        <h1 style={{ padding: "30px", backgroundColor: "white", borderRadius: "5px " }}>Total de Médicos: {totalmed}</h1>
+      </div>
       <Chart
         chartType="PieChart"
         loader={<div>Loading Chart</div>}
@@ -53,9 +57,9 @@ const ChartComponent = () => {
           title: 'Distribuição de Usuários',
           'width': 1500,
           'height': 400,
-            }}
-      rootProps={{ 'data-testid': '1' }}
-          />
+        }}
+        rootProps={{ 'data-testid': '1' }}
+      />
       <Chart
         chartType="BarChart"
         loader={<div>Loading Chart</div>}
