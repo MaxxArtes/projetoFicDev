@@ -4,6 +4,12 @@
   cursor: pointer;
 }
 
+.primaryButton{
+  background-color: #04737c;
+  display: flex;
+  margin-right: 10px;
+}
+
 .profileimg {
   height: 60px; /* Ajuste o tamanho da imagem conforme necessário */
 }

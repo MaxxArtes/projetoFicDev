@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import ChartComponent from '../../components/newchart';
 import ModalPerfil from '../../components/modalPerfil';
 import ConfirmationModal from '../../components/modalConfirmacao/index.jsx';
+import MyChart from '../../components//apexchart';
 
 // import React, { PureComponent } from 'react';
 // import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -26,6 +27,8 @@ export function Usuarios() {
     const [page, setPage] = React.useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [isEditMode, setIsEditMode] = useState(false);
+    // const [dashboard1, setDashboard1] = useState(true);
+    // const [dashboard2, setDashboard2] = useState(true);
     const [userData, setUserData] = useState(null);
     const [editPassword, setEditPassword] = useState('');
     const [idUser, setIdUser] = useState([null]);
@@ -33,6 +36,12 @@ export function Usuarios() {
     const [queryPacientes, setQueryPacientes] = React.useState('');
     let selectedPacientes = [];
 
+    const [selectedDashboard, setSelectedDashboard] = useState('dashboard1');
+
+    // Função para alternar entre os dashboards
+    const toggleDashboard = (dashboardName) => {
+        setSelectedDashboard(dashboardName);
+    };
 
 
     const idpaciente = (user) => {
@@ -498,6 +507,7 @@ export function Usuarios() {
                         </div>
                     </div>
                 )}
+
                 <div id="dashboard" style={{ display: "none" }}>
                     <button style={{ cursor: "pointer" }} onClick={tab2}>
                         usuarios
@@ -505,9 +515,44 @@ export function Usuarios() {
                     <button style={{ cursor: "pointer", marginBottom: '10px' }} onClick={tab1}>
                         dashboard
                     </button>
-                    <div >
+                    <div style={{ display: 'flex' }}>
+                        <div style={{ display: 'flex'}}>
+                            <div style={{height: '800px'}} className={styles.primaryButton}>
+                                <p style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    marginTop: '10px',
+                                    height: '3%',
+                                    backgroundColor: "white",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    borderRadius: "10px",
+                                    textAlign: "center",
+                                    color: "black"
+                                }}>
+                                    {/* {selectedDashboard === 'dashboard1' ? 'Dashboard 1' : 'Dashboard 2'} */}
+                                    <div>
+                                        <button onClick={() => setSelectedDashboard('dashboard1')}>dashboard1</button>
+                                    </div>
+                                    <div>
+                                        <button onClick={() => setSelectedDashboard('dashboard2')}>dashboard2</button>
+                                    </div>
 
-                        <ChartComponent />
+                                </p>
+                            </div>
+
+                            {selectedDashboard === 'dashboard2' && (
+                                <div>
+                                    <ChartComponent style={{ backgroundColor: "yellow" }} />
+                                </div>
+                            )}
+
+                            {selectedDashboard === 'dashboard1' && (
+                                <div style={{ marginLeft: '10px' }}>
+                                    <MyChart valor="teste"/>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
