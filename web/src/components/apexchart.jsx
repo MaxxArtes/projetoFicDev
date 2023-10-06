@@ -11,9 +11,14 @@ class MyChart extends React.Component {
     this.state = {
       series: [
         {
-          name: 'consultas',
-          data: [31, 40, 28, 51, 42, 109, 100],
+          name: 'andamento',
+          data: [5, 1],
         },
+        {
+          name: 'finalizado',
+          data: [3, 2],
+        },
+        
       ],
       options: {
         chart: {
@@ -28,22 +33,13 @@ class MyChart extends React.Component {
           curve: 'smooth',
         },
         xaxis: {
-          type: 'datetime',
+          type: 'text',
           categories: [
-            '2018-09-19T00:00:00.000Z',
-            '2018-09-19T01:30:00.000Z',
-            '2018-09-19T02:30:00.000Z',
-            '2018-09-19T03:30:00.000Z',
-            '2018-09-19T04:30:00.000Z',
-            '2018-09-19T05:30:00.000Z',
-            '2018-09-19T06:30:00.000Z',
+            'setembro',
+            'outubro',
           ],
         },
-        tooltip: {
-          x: {
-            format: 'dd/MM/yy HH:mm',
-          },
-        },
+        
       },
     };
   }

@@ -35,6 +35,7 @@ export function Usuarios() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [queryPacientes, setQueryPacientes] = React.useState('');
     let selectedPacientes = [];
+    const [mostrarAcoes, setMostrarAcoes] = useState(false);
 
     const [selectedDashboard, setSelectedDashboard] = useState('dashboard1');
 
@@ -285,6 +286,7 @@ export function Usuarios() {
         dashboard.style.display = "none";
     }
 
+
     return (
         <div className={styles.geral} >
             <div className={styles.ATENDIMENTO}>
@@ -292,7 +294,7 @@ export function Usuarios() {
                     <div className={styles.esq}>
                         <img alt="logo" src="logo.png" />
                         <div className={styles.header}>
-                            <h1>usuarios</h1>
+                            <h1>Administrador</h1>
                         </div>
                     </div>
                     <div className={styles.navdiv}>
@@ -309,8 +311,8 @@ export function Usuarios() {
                 </header>
                 <br />
                 <div id="usuarios" style={{ display: "block" }}>
-                    <button style={{ cursor: "pointer" }} onClick={tab2}>
-                        usuarios
+                    <button style={{ cursor: "pointer", marginRight: "10px", marginLeft: "10px" }} onClick={tab2}>
+                        <p style={{ boxShadow: "0px 1px 0px 0px white" }}>usuarios</p>
                     </button>
                     <button style={{ cursor: "pointer" }} onClick={tab1}>
                         dashboard
@@ -318,9 +320,6 @@ export function Usuarios() {
                     <div className={styles.bloco}>
                         <div className={styles.content}>
                             <div className={styles.pesquisa}>
-                                <div className={styles.h1}>
-                                    <h1>Usuarios</h1>
-                                </div>
                                 <div className={styles.inputGroup}>
                                     <input
                                         className={styles.formControl}
@@ -329,58 +328,66 @@ export function Usuarios() {
                                         onChange={(e) => setQueryPacientes(e.target.value)}
                                     />
 
-                                    <button onClick={handlePesquisarPacientes} className={styles.button}>
-                                        Pesquisar
+                                    <button style={{ marginRight: "10px", textAlign: "center", alignItems: "center", justifyContent: "center" }} onClick={handlePesquisarPacientes} className={styles.button}>
+                                        <img style={{ borderRadius: "50%" }} className={styles.search} alt="Search" src="search.png" />
                                     </button>
-                                    <button onClick={handleRecuperarSenhaClick} className={styles.button}>adicionar <img className={styles.search} alt="Search" src="adicao.png" /></button>
+                                    <button onClick={handleRecuperarSenhaClick} className={styles.button}>adicionar <img style={{ marginLeft: "10px" }} className={styles.search} alt="Search" src="adicao.png" /></button>
                                 </div>
                             </div>
 
-                            <table className={styles.table}>
-                                <thead>
-                                    <tr>
-                                        <th className={styles.acoes}>Selecionar</th>
-                                        <th className={styles.acoes}>NOME</th>
-                                        <th className={styles.acoes}>CARGO</th>
-                                        <th className={styles.acoes}>CPF</th>
-                                        <th className={styles.acoes}>E-MAIL</th>
-                                        <th className={styles.acoes}>EDITAR</th>
-                                        <th className={styles.acoes}>EXCLUIR</th>
-                                    </tr>
-                                </thead>
+                            <div>
+                                <table className={styles.table}>
+                                    <thead>
+                                        <tr>
+                                            {/* <th className={styles.acoes}>Selecionar</th> */}
+                                            <th className={styles.acoes}>NOME</th>
+                                            <th className={styles.acoes}>CARGO</th>
+                                            <th className={styles.acoes}>CPF</th>
+                                            <th className={styles.acoes}>E-MAIL</th>
+                                            <th className={styles.acoes}>AÇÕES</th>
+                                        </tr>
+                                    </thead>
 
-                                <tbody>
-                                    {users.map((user, index) => (
-                                        <tr key={index}>
-                                            <td className={styles.acoes}>
+                                    <tbody>
+                                        {users.map((user, index) => (
+                                            <tr key={index}>
+                                                {/* <td className={styles.acoes}>
                                                 <input
                                                     type="checkbox"
                                                     onChange={() => handleUserSelection(user.id_usuario)}
                                                     checked={selectedUsers.includes(user.id_usuario)}
                                                 />
-                                            </td>
-                                            <td className={styles.acoes}>{user.nome}</td>
-                                            <td className={styles.acoes}>{user.cargo}</td>
-                                            <td className={styles.acoes}>{user.cpf}</td>
-                                            <td className={styles.acoes}>{user.email}</td>
-                                            <td className={styles.acoes}>
-                                                <button onClick={() => handleEditButtonClick(user)} className={styles.primaryButton}>
-                                                    editar
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button onClick={() => idpaciente(user)}><img alt="deletar" src="lixo.png" /></button>
-                                                <ConfirmationModal
-                                                    isOpen={isModalOpen}
-                                                    message="Tem certeza de que deseja excluir este item?"
-                                                    onClose={() => setIsModalOpen(false)}
-                                                    onConfirm={() => handleDeleteUser(idUser)}
-                                                />
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                            </td> */}
+                                                <td className={styles.acoes}>{user.nome}</td>
+                                                <td className={styles.acoes}>{user.cargo}</td>
+                                                <td className={styles.acoes}>{user.cpf}</td>
+                                                <td className={styles.acoes}>{user.email}</td>
+                                                <td className={styles.acoes}>
+
+                                                    <p style={{ cursor: "pointer", color: "#04737c", marginBottom: "10px" }} onClick={() => { setMostrarAcoes(!mostrarAcoes) }}>...</p>
+                                                    {
+                                                        mostrarAcoes && (
+                                                            <div style={{ cursor: "pointer", color: "#04737c" }}>
+                                                                <p style={{ cursor: "pointer", color: "#04737c", border: "1px solid #04737c", marginBottom: "10px" }} onClick={() => handleEditButtonClick(user)}>
+                                                                    editar
+                                                                </p>
+                                                                <p style={{ cursor: "pointer", color: "#04737c", border: "1px solid #04737c" }} onClick={() => idpaciente(user)}>deletar</p>
+                                                                <ConfirmationModal
+                                                                    isOpen={isModalOpen}
+                                                                    message="Tem certeza de que deseja excluir este item?"
+                                                                    onClose={() => setIsModalOpen(false)}
+                                                                    onConfirm={() => handleDeleteUser(idUser)}
+                                                                />
+                                                            </div>
+
+                                                        )
+                                                    }
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <footer>
@@ -509,15 +516,15 @@ export function Usuarios() {
                 )}
 
                 <div id="dashboard" style={{ display: "none" }}>
-                    <button style={{ cursor: "pointer" }} onClick={tab2}>
+                    <button style={{ cursor: "pointer", marginLeft: "10px" }} onClick={tab2}>
                         usuarios
                     </button>
-                    <button style={{ cursor: "pointer", marginBottom: '10px' }} onClick={tab1}>
-                        dashboard
+                    <button style={{ cursor: "pointer", marginBottom: '10px', marginLeft: "10px" }} onClick={tab1}>
+                        <p style={{ boxShadow: "0px 1px 0px 0px white" }}>dashboard</p>
                     </button>
                     <div style={{ display: 'flex' }}>
-                        <div style={{ display: 'flex'}}>
-                            <div style={{height: '800px'}} className={styles.primaryButton}>
+                        <div style={{ display: 'flex' }}>
+                            <div style={{ height: '800px' }} className={styles.primaryButton}>
                                 <p style={{
                                     width: '100%',
                                     height: '100%',
@@ -530,7 +537,6 @@ export function Usuarios() {
                                     textAlign: "center",
                                     color: "black"
                                 }}>
-                                    {/* {selectedDashboard === 'dashboard1' ? 'Dashboard 1' : 'Dashboard 2'} */}
                                     <div>
                                         <button onClick={() => setSelectedDashboard('dashboard1')}>dashboard1</button>
                                     </div>
@@ -549,7 +555,7 @@ export function Usuarios() {
 
                             {selectedDashboard === 'dashboard1' && (
                                 <div style={{ marginLeft: '10px' }}>
-                                    <MyChart valor="teste"/>
+                                    <MyChart valor="teste" />
                                 </div>
                             )}
                         </div>

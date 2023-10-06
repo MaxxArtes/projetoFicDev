@@ -331,7 +331,7 @@ export function Agendamentos() {
                                     {agendamentos.map((agendamentoItem, index) => (
                                         <tr key={index}>
                                             <td>{agendamentoItem.id_agendamento}</td>
-                                            <td>{agendamentoItem.status}</td>
+                                            <td style={agendamentoItem.status === 'andamento' ? {backgroundColor: "yellow"}: {backgroundColor: "green", color: "white"}}>{agendamentoItem.status}</td>
                                             <td>{agendamentoItem.nome_paciente}</td>
                                             <td>{agendamentoItem.nome_medico}</td>
                                             <td>{agendamentoItem.especialidade}</td>
